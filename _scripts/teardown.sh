@@ -1,6 +1,6 @@
 #!/bin/sh
 
-. ./config.sh
+LAMBDA_ARN=$(cat "./_scripts/lambda-arn")
 
 echo "Deploying Lambda code"
 
@@ -9,11 +9,11 @@ if [[ ${LAMBDA_ARN} != arn* ]] ; then
     exit 1;
 fi
 
-aws cloudformation delete-stack --stack-name"${LAMBDA_ARN}"
+aws cloudformation delete-stack --stack-name "${LAMBDA_ARN}"
 if [ $? -ne 0 ]; then
     echo "An error occurred while tearing down environment"
 else
-    sed -i '' "s,LAMBDA_ARN=\"[-a-zA-Z:0-9]*\",LAMBDA_ARN=\"\"," ./config.sh
+    rm -f lambda-arn
     echo "Tearing down environment"
     echo "Run make install to reinstall environment"
 fi
