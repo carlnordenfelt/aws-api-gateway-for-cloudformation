@@ -102,7 +102,7 @@
                 },
                 "Description": "Api Gateway CloudFormation.",
                 "Handler": "lib/index.handler",
-                "MemorySize": 128,
+                "MemorySize": 256,
                 "Role": { "Fn::GetAtt": ["LambdaFunctionRole", "Arn"] },
                 "Runtime": "nodejs",
                 "Timeout": 10
