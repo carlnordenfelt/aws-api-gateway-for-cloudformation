@@ -2,7 +2,7 @@
 
 LAMBDA_ARN=$(cat "./_scripts/lambda-arn")
 
-echo "Deploying Lambda code"
+echo "Tearing down CloudFormation stack"
 
 if [[ ${LAMBDA_ARN} != arn* ]] ; then
     echo "make install not run, nothing to teardown";
