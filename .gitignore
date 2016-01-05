@@ -1,0 +1,6 @@
+*.iml
+.idea/**/*
+coverage/**/*
+node_modules/**/*
+customResources.zip
+tmp/**/*

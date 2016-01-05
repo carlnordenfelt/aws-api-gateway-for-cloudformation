@@ -1,0 +1,117 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "Creates Lambda function API Gateway CustomResource CloudFormation handler",
+    "Resources": {
+        "CfnApiGatewayTable": {
+            "Type": "AWS::DynamoDB::Table",
+            "Properties": {
+                "TableName": "cfn_api_gateway_resources",
+                "AttributeDefinitions": [
+                    {
+                        "AttributeName": "StackId",
+                        "AttributeType": "S"
+                    },
+                    {
+                        "AttributeName": "CloudFormationIdentifier",
+                        "AttributeType": "S"
+                    }
+                ],
+                "KeySchema": [
+                    {
+                        "AttributeName" : "StackId",
+                        "KeyType" : "HASH"
+                    },
+                    {
+                        "AttributeName" : "CloudFormationIdentifier",
+                        "KeyType" : "RANGE"
+                    }
+                ],
+                "ProvisionedThroughput" : {
+                    "ReadCapacityUnits" : "2",
+                    "WriteCapacityUnits" : "2"
+                }
+            }
+        },
+        "LambdaBasePolicy": {
+            "Type": "AWS::IAM::ManagedPolicy",
+            "Properties": {
+                "Description" : "managed Policy for API Gateway Lambda function",
+                "Path" : "/infrastructure/base/lambda/",
+                "PolicyDocument": {
+                    "Version" : "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Action": [
+                                "logs:CreateLogGroup",
+                                "logs:CreateLogStream",
+                                "logs:PutLogEvents"
+                            ],
+                            "Resource": "arn:aws:logs:*:*:*"
+                        },
+                        {
+                            "Action": [
+                                "dynamodb:DeleteItem",
+                                "dynamodb:GetItem",
+                                "dynamodb:PutItem"
+                            ],
+                            "Effect": "Allow",
+                            "Resource": { "Fn::Join": ["", ["arn:aws:dynamodb:", { "Ref": "AWS::Region" }, ":", { "Ref": "AWS::AccountId" }, ":table/" , { "Ref": "CfnApiGatewayTable" }]] }
+                        },
+                        {
+                            "Effect": "Allow",
+                            "Action": [
+                                "apigateway:*"
+                            ],
+                            "Resource": "*"
+                        },
+                        {
+                            "Effect": "Allow",
+                            "Action": [
+                                "iam:PassRole"
+                            ],
+                            "Resource": "*"
+                        }
+                    ]
+                }
+            }
+        },
+        "LambdaFunctionRole": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+                "AssumeRolePolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Principal": {
+                                "Service": "lambda.amazonaws.com"
+                            },
+                            "Action": "sts:AssumeRole"
+                        }
+                    ]
+                },
+                "ManagedPolicyArns": [{ "Ref": "LambdaBasePolicy" }]
+            }
+        },
+        "LambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+                "Code": {
+                    "ZipFile": "exports.handler = function(event, context) { context.fail('Not Implemented'); };"
+                },
+                "Description": "Api Gateway CloudFormation.",
+                "Handler": "lib/index.handler",
+                "MemorySize": 128,
+                "Role": { "Fn::GetAtt": ["LambdaFunctionRole", "Arn"] },
+                "Runtime": "nodejs",
+                "Timeout": 10
+            }
+        }
+    },
+    "Outputs": {
+        "LambdaFunction": {
+            "Value": { "Fn::GetAtt": ["LambdaFunction", "Arn"] }
+        }
+    }
+}
