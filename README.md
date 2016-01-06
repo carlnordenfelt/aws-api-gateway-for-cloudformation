@@ -11,12 +11,14 @@ The project is inspired by [AWS Labs API Gateway Swagger Importer](https://githu
 1. <a href="#installation">Installation</a>
     1. <a href="#uninstallation">Uninstallation</a>
 1. <a href="#usage">Usage</a>
+    1. <a href="#overview">Overview</a>
     1. <a href="#create-an-api">Create an API</a>
     1. <a href="#create-an-api-resource">Create an API Resource</a>
     1. <a href="#create-an-api-method">Create an API Method</a>
     1. <a href="#create-a-model">Create a Model</a>
     1. <a href="#create-a-domain-name">Create a Domain Name</a>
     1. <a href="#create-a-base-path-mapping">Create a Base Path Mapping</a>
+1. <a href="#todo">TODO</a>
 
 ##A note on terminology before we begin
 Throughout this document there are references to *resources* and *API Resources*.
@@ -79,6 +81,15 @@ After you've run this command you can run make install again to get a new enviro
 **Note:** if you reinstall the setup you have to update the ServiceToken in your CloudFormation templates. 
 
 #Usage   
+
+##Overview
+This setup allows you to manage the majority of the API Gateway releated resource. Below you'll find (hopefully) exhaistive documentation on how to use each resource type.
+
+One thing that is not currently supported are API deployments. There is a bit of a catch-22 thing happening with the SDK and deployments where I can't create a stage without a deployment and I can create a deployment without a stage. I have this on the TODO list but for now you'll have to mange API deployment outside of this project.
+
+Also note that some resources may be flagged as experimental which means that they haven't been tested thouroghly.
+
+That said, on to what you can do.
 
 ##Create an API
 
@@ -655,3 +666,9 @@ http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createBas
             "stage": "beta"
         }
     }
+
+#TODO
+
+* Enable deployment management
+* Change deploy script so that it does not require a local file with reference to the Lambda ARN, thus enabling multi-region setups from one installation.
+* Create stable release packages with release notes etc.
