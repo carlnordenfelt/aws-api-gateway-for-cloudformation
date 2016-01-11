@@ -5,3 +5,4 @@ node_modules/**/*
 customResources.zip
 tmp/**/*
 lambda-arn
+package.zip
