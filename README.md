@@ -74,6 +74,19 @@ The installation takes a couple of minutes after which you are ready to start us
 The script will output the Custom Resource Lambda function ARN.
 Save this value, it is the value of the ServiceToken parameter that each Custom Resource requires in your CloudFormation templates. 
 
+####Manual installation
+
+The installation scripts does not work under Windows and may fail under Linux. Until this has been fixed you can still do the setup manually by following the steps below. 
+
+1. Clone the repository. 
+1. Run now install --production
+1. Create a zip file containing /lib, /node_modules and package.json.
+1. Login to the AWS Console and go to CloudFormation
+1. Create a new stack using the template file: _scripts/install/ApiGatewayCloudFormation.template
+1. Once the stack is created, note the LambdaArn under the Outputs tab, this is the service token for your templates.
+1. Go to Lambda, find the function and update it with the zip package you created earlier. 
+1. All done!
+
 ####Uninstallation
 If you want to uninstall the setup you simply run make teardown.
 After you've run this command you can run make install again to get a new environment.
