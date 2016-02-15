@@ -50,5 +50,5 @@ if [ -z "${lambdaArn}" ]; then
     exit 1;
 else
     echo "Updating deploy script"
-    echo "${lambdaArn}" > './lambda-arn'
+    echo "${lambdaArn}" > './_scripts/lambda-arn'
 fi
