@@ -52,12 +52,23 @@ describe('ApiModelEvent', function () {
         it('should yield an error due to missing name', function (done) {
             var event = {
                 ResourceProperties: {
-                    restApiId: '123'
+                    restApiId: 'RestApiId'
                 }
             };
             var parameters = testSubject.getParameters(event);
             expect(parameters).to.be.an.Error;
             expect(parameters.message).to.contain('{name}');
+            done();
+        });
+        it('should not validate parameters id RequestType is Delete', function (done) {
+            var event = {
+                RequestType: 'Delete',
+                ResourceProperties: {
+                    restApiId: 'RestApiId'
+                }
+            };
+            var parameters = testSubject.getParameters(event);
+            expect(parameters.params.restApiId).to.equal('RestApiId');
             done();
         });
 

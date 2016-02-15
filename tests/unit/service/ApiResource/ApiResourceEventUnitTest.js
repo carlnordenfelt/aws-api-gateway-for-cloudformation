@@ -84,6 +84,14 @@ describe('ApiResourceEvent', function () {
             expect(parameters.message).to.contain('{corsConfiguration.allowMethods}');
             done();
         });
+        it('should not validate parameters if RequestType is Delete', function (done) {
+            delete event.ResourceProperties.parentId;
+            delete event.OldResourceProperties;
+            event.RequestType = 'Delete';
+            var parameters = testSubject.getParameters(event);
+            expect(parameters.params.restApiId).to.equal('RestApiId');
+            done();
+        });
 
         it('should get parameters with complete cors config', function (done) {
             event.ResourceProperties.corsConfiguration = {

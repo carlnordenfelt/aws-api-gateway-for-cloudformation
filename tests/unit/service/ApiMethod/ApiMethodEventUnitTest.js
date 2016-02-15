@@ -46,6 +46,18 @@ describe('ApiModelEvent', function () {
             expect(parameters.old.responses).to.equal('Responses2');
             done();
         });
+        it('additional coverage test', function (done) {
+            delete event.OldResourceProperties.method;
+            var parameters = testSubject.getParameters(event);
+            expect(parameters.params.restApiId).to.equal('RestApiId');
+
+            expect(parameters.old.restApiId).to.equal('RestApiId2');
+            expect(parameters.old.resourceId).to.equal('ResourceId2');
+            expect(parameters.old.method).to.be.undefined;
+            expect(parameters.old.integration).to.equal('Integration2');
+            expect(parameters.old.responses).to.equal('Responses2');
+            done();
+        });
         it('should yield an error due to missing restApiId', function (done) {
             delete event.ResourceProperties.restApiId;
             delete event.OldResourceProperties;
@@ -73,6 +85,13 @@ describe('ApiModelEvent', function () {
             var parameters = testSubject.getParameters(event);
             expect(parameters).to.be.an.Error;
             expect(parameters.message).to.contain('{method.httpMethod}');
+            done();
+        });
+        it('should not do validation if RequestType is set to delete', function (done) {
+            event.RequestType = 'Delete';
+            delete event.ResourceProperties.method.httpMethod;
+            var parameters = testSubject.getParameters(event);
+            expect(parameters.params.restApiId).to.equal('RestApiId');
             done();
         });
     });

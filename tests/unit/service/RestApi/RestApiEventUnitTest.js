@@ -37,6 +37,17 @@ describe('RestAPiEvent', function () {
             expect(parameters.message).to.contain('{name}');
             done();
         });
+        it('should not validate parameters if RequestType is Delete', function (done) {
+            var event = {
+                RequestType: 'Delete',
+                ResourceProperties: {
+                    description: "ApiDesc"
+                }
+            };
+            var parameters = testSubject.getParameters(event);
+            expect(parameters.params.description).to.equal('ApiDesc');
+            done();
+        });
     });
 
     describe('getPatchOperations', function () {
