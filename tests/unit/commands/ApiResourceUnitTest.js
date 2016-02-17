@@ -15,10 +15,6 @@ describe('ApiResourceCommand', function () {
     var getParametersStub;
     var updateCorsConfigurationStub;
 
-    var getStub;
-    var putStub;
-    var deleteStub;
-
     after(function () {
         mockery.deregisterAll();
         mockery.disable();
@@ -36,10 +32,6 @@ describe('ApiResourceCommand', function () {
         getParametersStub = sinon.stub();
         updateCorsConfigurationStub = sinon.stub();
 
-        getStub = sinon.stub();
-        putStub = sinon.stub();
-        deleteStub = sinon.stub();
-
         var apiResourceServiceStub = {
             createResource: createResourceStub,
             deleteResource: deleteResourceStub,
@@ -52,16 +44,10 @@ describe('ApiResourceCommand', function () {
         var corsServiceStub = {
             updateCorsConfiguration: updateCorsConfigurationStub
         };
-        var cloudFormationTrackerStub = {
-            put: putStub,
-            get: getStub,
-            delete: deleteStub
-        };
 
         mockery.registerMock('../service/ApiResource/ApiResourceService', apiResourceServiceStub);
         mockery.registerMock('../service/ApiResource/ApiResourceEvent', apiResourceEventStub);
         mockery.registerMock('../service/Cors/CorsService', corsServiceStub);
-        mockery.registerMock('../service/CloudFormationResourceTracker', cloudFormationTrackerStub);
 
         testSubject = require('../../../lib/commands/ApiResource');
     });
@@ -78,13 +64,6 @@ describe('ApiResourceCommand', function () {
         getParametersStub.returns({ params: {} });
         updateCorsConfigurationStub.reset().resetBehavior();
         updateCorsConfigurationStub.yields(undefined, {});
-
-        getStub.reset().resetBehavior();
-        getStub.yields(undefined, {});
-        putStub.reset().resetBehavior();
-        putStub.yields(undefined, {});
-        deleteStub.reset().resetBehavior();
-        deleteStub.yields(undefined, {});
     });
 
     describe('getParameters', function () {
@@ -107,7 +86,6 @@ describe('ApiResourceCommand', function () {
                 expect(error).to.be.undefined;
                 expect(createResourceStub.called).to.be.true;
                 expect(getForResponseStub.called).to.be.true;
-                expect(putStub.called).to.be.true;
                 done();
             });
         });
@@ -117,7 +95,6 @@ describe('ApiResourceCommand', function () {
                 expect(error).to.equal('createError');
                 expect(createResourceStub.called).to.be.true;
                 expect(getForResponseStub.called).to.be.false;
-                expect(putStub.called).to.be.false;
                 done();
             });
         });
@@ -127,77 +104,48 @@ describe('ApiResourceCommand', function () {
                 expect(error).to.equal('getForResponseError');
                 expect(createResourceStub.called).to.be.true;
                 expect(getForResponseStub.called).to.be.true;
-                expect(putStub.called).to.be.false;
                 done();
             });
         });
     });
 
     describe('deleteResource', function () {
-        it('should delete resource', function (done) {
+        it('should delete API Resource', function (done) {
             testSubject.deleteResource({}, {}, { params: {} }, function (error) {
                 expect(error).to.be.undefined;
-                expect(getStub.called).to.be.true;
                 expect(deleteResourceStub.called).to.be.true;
-                expect(deleteStub.called).to.be.true;
                 done();
             });
         });
-        it('should fail delete resource', function (done) {
+        it('should fail delete API Resource', function (done) {
             deleteResourceStub.yields('deleteError');
             testSubject.deleteResource({}, {}, { params: {} }, function (error) {
                 expect(error).to.equal('deleteError');
-                expect(getStub.called).to.be.true;
                 expect(deleteResourceStub.called).to.be.true;
-                expect(deleteStub.called).to.be.false;
-                done();
-            });
-        });
-        it('should succeed if get from tracker return nothing', function (done) {
-            getStub.yields();
-            testSubject.deleteResource({}, {}, { params: {} }, function (error) {
-                expect(error).to.be.undefined;
-                expect(getStub.called).to.be.true;
-                expect(deleteResourceStub.called).to.be.false;
-                expect(deleteStub.called).to.be.false;
-                done();
-            });
-        });
-        it('should fail if get from tracker fails', function (done) {
-            getStub.yields('getTrackerError');
-            testSubject.deleteResource({}, {}, { params: {} }, function (error) {
-                expect(error).to.equal('getTrackerError');
-                expect(getStub.called).to.be.true;
-                expect(deleteResourceStub.called).to.be.false;
-                expect(deleteStub.called).to.be.false;
                 done();
             });
         });
     });
 
     describe('updateResource', function () {
-        it('should update resource', function (done) {
+        it('should update API Resource', function (done) {
             testSubject.updateResource({}, {}, { params: {}}, function (error, resource) {
                 expect(error).to.be.undefined;
                 expect(resource).to.be.an('object');
-                expect(getStub.called).to.be.true;
                 expect(patchResourceStub.called).to.be.true;
                 expect(updateCorsConfigurationStub.called).to.be.true;
-                expect(putStub.called).to.be.true;
                 expect(getForResponseStub.calledTwice).to.be.true;
                 done();
             });
         });
-        it('should fail update resource if patch fails', function (done) {
+        it('should fail update API Resource if patch fails', function (done) {
             patchResourceStub.yields('updateError');
             testSubject.updateResource({}, {}, { params: {} }, function (error, resource) {
                 expect(error).to.equal('updateError');
                 expect(resource).to.be.undefined;
-                expect(getStub.called).to.be.true;
                 expect(patchResourceStub.called).to.be.true;
                 expect(updateCorsConfigurationStub.called).to.be.false;
                 expect(getForResponseStub.called).to.be.false;
-                expect(putStub.called).to.be.false;
                 done();
             });
         });
@@ -206,35 +154,19 @@ describe('ApiResourceCommand', function () {
             testSubject.updateResource({}, {}, { params: {} }, function (error, resource) {
                 expect(error).to.equal('getForResponseError');
                 expect(resource).to.be.undefined;
-                expect(getStub.called).to.be.true;
                 expect(patchResourceStub.called).to.be.true;
                 expect(updateCorsConfigurationStub.called).to.be.false;
                 expect(getForResponseStub.calledOnce).to.be.true;
-                expect(putStub.called).to.be.false;
                 done();
             });
         });
         it('should fail if get for response doesnt find the resource', function (done) {
-            getStub.yields();
+            patchResourceStub.yields('API Resource not found');
             testSubject.updateResource({}, {}, { params: {} }, function (error, resource) {
                 expect(error).to.equal('API Resource not found');
                 expect(resource).to.be.undefined;
-                expect(getStub.called).to.be.true;
-                expect(patchResourceStub.called).to.be.false;
+                expect(patchResourceStub.called).to.be.true;
                 expect(updateCorsConfigurationStub.called).to.be.false;
-                expect(putStub.called).to.be.false;
-                expect(getForResponseStub.called).to.be.false;
-                done();
-            });
-        });
-        it('should fail if get from tracker fails', function (done) {
-            getStub.yields('getTrackerError');
-            testSubject.updateResource({}, {}, { params: {} }, function (error) {
-                expect(error).to.equal('getTrackerError');
-                expect(getStub.called).to.be.true;
-                expect(patchResourceStub.called).to.be.false;
-                expect(updateCorsConfigurationStub.called).to.be.false;
-                expect(putStub.called).to.be.false;
                 expect(getForResponseStub.called).to.be.false;
                 done();
             });
@@ -243,10 +175,8 @@ describe('ApiResourceCommand', function () {
             updateCorsConfigurationStub.yields('corsError');
             testSubject.updateResource({}, {}, { params: {} }, function (error) {
                 expect(error).to.equal('corsError');
-                expect(getStub.called).to.be.true;
                 expect(patchResourceStub.called).to.be.true;
                 expect(updateCorsConfigurationStub.called).to.be.true;
-                expect(putStub.called).to.be.false;
                 expect(getForResponseStub.calledOnce).to.be.true;
                 expect(getForResponseStub.calledTwice).to.be.false;
                 done();

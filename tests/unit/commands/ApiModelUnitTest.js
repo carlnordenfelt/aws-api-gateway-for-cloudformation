@@ -14,10 +14,6 @@ describe('ApiModelCommand', function () {
     var getForResponseStub;
     var getParametersStub;
 
-    var getStub;
-    var putStub;
-    var deleteStub;
-
     after(function () {
         mockery.deregisterAll();
         mockery.disable();
@@ -34,10 +30,6 @@ describe('ApiModelCommand', function () {
         getForResponseStub = sinon.stub();
         getParametersStub = sinon.stub();
 
-        getStub = sinon.stub();
-        putStub = sinon.stub();
-        deleteStub = sinon.stub();
-
         var apiModelServiceStub = {
             createModel: createModelStub,
             deleteModel: deleteModelStub,
@@ -47,15 +39,9 @@ describe('ApiModelCommand', function () {
         var apiModelEventStub = {
             getParameters: getParametersStub
         };
-        var cloudFormationTrackerStub = {
-            put: putStub,
-            get: getStub,
-            delete: deleteStub
-        };
 
         mockery.registerMock('../service/ApiModel/ApiModelService', apiModelServiceStub);
         mockery.registerMock('../service/ApiModel/ApiModelEvent', apiModelEventStub);
-        mockery.registerMock('../service/CloudFormationResourceTracker', cloudFormationTrackerStub);
 
         testSubject = require('../../../lib/commands/ApiModel');
     });
@@ -70,14 +56,6 @@ describe('ApiModelCommand', function () {
         getForResponseStub.yields(undefined, {});
         getParametersStub.reset().resetBehavior();
         getParametersStub.returns({ params: {} });
-
-
-        getStub.reset().resetBehavior();
-        getStub.yields(undefined, {});
-        putStub.reset().resetBehavior();
-        putStub.yields(undefined, {});
-        deleteStub.reset().resetBehavior();
-        deleteStub.yields(undefined, {});
     });
 
     describe('getParameters', function () {
@@ -97,10 +75,9 @@ describe('ApiModelCommand', function () {
     describe('createResource', function () {
         it('should create resource', function (done) {
             testSubject.createResource({}, {}, { params: {} }, function (error) {
-                expect(error).to.be.undefined;
+                expect(error).to.be.null;
                 expect(createModelStub.called).to.be.true;
                 expect(getForResponseStub.called).to.be.true;
-                expect(putStub.called).to.be.true;
                 done();
             });
         });
@@ -110,7 +87,6 @@ describe('ApiModelCommand', function () {
                 expect(error).to.equal('createError');
                 expect(createModelStub.called).to.be.true;
                 expect(getForResponseStub.called).to.be.false;
-                expect(putStub.called).to.be.false;
                 done();
             });
         });
@@ -120,7 +96,6 @@ describe('ApiModelCommand', function () {
                 expect(error).to.equal('getForResponseError');
                 expect(createModelStub.called).to.be.true;
                 expect(getForResponseStub.called).to.be.true;
-                expect(putStub.called).to.be.false;
                 done();
             });
         });
@@ -130,9 +105,7 @@ describe('ApiModelCommand', function () {
         it('should delete resource', function (done) {
             testSubject.deleteResource({}, {}, { params: {} }, function (error) {
                 expect(error).to.be.undefined;
-                expect(getStub.called).to.be.true;
                 expect(deleteModelStub.called).to.be.true;
-                expect(deleteStub.called).to.be.true;
                 done();
             });
         });
@@ -140,29 +113,7 @@ describe('ApiModelCommand', function () {
             deleteModelStub.yields('deleteError');
             testSubject.deleteResource({}, {}, { params: {} }, function (error) {
                 expect(error).to.equal('deleteError');
-                expect(getStub.called).to.be.true;
                 expect(deleteModelStub.called).to.be.true;
-                expect(deleteStub.called).to.be.false;
-                done();
-            });
-        });
-        it('should succeed if get from tracker return nothing', function (done) {
-            getStub.yields();
-            testSubject.deleteResource({}, {}, { params: {} }, function (error) {
-                expect(error).to.be.undefined;
-                expect(getStub.called).to.be.true;
-                expect(deleteModelStub.called).to.be.false;
-                expect(deleteStub.called).to.be.false;
-                done();
-            });
-        });
-        it('should fail if get from tracker fails', function (done) {
-            getStub.yields('getTrackerError');
-            testSubject.deleteResource({}, {}, { params: {} }, function (error) {
-                expect(error).to.equal('getTrackerError');
-                expect(getStub.called).to.be.true;
-                expect(deleteModelStub.called).to.be.false;
-                expect(deleteStub.called).to.be.false;
                 done();
             });
         });
@@ -171,12 +122,10 @@ describe('ApiModelCommand', function () {
     describe('updateResource', function () {
         it('should update resource', function (done) {
             testSubject.updateResource({}, {}, { params: {}}, function (error, resource) {
-                expect(error).to.be.undefined;
+                expect(error).to.be.null;
                 expect(resource).to.be.an('object');
-                expect(getStub.called).to.be.true;
                 expect(patchModelStub.called).to.be.true;
                 expect(getForResponseStub.called).to.be.true;
-                expect(putStub.called).to.be.true;
                 done();
             });
         });
@@ -185,10 +134,8 @@ describe('ApiModelCommand', function () {
             testSubject.updateResource({}, {}, { params: {} }, function (error, resource) {
                 expect(error).to.equal('updateError');
                 expect(resource).to.be.undefined;
-                expect(getStub.called).to.be.true;
                 expect(patchModelStub.called).to.be.true;
                 expect(getForResponseStub.called).to.be.false;
-                expect(putStub.called).to.be.false;
                 done();
             });
         });
@@ -197,33 +144,18 @@ describe('ApiModelCommand', function () {
             testSubject.updateResource({}, {}, { params: {} }, function (error, resource) {
                 expect(error).to.equal('getForResponseError');
                 expect(resource).to.be.undefined;
-                expect(getStub.called).to.be.true;
                 expect(patchModelStub.called).to.be.true;
                 expect(getForResponseStub.called).to.be.true;
-                expect(putStub.called).to.be.false;
                 done();
             });
         });
         it('should fail if get for response doesnt find the resource', function (done) {
-            getStub.yields();
+            patchModelStub.yields('API Model not found');
             testSubject.updateResource({}, {}, { params: {} }, function (error, resource) {
                 expect(error).to.equal('API Model not found');
                 expect(resource).to.be.undefined;
-                expect(getStub.called).to.be.true;
-                expect(patchModelStub.called).to.be.false;
+                expect(patchModelStub.called).to.be.true;
                 expect(getForResponseStub.called).to.be.false;
-                expect(putStub.called).to.be.false;
-                done();
-            });
-        });
-        it('should fail if get from tracker fails', function (done) {
-            getStub.yields('getTrackerError');
-            testSubject.updateResource({}, {}, { params: {} }, function (error) {
-                expect(error).to.equal('getTrackerError');
-                expect(getStub.called).to.be.true;
-                expect(patchModelStub.called).to.be.false;
-                expect(getForResponseStub.called).to.be.false;
-                expect(putStub.called).to.be.false;
                 done();
             });
         });

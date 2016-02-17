@@ -1,6 +1,6 @@
 {
     "name": "AWS-APIGateway-for-CloudFormation",
-    "version": "0.0.1",
+    "version": "1.0.0",
     "description": "AWS Api Gateway CloudFormation",
     "author": "carl@nordenfelt.com",
     "repository": {
@@ -11,12 +11,13 @@
     "scripts": {
         "clean": "rm -rf node_modules *.zip coverage && npm install",
         "test": "npm run eslint && NODE_ENV=TEST npm run unittest && npm run checkcoverage",
-        "unittest": "istanbul cover --include-all-sources true ./node_modules/mocha/bin/_mocha ./tests/unit -- --recursive",
+        "unittest": "istanbul cover --include-all-sources true -x \"_scripts/**/*\" ./node_modules/mocha/bin/_mocha ./tests/unit -- --recursive",
         "checkcoverage": "istanbul check-coverage --statement 100 --branches 100 --functions 100 --lines 100",
         "eslint": "eslint --max-warnings 0 lib",
-        "build": "npm prune --production && zip -r package.zip lib/* lib/*/** node_modules/*/** package.json > /dev/null 2>&1",
-        "deploy": "./_scripts/deploy.sh",
-        "setup": "./_scripts/install.sh",
+
+        "deploy": "node _scripts/deploy.js",
+        "installation": "node _scripts/install.js",
+        "uninstall": "node _scripts/uninstall.js",
         "teardown": "./_scripts/teardown.sh"
     },
     "dependencies": {
@@ -31,7 +32,7 @@
         "mockery": "1.4.0",
         "should": "7.1.0",
         "sinon": "1.16.1",
-        "chai": "^3.4.1",
+        "chai": "3.5.0",
         "eslint": "1.10.1",
         "eslint-config-defaults": "7.1.1",
         "eslint-plugin-filenames": "0.2.0"
