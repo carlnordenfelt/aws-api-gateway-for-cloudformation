@@ -39,7 +39,7 @@ function _updateLambdaCode(lambdaArn, callback) {
         FunctionName: lambdaArn,
         Publish: true,
         S3Bucket: 'apigatewaycloudformation',
-        S3Key: 'builds/' + version + '.zip'
+        S3Key: 'builds/v' + version + '.zip'
     };
     lambda.updateFunctionCode(params, function(error) {
         if  (error) {
