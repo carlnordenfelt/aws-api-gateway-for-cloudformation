@@ -1,0 +1,125 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "Test Template",
+    "Resources": {
+        "TestRestApi" : {
+            "Type" : "Custom::RestApi",
+            "Properties" : {
+                "ServiceToken": "arn:aws:lambda:eu-west-1:287265878868:function:ApiGatewayCloudFormation-LambdaFunction-ZSO5VVA9QUD4",
+                "name": "Test API",
+                "description": "This is a test API with a new description"
+            }
+        },
+        "TestApiResource" : {
+            "Type" : "Custom::ApiResource",
+            "Properties" : {
+                "ServiceToken": "arn:aws:lambda:eu-west-1:287265878868:function:ApiGatewayCloudFormation-LambdaFunction-ZSO5VVA9QUD4",
+                "restApiId": { "Fn::GetAtt": ["TestRestApi", "id"] },
+                "parentId": { "Fn::GetAtt": ["TestRestApi", "parentResourceId"] },
+                "pathPart": "test-resource",
+                "corsConfiguration": {
+                    "allowMethods": ["GET", "POST"],
+                    "allowHeaders": ["x-my-header", "some-other-header"],
+                    "allowDefaultHeaders": true,
+                    "allowOrigin": "www.example.com",
+                    "exposeHeaders": ["some-header", "x-another-header"],
+                    "maxAge": 1800,
+                    "allowCredentials": true
+                }
+            }
+        },
+        "TestModel": {
+            "Type": "Custom::ApiModel",
+            "Properties": {
+                "ServiceToken": "arn:aws:lambda:eu-west-1:287265878868:function:ApiGatewayCloudFormation-LambdaFunction-ZSO5VVA9QUD4",
+                "restApiId": { "Fn::GetAtt": ["TestRestApi", "id"] },
+                "name": "TestModel",
+                "contentType": "application/json",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "country": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "TestModelWithParent": {
+            "Type": "Custom::ApiModel",
+            "Properties": {
+                "ServiceToken": "arn:aws:lambda:eu-west-1:287265878868:function:ApiGatewayCloudFormation-LambdaFunction-ZSO5VVA9QUD4",
+                "restApiId": { "Fn::GetAtt": ["TestRestApi", "id"] },
+                "name": "TestModelWithParent",
+                "contentType": "application/json",
+                "schema": {
+                    "allOf": [
+                        {
+                            "$ref": { "Fn::Join": ["", ["https://apigateway.amazonaws.com/restapis/", { "Fn::GetAtt": ["TestRestApi", "id"] }, "/models/", { "Fn::GetAtt": ["TestModel", "name"] }]] }
+                        },
+                        {
+                            "type": "object",
+                            "properties": {
+                                "accountName": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+        "TestApiMethod" : {
+            "Type" : "Custom::ApiMethod",
+            "Properties" : {
+                "ServiceToken": "arn:aws:lambda:eu-west-1:287265878868:function:ApiGatewayCloudFormation-LambdaFunction-ZSO5VVA9QUD4",
+                "restApiId": { "Fn::GetAtt": ["TestRestApi", "id"] },
+                "resourceId": { "Fn::GetAtt": ["TestRestApi", "parentResourceId"] },
+                "method": {
+                    "authorizationType": "NONE",
+                    "httpMethod": "GET",
+                    "apiKeyRequired": "true",
+                    "requestModels": {
+                        "application/json": { "Fn::GetAtt": ["TestModel", "name"] }
+                    },
+                    "parameters": [
+                        "querystring.sortBy",
+                        "header.x-test-header",
+                        "path.entityType"
+                    ]
+                },
+                "integration": {
+                    "type": "MOCK",
+                    "requestTemplates": {
+                        "application/json": "{\"statusCode\": 200}"
+                    },
+                    "requestParameters": {
+                        "integration.request.querystring.sortBy": "'hardcodedValue'"
+                    }
+                },
+                "responses": {
+                    "default": {
+                        "statusCode": "200",
+                        "headers": {
+                            "X-Custom-Header": "'hardcodedValue'"
+                        }
+                    },
+                    ".*NotFound.*": {
+                        "statusCode": "404"
+                    }
+                }
+            }
+        }
+    },
+    "Outputs": {
+        "RestApiId": {
+            "Value": { "Fn::GetAtt": ["TestRestApi", "id"] }
+        },
+        "ParentResourceId": {
+            "Value": { "Fn::GetAtt": ["TestRestApi", "parentResourceId"] }
+        },
+        "TestResourceId": {
+            "Value": { "Fn::GetAtt": ["TestApiResource", "id"] }
+        }
+    }
+}

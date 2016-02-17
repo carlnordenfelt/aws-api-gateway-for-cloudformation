@@ -122,6 +122,20 @@ describe('Index', function () {
             });
             testSubject.handler(event, context);
         });
+
+        it('should succeed invalid command if RequestType is Delete', function (done) {
+            event.ResourceType = 'INVALID';
+            event.RequestType = 'Delete';
+            registerCfnResponseMock(function (event, context, responseStatus, responseData, physicalResourceId) {
+                expect(responseStatus).to.equal('SUCCESS');
+                expect(responseData).not.to.be.an.Error;
+                expect(createResourceStub.called).to.be.false;
+                expect(deleteResourceStub.called).to.be.false;
+                expect(updateResourceStub.called).to.be.false;
+                done();
+            });
+            testSubject.handler(event, context);
+        });
     });
 });
 

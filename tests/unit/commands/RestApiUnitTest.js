@@ -14,10 +14,6 @@ describe('RestApiCommand', function () {
     var getForResponseStub;
     var getParametersStub;
 
-    var getStub;
-    var putStub;
-    var deleteStub;
-
     after(function () {
         mockery.deregisterAll();
         mockery.disable();
@@ -34,10 +30,6 @@ describe('RestApiCommand', function () {
         getForResponseStub = sinon.stub();
         getParametersStub = sinon.stub();
 
-        getStub = sinon.stub();
-        putStub = sinon.stub();
-        deleteStub = sinon.stub();
-
         var apiRestApiServiceStub = {
             createApi: createRestApiStub,
             deleteApi: deleteRestApiStub,
@@ -47,15 +39,8 @@ describe('RestApiCommand', function () {
         var apiRestApiEventStub = {
             getParameters: getParametersStub
         };
-        var cloudFormationTrackerStub = {
-            put: putStub,
-            get: getStub,
-            delete: deleteStub
-        };
-
         mockery.registerMock('../service/RestApi/RestApiService', apiRestApiServiceStub);
         mockery.registerMock('../service/RestApi/RestApiEvent', apiRestApiEventStub);
-        mockery.registerMock('../service/CloudFormationResourceTracker', cloudFormationTrackerStub);
 
         testSubject = require('../../../lib/commands/RestApi');
     });
@@ -70,14 +55,6 @@ describe('RestApiCommand', function () {
         getForResponseStub.yields(undefined, {});
         getParametersStub.reset().resetBehavior();
         getParametersStub.returns({ params: {} });
-
-
-        getStub.reset().resetBehavior();
-        getStub.yields(undefined, {});
-        putStub.reset().resetBehavior();
-        putStub.yields(undefined, {});
-        deleteStub.reset().resetBehavior();
-        deleteStub.yields(undefined, {});
     });
 
     describe('getParameters', function () {
@@ -100,7 +77,6 @@ describe('RestApiCommand', function () {
                 expect(error).to.be.undefined;
                 expect(createRestApiStub.called).to.be.true;
                 expect(getForResponseStub.called).to.be.true;
-                expect(putStub.called).to.be.true;
                 done();
             });
         });
@@ -110,7 +86,6 @@ describe('RestApiCommand', function () {
                 expect(error).to.equal('createError');
                 expect(createRestApiStub.called).to.be.true;
                 expect(getForResponseStub.called).to.be.false;
-                expect(putStub.called).to.be.false;
                 done();
             });
         });
@@ -120,75 +95,46 @@ describe('RestApiCommand', function () {
                 expect(error).to.equal('getForResponseError');
                 expect(createRestApiStub.called).to.be.true;
                 expect(getForResponseStub.called).to.be.true;
-                expect(putStub.called).to.be.false;
                 done();
             });
         });
     });
 
     describe('deleteResource', function () {
-        it('should delete resource', function (done) {
+        it('should delete the rest api', function (done) {
             testSubject.deleteResource({}, {}, { params: {} }, function (error) {
                 expect(error).to.be.undefined;
-                expect(getStub.called).to.be.true;
                 expect(deleteRestApiStub.called).to.be.true;
-                expect(deleteStub.called).to.be.true;
                 done();
             });
         });
-        it('should fail delete resource', function (done) {
+        it('should fail delete rest api', function (done) {
             deleteRestApiStub.yields('deleteError');
             testSubject.deleteResource({}, {}, { params: {} }, function (error) {
                 expect(error).to.equal('deleteError');
-                expect(getStub.called).to.be.true;
                 expect(deleteRestApiStub.called).to.be.true;
-                expect(deleteStub.called).to.be.false;
-                done();
-            });
-        });
-        it('should succeed if get from tracker return nothing', function (done) {
-            getStub.yields();
-            testSubject.deleteResource({}, {}, { params: {} }, function (error) {
-                expect(error).to.be.undefined;
-                expect(getStub.called).to.be.true;
-                expect(deleteRestApiStub.called).to.be.false;
-                expect(deleteStub.called).to.be.false;
-                done();
-            });
-        });
-        it('should fail if get from tracker fails', function (done) {
-            getStub.yields('getTrackerError');
-            testSubject.deleteResource({}, {}, { params: {} }, function (error) {
-                expect(error).to.equal('getTrackerError');
-                expect(getStub.called).to.be.true;
-                expect(deleteRestApiStub.called).to.be.false;
-                expect(deleteStub.called).to.be.false;
                 done();
             });
         });
     });
 
     describe('updateResource', function () {
-        it('should update resource', function (done) {
+        it('should update rest api', function (done) {
             testSubject.updateResource({}, {}, { params: {}}, function (error, resource) {
                 expect(error).to.be.undefined;
                 expect(resource).to.be.an('object');
-                expect(getStub.called).to.be.true;
                 expect(patchRestApiStub.called).to.be.true;
                 expect(getForResponseStub.called).to.be.true;
-                expect(putStub.called).to.be.true;
                 done();
             });
         });
-        it('should fail update resource if delete fails', function (done) {
+        it('should fail update rest api if delete fails', function (done) {
             patchRestApiStub.yields('updateError');
             testSubject.updateResource({}, {}, { params: {} }, function (error, resource) {
                 expect(error).to.equal('updateError');
                 expect(resource).to.be.undefined;
-                expect(getStub.called).to.be.true;
                 expect(patchRestApiStub.called).to.be.true;
                 expect(getForResponseStub.called).to.be.false;
-                expect(putStub.called).to.be.false;
                 done();
             });
         });
@@ -197,33 +143,18 @@ describe('RestApiCommand', function () {
             testSubject.updateResource({}, {}, { params: {} }, function (error, resource) {
                 expect(error).to.equal('getForResponseError');
                 expect(resource).to.be.undefined;
-                expect(getStub.called).to.be.true;
                 expect(patchRestApiStub.called).to.be.true;
                 expect(getForResponseStub.called).to.be.true;
-                expect(putStub.called).to.be.false;
                 done();
             });
         });
-        it('should fail if get for response doesnt find the resource', function (done) {
-            getStub.yields();
+        it('should fail if get for response doesnt find the rest api', function (done) {
+            patchRestApiStub.yields('Rest API not found');
             testSubject.updateResource({}, {}, { params: {} }, function (error, resource) {
                 expect(error).to.equal('Rest API not found');
                 expect(resource).to.be.undefined;
-                expect(getStub.called).to.be.true;
-                expect(patchRestApiStub.called).to.be.false;
+                expect(patchRestApiStub.called).to.be.true;
                 expect(getForResponseStub.called).to.be.false;
-                expect(putStub.called).to.be.false;
-                done();
-            });
-        });
-        it('should fail if get from tracker fails', function (done) {
-            getStub.yields('getTrackerError');
-            testSubject.updateResource({}, {}, { params: {} }, function (error) {
-                expect(error).to.equal('getTrackerError');
-                expect(getStub.called).to.be.true;
-                expect(patchRestApiStub.called).to.be.false;
-                expect(getForResponseStub.called).to.be.false;
-                expect(putStub.called).to.be.false;
                 done();
             });
         });

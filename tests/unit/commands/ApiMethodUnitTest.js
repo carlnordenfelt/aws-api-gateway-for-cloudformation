@@ -13,10 +13,6 @@ describe('ApiMethodCommand', function () {
     var getForResponseStub;
     var getParametersStub;
 
-    var getStub;
-    var putStub;
-    var deleteStub;
-
     after(function () {
         mockery.deregisterAll();
         mockery.disable();
@@ -32,10 +28,6 @@ describe('ApiMethodCommand', function () {
         getForResponseStub = sinon.stub();
         getParametersStub = sinon.stub();
 
-        getStub = sinon.stub();
-        putStub = sinon.stub();
-        deleteStub = sinon.stub();
-
         var apiMethodServiceStub = {
             createMethod: createMethodStub,
             deleteMethod: deleteMethodStub,
@@ -44,15 +36,9 @@ describe('ApiMethodCommand', function () {
         var apiMethodEventStub = {
             getParameters: getParametersStub
         };
-        var cloudFormationTrackerStub = {
-            put: putStub,
-            get: getStub,
-            delete: deleteStub
-        };
 
         mockery.registerMock('../service/ApiMethod/ApiMethodService', apiMethodServiceStub);
         mockery.registerMock('../service/ApiMethod/ApiMethodEvent', apiMethodEventStub);
-        mockery.registerMock('../service/CloudFormationResourceTracker', cloudFormationTrackerStub);
 
         testSubject = require('../../../lib/commands/ApiMethod');
     });
@@ -65,14 +51,6 @@ describe('ApiMethodCommand', function () {
         getForResponseStub.yields(undefined, {});
         getParametersStub.reset().resetBehavior();
         getParametersStub.returns({ params: {} });
-
-
-        getStub.reset().resetBehavior();
-        getStub.yields(undefined, {});
-        putStub.reset().resetBehavior();
-        putStub.yields(undefined, {});
-        deleteStub.reset().resetBehavior();
-        deleteStub.yields(undefined, {});
     });
 
     describe('getParameters', function () {
@@ -89,11 +67,10 @@ describe('ApiMethodCommand', function () {
         });
     });
 
-    describe('createResource', function () {
+    describe('createMethod', function () {
         it('should create resource', function (done) {
             testSubject.createResource({}, {}, { params: {method: {}} }, function (error) {
                 expect(error).to.be.undefined;
-                expect(putStub.called).to.be.true;
                 done();
             });
         });
@@ -102,7 +79,6 @@ describe('ApiMethodCommand', function () {
             testSubject.createResource({}, {}, { params: {method: {}} }, function (error) {
                 expect(error).to.equal('createError');
                 expect(createMethodStub.called).to.be.true;
-                expect(putStub.called).to.be.false;
                 expect(getForResponseStub.called).to.be.false;
                 done();
             });
@@ -113,7 +89,6 @@ describe('ApiMethodCommand', function () {
                 expect(error).to.equal('getForResponseError');
                 expect(createMethodStub.called).to.be.true;
                 expect(getForResponseStub.called).to.be.true;
-                expect(putStub.called).to.be.false;
                 done();
             });
         });
@@ -121,41 +96,17 @@ describe('ApiMethodCommand', function () {
 
     describe('deleteResource', function () {
         it('should delete resource', function (done) {
-            testSubject.deleteResource({}, {}, { params: {method: {}} }, function (error) {
+            testSubject.deleteResource({ PhysicalResourceId: 'test/GET' }, {}, { params: {method: {}} }, function (error) {
                 expect(error).to.be.undefined;
-                expect(getStub.called).to.be.true;
                 expect(deleteMethodStub.called).to.be.true;
-                expect(deleteStub.called).to.be.true;
                 done();
             });
         });
         it('should fail delete resource', function (done) {
             deleteMethodStub.yields('deleteError');
-            testSubject.deleteResource({}, {}, { params: {method: {}} }, function (error) {
+            testSubject.deleteResource({ PhysicalResourceId: 'test/GET' }, {}, { params: {method: {}} }, function (error) {
                 expect(error).to.equal('deleteError');
-                expect(getStub.called).to.be.true;
                 expect(deleteMethodStub.called).to.be.true;
-                expect(deleteStub.called).to.be.false;
-                done();
-            });
-        });
-        it('should succeed if get from tracker return nothing', function (done) {
-            getStub.yields();
-            testSubject.deleteResource({}, {}, { params: {method: {}} }, function (error) {
-                expect(error).to.be.undefined;
-                expect(getStub.called).to.be.true;
-                expect(deleteMethodStub.called).to.be.false;
-                expect(deleteStub.called).to.be.false;
-                done();
-            });
-        });
-        it('should fail if get from tracker fails', function (done) {
-            getStub.yields('getTrackerError');
-            testSubject.deleteResource({}, {}, { params: {method: {}} }, function (error) {
-                expect(error).to.equal('getTrackerError');
-                expect(getStub.called).to.be.true;
-                expect(deleteMethodStub.called).to.be.false;
-                expect(deleteStub.called).to.be.false;
                 done();
             });
         });
@@ -163,53 +114,55 @@ describe('ApiMethodCommand', function () {
 
     describe('updateResource', function () {
         it('should update resource', function (done) {
-            testSubject.updateResource({}, {}, { params: {method: {}} }, function (error, resource) {
+            testSubject.updateResource({ PhysicalResourceId: 'test/GET' }, {}, { params: {method: {}} }, function (error, resource) {
                 expect(error).to.be.undefined;
                 expect(resource).to.be.an('object');
-                expect(getStub.called).to.be.true;
                 expect(deleteMethodStub.called).to.be.true;
                 expect(createMethodStub.called).to.be.true;
-                expect(putStub.called).to.be.true;
+                expect(getForResponseStub.called).to.be.true;
+                done();
+            });
+        });
+        it('should fallback to method from parameters if PhysicalResourceId is not properly set', function (done) {
+            testSubject.updateResource({ PhysicalResourceId: 'dummy' }, {}, { params: {method: {}} }, function (error, resource) {
+                expect(error).to.be.undefined;
+                expect(resource).to.be.an('object');
+                expect(deleteMethodStub.called).to.be.true;
+                expect(createMethodStub.called).to.be.true;
                 expect(getForResponseStub.called).to.be.true;
                 done();
             });
         });
         it('should fail update resource if delete fails', function (done) {
             deleteMethodStub.yields('deleteError');
-            testSubject.updateResource({}, {}, { params: {method: {}} }, function (error, resource) {
+            testSubject.updateResource({ PhysicalResourceId: 'test/GET' }, {}, { params: {method: {}} }, function (error, resource) {
                 expect(error).to.equal('deleteError');
                 expect(resource).to.be.undefined;
-                expect(getStub.called).to.be.true;
                 expect(deleteMethodStub.called).to.be.true;
                 expect(createMethodStub.called).to.be.false;
-                expect(putStub.called).to.be.false;
                 expect(getForResponseStub.called).to.be.false;
                 done();
             });
         });
         it('should fail update resource if create fails', function (done) {
             createMethodStub.yields('createError');
-            testSubject.updateResource({}, {}, { params: {method: {}} }, function (error, resource) {
+            testSubject.updateResource({ PhysicalResourceId: 'test/GET' }, {}, { params: {method: {}} }, function (error, resource) {
                 expect(error).to.equal('createError');
                 expect(resource).to.be.undefined;
-                expect(getStub.called).to.be.true;
                 expect(deleteMethodStub.called).to.be.true;
                 expect(createMethodStub.called).to.be.true;
                 expect(getForResponseStub.called).to.be.false;
-                expect(putStub.called).to.be.false;
                 done();
             });
         });
         it('should fail if get for response fails', function (done) {
             getForResponseStub.yields('getForResponseError');
-            testSubject.updateResource({}, {}, { params: {method: {}} }, function (error, resource) {
+            testSubject.updateResource({ PhysicalResourceId: 'test/GET' }, {}, { params: {method: {}} }, function (error, resource) {
                 expect(error).to.equal('getForResponseError');
                 expect(resource).to.be.undefined;
-                expect(getStub.called).to.be.true;
                 expect(deleteMethodStub.called).to.be.true;
                 expect(createMethodStub.called).to.be.true;
                 expect(getForResponseStub.called).to.be.true;
-                expect(putStub.called).to.be.false;
                 done();
             });
         });
