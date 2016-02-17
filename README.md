@@ -1,3 +1,7 @@
+**Important Notice!**
+If you installed this prior to February 17 2016 you have to uninstall everything, including any APIs created using 
+these resources, before you upgrade. There has been a lot of changes made and they are not backwards compatible!
+
 #API Gateway for CloudFormation
 API Gateway for CloudFormation is a set of Custom Resources that allows you to manage your API Gateway setup
 with CloudFormation. It is deployed with CloudFormation and run on AWS Lambda.
@@ -9,7 +13,7 @@ The project is inspired by [AWS Labs API Gateway Swagger Importer](https://githu
 ##Contents
 1. <a href="#a-note-on-terminology-before-we-begin">A note on terminology before we begin</a>
 1. <a href="#installation">Installation</a>
-    1. <a href="#uninstallation">Uninstallation</a>
+    1. <a href="#uninstallation">Un-installation</a>
 1. <a href="#usage">Usage</a>
     1. <a href="#overview">Overview</a>
     1. <a href="#create-an-api">Create an API</a>
