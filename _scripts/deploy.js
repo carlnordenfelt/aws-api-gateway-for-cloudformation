@@ -3,7 +3,7 @@
 var version = process.env.VERSION;
 if (!version) {
     var pkg = require('../package.json');
-    version = pkg.version;
+    version = 'v' + pkg.version;
 }
 
 var STACK_NAME = 'ApiGatewayCloudFormation';
@@ -12,10 +12,8 @@ if (process.env.NAME) {
 }
 
 var aws = require('aws-sdk');
-var cloudformation = new aws.CloudFormation({ apiVersion: '2010-05-15' });
 var lambda = new aws.Lambda({ apiVersion: '2015-03-31' });
 
-var fs = require('fs');
 var path = require('path');
 var _getStack = require('./helpers/getStack');
 var _getLambdaArn = require('./helpers/getLambdaArn');
@@ -42,7 +40,7 @@ function _updateLambdaCode(lambdaArn, callback) {
         FunctionName: lambdaArn,
         Publish: true,
         S3Bucket: 'apigatewaycloudformation',
-        S3Key: 'builds/v' + version + '.zip'
+        S3Key: 'builds/' + version + '.zip'
     };
     lambda.updateFunctionCode(params, function(error) {
         if  (error) {
