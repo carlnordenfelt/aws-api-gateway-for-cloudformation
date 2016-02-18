@@ -8,7 +8,7 @@ with CloudFormation. It is deployed with CloudFormation and run on AWS Lambda.
 
 The project is inspired by [AWS Labs API Gateway Swagger Importer](https://github.com/awslabs/aws-apigateway-importer) so you will see a lot of familiar syntax in the setup.
 
-![Build status](https://travis-ci.org/carlnordenfelt/aws-api-gateway-for-cloudformation.svg?branch=master)
+[![Build Status](https://travis-ci.org/carlnordenfelt/aws-api-gateway-for-cloudformation.svg?branch=master)](https://travis-ci.org/carlnordenfelt/aws-api-gateway-for-cloudformation)
 
 **Current version:** 1.0.2 (2016-02-18)
 
