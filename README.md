@@ -692,6 +692,9 @@ http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createBas
 
 #Change Log
 
+## 1.0.3  (2016-02-18)
+* Introducing API Authorizers (http://docs.aws.amazon.com/apigateway/latest/developerguide/use-custom-authorizer.html)
+
 ## 1.0.2  (2016-02-18)
 * Fix: Ensure that moving an API Method to another resource cleans up the old method.
 
