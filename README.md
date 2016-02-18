@@ -24,6 +24,7 @@ The project is inspired by [AWS Labs API Gateway Swagger Importer](https://githu
     1. <a href="#create-a-model">Create a Model</a>
     1. <a href="#create-a-domain-name">Create a Domain Name</a>
     1. <a href="#create-a-base-path-mapping">Create a Base Path Mapping</a>
+    1. <a href="#create-an-authorizer">Create an Authorizer</a>
 1. <a href="#change-log">Change log</a>
 1. <a href="#todo">TODO</a>
 1. <a href="#contribute">Contribute</a>
@@ -314,9 +315,17 @@ The HTTP verb that this method adheres to.
 * Update: No interruption
 
 **method.authorizationType**
-API Method authorization type
+API Method authorization type.
+Set to CUSTOM if you want to use an Api Authorizer.
 
 * Required: no, default is NONE
+* Type: String
+* Update: No interruption
+
+**method.authorizerId**
+Authorizer Id if method.authorizationType is set to CUSTOM
+
+* Required: no
 * Type: String
 * Update: No interruption
 
@@ -687,6 +696,84 @@ http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createBas
             "domainName": "example.com",
             "basePath": "test",
             "stage": "beta"
+        }
+    }
+
+##Create an Authorizer
+
+Creates a new Api Gateway Authorizer
+http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createAuthorizer-property
+
+###Parameters
+**authorizerUri:**
+Authorizer Api Gateway Lambda function invocation ARN.
+Example: arn:aws:apigateway:eu-west-1:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-1:1234:function:LambdaName/invocations
+
+* Required: *yes*
+* Type: String
+* Update: No interruption
+
+**identitySource:**
+Source header from where the token can be read.
+Must match the regexp 'method.request.header.[a-zA-Z0-9._-]+'
+
+* Required: *yes*
+* Type: String
+* Update: No interruption
+
+**name:**
+The base path name that callers of the API must provide as part of the URL after the domain name. 
+This value must be unique for all of the mappings across a single API. 
+Exclude this if you do not want callers to specify a base path name after the domain name.
+
+* Required: *yes*
+* Type: String
+* Update: No interruption
+
+**restApiId:**
+The domain name of the BasePathMapping resource to create.
+
+* Required: *yes*
+* Type: String
+* Update: Not supported
+
+**authorizerCredentials:**
+IAM role that API Gateway will use to invoke the Lambda function.
+
+* Required: *yes*
+* Type: String
+* Update: No interruption
+
+**authorizerResultTtlInSeconds:**
+The TTL of cached authorizer results.
+
+* Required: no, default is 300
+* Type: Integer
+* Update: No interruption
+
+**identityValidationExpression:**
+Optional RegEx statement for API Gateway to validate the input token before calling the custom authorizer Lambda function.
+This helps you avoid or reduce the chances of being charged for processing invalid tokens.
+
+* Required: no
+* Type: String
+* Update: No interruption
+
+###Outputs
+http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createAuthorizer-property
+
+###CloudFormation example
+    "TestAuthorizer" : {
+        "Type" : "Custom::ApiAuthorizer",
+        "Properties" : {
+            "ServiceToken": "{Lambda_Function_ARN}",
+            "restApiId": "xyz123",
+            "authorizerUri": "{Authorizer_Lambda_ARN}",
+            "identitySource": "x-auth-header",
+            "name": "TestAuthorizer",
+            "authorizerCredentials": "beta",
+            "authorizerResultTtlInSeconds": 3600,
+            "identityValidationExpression": "$[a-z]*"
         }
     }
 

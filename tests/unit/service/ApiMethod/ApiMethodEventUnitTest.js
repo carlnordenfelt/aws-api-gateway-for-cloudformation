@@ -105,6 +105,7 @@ describe('ApiModelEvent', function () {
                  method: {
                      httpMethod: 'HttpMethod',
                      authorizationType: 'IAM',
+                     authorizerId: 'AuthorizerId',
                      apiKeyRequired: true
                  },
                  integration: {
@@ -152,6 +153,12 @@ describe('ApiModelEvent', function () {
         });
         it('should return valid parameters if integration is missing', function (done) {
             delete params.integration;
+            var parameters = testSubject.validateParameters(params);
+            expect(parameters).not.to.be.an.Error;
+            done();
+        });
+        it('should return valid parameters for authorizationType CUSTOM', function (done) {
+            params.method.authorizationType = 'CUSTOM';
             var parameters = testSubject.validateParameters(params);
             expect(parameters).not.to.be.an.Error;
             done();
@@ -231,6 +238,14 @@ describe('ApiModelEvent', function () {
             var parameters = testSubject.validateParameters(params);
             expect(parameters).to.be.an.Error;
             expect(parameters.message).to.contain('{responses.statusCode}');
+            done();
+        });
+        it('should yield an error if authorizationType is CUSTOM and no authorizerId is set', function (done) {
+            params.method.authorizationType = 'CUSTOM';
+            delete params.method.authorizerId;
+            var parameters = testSubject.validateParameters(params);
+            expect(parameters).to.be.an.Error;
+            expect(parameters.message).to.contain('{method.authorizerId}');
             done();
         });
     });
