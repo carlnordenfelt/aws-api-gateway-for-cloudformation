@@ -10,7 +10,7 @@ The project is inspired by [AWS Labs API Gateway Swagger Importer](https://githu
 
 [![Build Status](https://travis-ci.org/carlnordenfelt/aws-api-gateway-for-cloudformation.svg?branch=master)](https://travis-ci.org/carlnordenfelt/aws-api-gateway-for-cloudformation)
 
-**Current version:** 1.0.2 (2016-02-18)
+**Current version:** 1.0.4 (2016-02-18)
 
 ##Contents
 1. <a href="#a-note-on-terminology-before-we-begin">A note on terminology before we begin</a>
@@ -779,7 +779,7 @@ http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createAut
 
 #Change Log
 
-## 1.0.3  (2016-02-18)
+## 1.0.4  (2016-02-18)
 * Introducing API Authorizers (http://docs.aws.amazon.com/apigateway/latest/developerguide/use-custom-authorizer.html)
 
 ## 1.0.2  (2016-02-18)
