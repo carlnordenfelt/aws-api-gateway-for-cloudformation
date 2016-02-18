@@ -16,6 +16,18 @@
                 "description": "This is a test API with a new description"
             }
         },
+        "TestAuthorizer": {
+            "Type": "Custom::ApiAuthorizer",
+            "Properties": {
+                "ServiceToken": { "Ref": "ServiceToken" },
+                "restApiId": { "Fn::GetAtt": ["TestRestApi", "id"] },
+                "authorizerUri": "{AUTHORIZER_LAMBDA_INVOCATION_ARN}",
+                "identitySource": "method.request.header.x-auth-token",
+                "name": "TestAuthorizer",
+                "authorizerResultTtlInSeconds": 30,
+                "authorizerCredentials": "{API_GATEWAY_INVOKE_LAMBDA_IAM_ROLE_ARN}"
+            }
+        },
         "TestApiResource" : {
             "Type" : "Custom::ApiResource",
             "Properties" : {
@@ -100,7 +112,8 @@
                 "restApiId": { "Fn::GetAtt": ["TestRestApi", "id"] },
                 "resourceId": { "Fn::GetAtt": ["TestApiResource2", "id"] },
                 "method": {
-                    "authorizationType": "NONE",
+                    "authorizationType": "CUSTOM",
+                    "authorizerId": { "Fn::GetAtt": ["TestAuthorizer", "id"] },
                     "httpMethod": "GET",
                     "apiKeyRequired": "true",
                     "requestModels": {

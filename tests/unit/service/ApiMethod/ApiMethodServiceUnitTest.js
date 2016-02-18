@@ -177,6 +177,15 @@ describe('ApiMethodService', function () {
                 done();
             });
         });
+        it('should create method with authorizationType CUSTOM', function (done) {
+            params.params.method.authorizationType = 'CUSTOM';
+            params.params.method.authorizerId = 'AuthorizerId';
+            testSubject.createMethod(params, function (error, apiMethod) {
+                expect(error).to.be.undefined;
+                expect(apiMethod).to.be.an('object');
+                done();
+            });
+        });
 
         it('should yield an error if getParameters fails', function (done) {
             delete params.params.restApiId;
