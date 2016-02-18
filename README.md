@@ -721,4 +721,4 @@ This update is not backwards compatible.
 #Contribute
 I gladly accepts PRs, issues and comments. Anything that will help improve stability, reduce complexity or add more 
 functionality is appreciated. Please make sure that npm test does not fail before you push your PR. 
-There are strict requiremenst on es-lint and 100% unit test coverage for builds to succeed before they can be published.
+There are strict requirements on es-lint and 100% unit test coverage for builds to succeed before they can be published.
