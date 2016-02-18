@@ -1,11 +1,17 @@
 {
     "AWSTemplateFormatVersion": "2010-09-09",
     "Description": "Test Template",
+    "Parameters": {
+        "ServiceToken": {
+            "Type": "String",
+            "Description": "CustomResource Lambda ARN"
+        }
+    },
     "Resources": {
         "TestRestApi" : {
             "Type" : "Custom::RestApi",
             "Properties" : {
-                "ServiceToken": "arn:aws:lambda:eu-west-1:287265878868:function:ApiGatewayCloudFormation-LambdaFunction-ZSO5VVA9QUD4",
+                "ServiceToken": { "Ref": "ServiceToken" },
                 "name": "Test API",
                 "description": "This is a test API with a new description"
             }
@@ -13,7 +19,7 @@
         "TestApiResource" : {
             "Type" : "Custom::ApiResource",
             "Properties" : {
-                "ServiceToken": "arn:aws:lambda:eu-west-1:287265878868:function:ApiGatewayCloudFormation-LambdaFunction-ZSO5VVA9QUD4",
+                "ServiceToken": { "Ref": "ServiceToken" },
                 "restApiId": { "Fn::GetAtt": ["TestRestApi", "id"] },
                 "parentId": { "Fn::GetAtt": ["TestRestApi", "parentResourceId"] },
                 "pathPart": "test-resource",
@@ -31,7 +37,7 @@
         "TestApiResource2" : {
             "Type" : "Custom::ApiResource",
             "Properties" : {
-                "ServiceToken": "arn:aws:lambda:eu-west-1:287265878868:function:ApiGatewayCloudFormation-LambdaFunction-ZSO5VVA9QUD4",
+                "ServiceToken": { "Ref": "ServiceToken" },
                 "restApiId": { "Fn::GetAtt": ["TestRestApi", "id"] },
                 "parentId": { "Fn::GetAtt": ["TestRestApi", "parentResourceId"] },
                 "pathPart": "test-resource2",
@@ -49,7 +55,7 @@
         "TestModel": {
             "Type": "Custom::ApiModel",
             "Properties": {
-                "ServiceToken": "arn:aws:lambda:eu-west-1:287265878868:function:ApiGatewayCloudFormation-LambdaFunction-ZSO5VVA9QUD4",
+                "ServiceToken": { "Ref": "ServiceToken" },
                 "restApiId": { "Fn::GetAtt": ["TestRestApi", "id"] },
                 "name": "TestModel",
                 "contentType": "application/json",
@@ -66,7 +72,7 @@
         "TestModelWithParent": {
             "Type": "Custom::ApiModel",
             "Properties": {
-                "ServiceToken": "arn:aws:lambda:eu-west-1:287265878868:function:ApiGatewayCloudFormation-LambdaFunction-ZSO5VVA9QUD4",
+                "ServiceToken": { "Ref": "ServiceToken" },
                 "restApiId": { "Fn::GetAtt": ["TestRestApi", "id"] },
                 "name": "TestModelWithParent",
                 "contentType": "application/json",
@@ -90,7 +96,7 @@
         "TestApiMethod" : {
             "Type" : "Custom::ApiMethod",
             "Properties" : {
-                "ServiceToken": "arn:aws:lambda:eu-west-1:287265878868:function:ApiGatewayCloudFormation-LambdaFunction-ZSO5VVA9QUD4",
+                "ServiceToken": { "Ref": "ServiceToken" },
                 "restApiId": { "Fn::GetAtt": ["TestRestApi", "id"] },
                 "resourceId": { "Fn::GetAtt": ["TestApiResource2", "id"] },
                 "method": {
