@@ -26,6 +26,7 @@ The project is inspired by [AWS Labs API Gateway Swagger Importer](https://githu
     1. <a href="#create-a-base-path-mapping">Create a Base Path Mapping</a>
 1. <a href="#change-log">Change log</a>
 1. <a href="#todo">TODO</a>
+1. <a href="#contribute">Contribute</a>
 
 ##A note on terminology before we begin
 Throughout this document there are references to *resources* and *API Resources*.
