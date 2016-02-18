@@ -10,6 +10,8 @@ The project is inspired by [AWS Labs API Gateway Swagger Importer](https://githu
 
 ![Build status](https://travis-ci.org/carlnordenfelt/aws-api-gateway-for-cloudformation.svg?branch=master)
 
+**Current version:** 1.0.2
+
 ##Contents
 1. <a href="#a-note-on-terminology-before-we-begin">A note on terminology before we begin</a>
 1. <a href="#installation">Installation</a>
