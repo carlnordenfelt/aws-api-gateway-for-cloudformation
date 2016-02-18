@@ -675,6 +675,9 @@ http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createBas
 
 #Change Log
 
+## 1.0.2
+* Fix: Ensure that moving an API Method to another resource cleans up the old method.
+
 ## 1.0.1
 * Added backoff and retries if failure due to concurrent modifications. <a href="https://github.com/carlnordenfelt/aws-api-gateway-for-cloudformation/pull/5">PR #5</a>
 * Rewrote installation and deploy scripts in nodejs and npm.
