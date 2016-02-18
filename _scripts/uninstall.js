@@ -1,6 +1,9 @@
 'use strict';
 
 var STACK_NAME = 'ApiGatewayCloudFormation';
+if (process.env.NAME) {
+    STACK_NAME = process.env.NAME;
+}
 
 var aws = require('aws-sdk');
 var cloudformation = new aws.CloudFormation({ apiVersion: '2010-05-15' });

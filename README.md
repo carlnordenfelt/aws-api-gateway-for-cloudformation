@@ -77,6 +77,12 @@ Run the following commands from you shell:
 
     npm run installation
 
+If you want a custom name for your installation (the default is ApiGatewayCloudFormation) you can run:
+
+    NAME=SomeOtherName npm run installation
+
+**Note:** If you set another name for you installation you have to provide the same name when you deploy.
+
 The installation takes a couple of minutes.
 The script will output the Custom Resource Lambda function ARN.
 Save this value, it is the value of the ServiceToken parameter that each Custom Resource requires in your CloudFormation templates.
@@ -85,11 +91,15 @@ Once installation is done you have to deploy the source code:
 
     npm run deploy
 
-This will install the latest version. If you want to specify a different version you can run
+This will install the latest version. If you want to specify a different version you can run:
 
     VERSION=1.2.3 npm run deploy
 
-For a list of available versions, please see the <a href="#change-log">Change Log</a>
+For a list of available versions, please see the <a href="#change-log">Change Log</a>.
+
+If you provided a custom name during installation you have to provide the same name during deploy:
+ 
+     NAME=SomeOtherName {VERSION=1.2.3} npm run deploy
 
 ####Uninstallation
 If you want to uninstall the setup you simply run:
@@ -98,6 +108,10 @@ If you want to uninstall the setup you simply run:
 
 After you've run this command you can install a new environment if you want.
 Note that uninstallation may take a minute or two.
+
+If you provided a custom name during installation you have to provide the same name during un-installation:
+ 
+    NAME=SomeOtherName npm run uninstall
 
 **Note:** If you reinstall the setup you have to update the ServiceToken in your CloudFormation templates. 
 

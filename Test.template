@@ -28,6 +28,24 @@
                 }
             }
         },
+        "TestApiResource2" : {
+            "Type" : "Custom::ApiResource",
+            "Properties" : {
+                "ServiceToken": "arn:aws:lambda:eu-west-1:287265878868:function:ApiGatewayCloudFormation-LambdaFunction-ZSO5VVA9QUD4",
+                "restApiId": { "Fn::GetAtt": ["TestRestApi", "id"] },
+                "parentId": { "Fn::GetAtt": ["TestRestApi", "parentResourceId"] },
+                "pathPart": "test-resource2",
+                "corsConfiguration": {
+                    "allowMethods": ["GET", "POST"],
+                    "allowHeaders": ["x-my-header", "some-other-header"],
+                    "allowDefaultHeaders": true,
+                    "allowOrigin": "www.example.com",
+                    "exposeHeaders": ["some-header", "x-another-header"],
+                    "maxAge": 1800,
+                    "allowCredentials": true
+                }
+            }
+        },
         "TestModel": {
             "Type": "Custom::ApiModel",
             "Properties": {
@@ -74,7 +92,7 @@
             "Properties" : {
                 "ServiceToken": "arn:aws:lambda:eu-west-1:287265878868:function:ApiGatewayCloudFormation-LambdaFunction-ZSO5VVA9QUD4",
                 "restApiId": { "Fn::GetAtt": ["TestRestApi", "id"] },
-                "resourceId": { "Fn::GetAtt": ["TestRestApi", "parentResourceId"] },
+                "resourceId": { "Fn::GetAtt": ["TestApiResource2", "id"] },
                 "method": {
                     "authorizationType": "NONE",
                     "httpMethod": "GET",
