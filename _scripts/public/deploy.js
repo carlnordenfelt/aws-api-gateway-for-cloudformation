@@ -2,7 +2,7 @@
 
 var version = process.env.VERSION;
 if (!version) {
-    var pkg = require('../package.json');
+    var pkg = require('./package.json');
     version = 'v' + pkg.version;
 }
 

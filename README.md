@@ -10,8 +10,6 @@ The project is inspired by [AWS Labs API Gateway Swagger Importer](https://githu
 
 [![Build Status](https://travis-ci.org/carlnordenfelt/aws-api-gateway-for-cloudformation.svg?branch=master)](https://travis-ci.org/carlnordenfelt/aws-api-gateway-for-cloudformation)
 
-**Current version:** 1.0.4 (2016-02-18)
-
 ##Contents
 1. <a href="#a-note-on-terminology-before-we-begin">A note on terminology before we begin</a>
 1. <a href="#installation">Installation</a>
@@ -56,8 +54,6 @@ Configure your IAM user with the following policy and make sure that you have co
                 "Action": [
                     "cloudformation:CreateStack",
                     "cloudformation:DescribeStacks",
-                    "dynamodb:CreateTable",
-                    "dynamodb:DescribeTable",
                     "iam:CreateRole",
                     "iam:CreatePolicy",
                     "iam:AttachRolePolicy",
@@ -75,33 +71,33 @@ Configure your IAM user with the following policy and make sure that you have co
     }
 
 ###Run the installation script
-Run the following commands from you shell:
+
+You no longer have to clone the repo to install!
+Download the installation package from the CDN: <a href="https://s3-eu-west-1.amazonaws.com/apigatewaycloudformation/builds/v1.1.0.zip">Latest version: 1.1.0</a> (2016-02-19)
+Unzip the package
+Run the following commands from your shell:
 
     npm run installation
 
-If you want a custom name for your installation (the default is ApiGatewayCloudFormation) you can run:
-
-    NAME=SomeOtherName npm run installation
-
-**Note:** If you set another name for you installation you have to provide the same name when you deploy.
-
-The installation takes a couple of minutes.
-The script will output the Custom Resource Lambda function ARN.
+Installation takes a couple of minutes and when it completes it will output the Custom Resource Lambda function ARN.
 Save this value, it is the value of the ServiceToken parameter that each Custom Resource requires in your CloudFormation templates.
- 
-Once installation is done you have to deploy the source code:
+Once installation is done, run the following command to deploy the code:
 
     npm run deploy
 
-This will install the latest version. If you want to specify a different version you can run:
+####Options
 
-    VERSION=1.2.3 npm run deploy
+If you want a custom name for your installation (default is ApiGatewayCloudFormation) you can set it by prepending 
+the commands with NAME=MyCustomName. Note that the custom name has to be provided to all scripts.
+
+    NAME=MyCustomName npm run installation
+    NAME=MyCustomName npm run deploy
+
+You can also install a specific version if you do not want to install the latest by specifying VERSION:
+
+    VERSION=1.2.3 {NAME=MyCustomName} npm run deploy
 
 For a list of available versions, please see the <a href="#change-log">Change Log</a>.
-
-If you provided a custom name during installation you have to provide the same name during deploy:
- 
-     NAME=SomeOtherName {VERSION=1.2.3} npm run deploy
 
 ####Uninstallation
 If you want to uninstall the setup you simply run:
@@ -779,13 +775,16 @@ http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createAut
 
 #Change Log
 
-## 1.0.4  (2016-02-18)
+## <a href="https://s3-eu-west-1.amazonaws.com/apigatewaycloudformation/builds/v1.1.0.zip">1.1.0</a> (2016-02-19)
+* Introduced installation package so that you no longer have to clone the repo to install and deploy.
+
+## <a href="https://s3-eu-west-1.amazonaws.com/apigatewaycloudformation/builds/v1.0.4.zip">1.0.4</a>  (2016-02-18)
 * Introducing API Authorizers (http://docs.aws.amazon.com/apigateway/latest/developerguide/use-custom-authorizer.html)
 
-## 1.0.2  (2016-02-18)
+## <a href="https://s3-eu-west-1.amazonaws.com/apigatewaycloudformation/builds/v1.0.2.zip">1.0.2</a>  (2016-02-18)
 * Fix: Ensure that moving an API Method to another resource cleans up the old method.
 
-## 1.0.1 (2016-02-17)
+## <a href="https://s3-eu-west-1.amazonaws.com/apigatewaycloudformation/builds/1.0.1.zip">1.0.1</a> (2016-02-17)
 * Added backoff and retries if failure due to concurrent modifications. <a href="https://github.com/carlnordenfelt/aws-api-gateway-for-cloudformation/pull/5">PR #5</a>
 * Rewrote installation and deploy scripts in nodejs and npm.
 * Removed Dynamo table for tracking resources, now tracked via the PhysicalResourceId. <a href="https://github.com/carlnordenfelt/aws-api-gateway-for-cloudformation/pull/4">PR #4</a>
