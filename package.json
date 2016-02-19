@@ -5,7 +5,7 @@
   "author": "carl@nordenfelt.com",
   "repository": {
     "type": "git",
-    "url": "https://github.com/npm/npm.git"
+    "url": "https://github.com/carlnordenfelt/aws-api-gateway-for-cloudformation"
   },
   "license": "MIT",
   "scripts": {
