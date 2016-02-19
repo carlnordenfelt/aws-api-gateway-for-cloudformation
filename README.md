@@ -74,7 +74,7 @@ Configure your IAM user with the following policy and make sure that you have co
 
 You no longer have to clone the repo to install!
 
-Simply <a href="https://s3-eu-west-1.amazonaws.com/apigatewaycloudformation/builds/v1.1.0.zip">wownload the installation package from the CDN</a>, unzip it and run the following command from your shell:
+Simply <a href="https://s3-eu-west-1.amazonaws.com/apigatewaycloudformation/builds/v1.1.0.zip">download the installation package from the CDN</a>, unzip it and run the following command from your shell:
 
     npm run installation
 
