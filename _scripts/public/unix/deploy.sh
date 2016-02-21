@@ -35,6 +35,7 @@ if [[ ${lambdaArn} != arn* ]] ; then
     exit 1;
 fi
 
+rm -f latest
 wget http://apigatewaycloudformation.s3-website-eu-west-1.amazonaws.com/builds/${version}
 aws lambda update-function-code --function-name "${lambdaArn}" --zip-file fileb://${version} --publish
 rm -f latest
