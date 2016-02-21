@@ -780,7 +780,7 @@ http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createAut
 
 #Change Log
 
-## <a href="https://s3-eu-west-1.amazonaws.com/apigatewaycloudformation/builds/v1.1.1.zip">1.1.1</a> (2016-02-21)
+## <a href="https://s3-eu-west-1.amazonaws.com/apigatewaycloudformation/builds/v1.1.3.zip">1.1.3</a> (2016-02-21)
 * Added installation scripts for unix that do not require npm or node to be installed.
 
 ## <a href="https://s3-eu-west-1.amazonaws.com/apigatewaycloudformation/builds/v1.1.0.zip">1.1.0</a> (2016-02-19)
