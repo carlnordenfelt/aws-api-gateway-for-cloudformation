@@ -1,10 +1,10 @@
 **Important Notice!**
 If you installed this prior to February 17 2016 you have to uninstall everything, including any APIs created using 
-these resources, before you upgrade. There has been a lot of changes made and they are not backwards compatible!
+these resources, before you upgrade. There has been a lot of changes made and they are not backward compatible!
 
 #API Gateway for CloudFormation
 API Gateway for CloudFormation is a set of Custom Resources that allows you to manage your API Gateway setup
-with CloudFormation. It is deployed with CloudFormation and run on AWS Lambda.
+with CloudFormation. It is deployed with CloudFormation and runs on AWS Lambda.
 
 The project is inspired by [AWS Labs API Gateway Swagger Importer](https://github.com/awslabs/aws-apigateway-importer) so you will see a lot of familiar syntax in the setup.
 
@@ -13,7 +13,6 @@ The project is inspired by [AWS Labs API Gateway Swagger Importer](https://githu
 ##Contents
 1. <a href="#a-note-on-terminology-before-we-begin">A note on terminology before we begin</a>
 1. <a href="#installation">Installation</a>
-    1. <a href="#uninstallation">Un-installation</a>
 1. <a href="#usage">Usage</a>
     1. <a href="#overview">Overview</a>
     1. <a href="#create-an-api">Create an API</a>
@@ -33,8 +32,6 @@ It is very important to distinguish between the two:
 
 * A *resource* is a CloudFormation term and can refer to any AWS resource.
 * An *API Resource* is a specific type of AWS resource (Custom::ApiResource) which is called "Resource" in API Gateway.
-
-Confusing, I know...
 
 ##Installation
 ##Prerequisites
@@ -81,12 +78,10 @@ Configure your IAM user with the following policy and make sure that you have co
 
 ###Run the installation script
 
-You no longer have to clone the repo to install!
-
-Simply <a href="https://s3-eu-west-1.amazonaws.com/apigatewaycloudformation/install/latest.zip">download the installation package</a>, unzip it and follow the OS specific instuctions below.
+<a href="https://s3-eu-west-1.amazonaws.com/apigatewaycloudformation/install/latest.zip">Download the installation package</a>, unzip it and follow the OS specific instructions below.
 
 ####Unix
-First, you hve to install the infrastructure:
+Install the infrastructure:
 
     ./install.sh
 
@@ -100,14 +95,17 @@ Once installation is done, run the following command to deploy the code:
 #####Options
 
 **-n NAME**<br/>
-Sets a custom name for your installation. The default is ApiGatewayCloudFormation). Note that the custom name has to be provided to all scripts.
+Sets a custom name for your installation (the default is ApiGatewayCloudFormation). 
+Note that the custom name has to be provided to all scripts.
 
 **-v VERSION**<br/>
-If you don't want to deploy the latest version you can supply it by passing it as an argument with -v.
+If you don't want to deploy the latest version you can supply another version name by passing it as an argument with -v.
+Available versions follow this naming convention: v{versionNumber}.zip
+-v is only supported by the deploy script.
 
 For a list of available versions, please see the <a href="#change-log">Change Log</a>.
 
-####Uninstallation
+#####Uninstallation
 If you want to uninstall the setup you simply run:
 
     ./uninstall.sh
@@ -123,11 +121,11 @@ TODO
 #Usage   
 
 ##Overview
-This setup allows you to manage the majority of the API Gateway releated resource. Below you'll find (hopefully) exhaistive documentation on how to use each resource type.
+This setup allows you to manage the majority of the API Gateway related resources. Below you'll find (hopefully) exhaustive documentation on how to use each resource type.
 
 One thing that is not currently supported are API deployments. There is a bit of a catch-22 thing happening with the SDK and deployments where I can't create a stage without a deployment and I can create a deployment without a stage. I have this on the TODO list but for now you'll have to mange API deployment outside of this project.
 
-Also note that some resources may be flagged as experimental which means that they haven't been tested thouroghly.
+Also note that some resources may be flagged as experimental which means that they haven't been tested thoroughly.
 
 That said, on to what you can do.
 
