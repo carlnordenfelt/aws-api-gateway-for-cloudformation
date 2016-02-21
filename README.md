@@ -78,7 +78,7 @@ Configure your IAM user with the following policy and make sure that you have co
 
 ###Run the installation script
 
-<a href="https://s3-eu-west-1.amazonaws.com/apigatewaycloudformation/install/latest.zip">Download the installation package</a>, unzip it and follow the OS specific instructions below.
+<a href="http://apigatewaycloudformation.s3-website-eu-west-1.amazonaws.com/install/latest">Download the installation package</a>, unzip it and follow the OS specific instructions below.
 
 ####Unix
 Install the infrastructure:
@@ -779,6 +779,9 @@ http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createAut
     }
 
 #Change Log
+
+## <a href="https://s3-eu-west-1.amazonaws.com/apigatewaycloudformation/builds/v1.1.1.zip">1.1.1</a> (2016-02-21)
+* Added installation scripts for unix that do not require npm or node to be installed.
 
 ## <a href="https://s3-eu-west-1.amazonaws.com/apigatewaycloudformation/builds/v1.1.0.zip">1.1.0</a> (2016-02-19)
 * Introduced installation package so that you no longer have to clone the repo to install and deploy.
