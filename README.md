@@ -76,21 +76,21 @@ Configure your IAM user with the following policy and make sure that you have co
         ]
     }
 
-###Run the installation script
+###Download the installation package
 
-<a href="https://s3-eu-west-1.amazonaws.com/apigatewaycloudformation/install/latest.zip">Download the installation package</a>, unzip it and follow the OS specific instructions below.
+<a href="http://apigatewaycloudformation.s3-website-eu-west-1.amazonaws.com/install/latest">Download the installation package</a>, unzip it and follow the OS specific instructions below.
 
 ####Unix
 Install the infrastructure:
 
-    ./install.sh
+    unix/install.sh
 
 Installation takes a couple of minutes and when it completes it will output the Custom Resource Lambda function ARN.
 Save this value, it is the value of the ServiceToken parameter that each Custom Resource requires in your CloudFormation templates. 
 
 Once installation is done, run the following command to deploy the code:
 
-    ./deploy.sh
+    unix/deploy.sh
 
 #####Options
 
@@ -108,7 +108,7 @@ For a list of available versions, please see the <a href="#change-log">Change Lo
 #####Uninstallation
 If you want to uninstall the setup you simply run:
 
-    ./uninstall.sh
+    unix/uninstall.sh
 
 If you provided a custom name during installation you have to provide the same name during un-installation with the -n argument
 
@@ -779,6 +779,9 @@ http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createAut
     }
 
 #Change Log
+
+## <a href="https://s3-eu-west-1.amazonaws.com/apigatewaycloudformation/builds/v1.1.1.zip">1.1.1</a> (2016-02-21)
+* Added installation scripts for unix that do not require npm or node to be installed.
 
 ## <a href="https://s3-eu-west-1.amazonaws.com/apigatewaycloudformation/builds/v1.1.0.zip">1.1.0</a> (2016-02-19)
 * Introduced installation package so that you no longer have to clone the repo to install and deploy.
