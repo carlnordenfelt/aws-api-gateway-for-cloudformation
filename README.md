@@ -44,7 +44,9 @@ Confusing, I know...
 
 ###Setup IAM permissions
 To be able to install the Custom Resource library you require a set of permissions.
-Configure your IAM user with the following policy and make sure that you have configured your aws-cli with access and secret key.
+Configure your IAM user with the following policy and make sure that you have configured your aws-cli with access and secret key. 
+
+**Note:** This Role contains delete permissions. If you do not want to give these permissions you can omit the last 6 permissions in the policy. If you do so, uninstallation cannot be done via the provided scripts.
 
     {
         "Version": "2012-10-17",
@@ -61,7 +63,14 @@ Configure your IAM user with the following policy and make sure that you have co
                     "iam:PassRole",
                     "lambda:CreateFunction",
                     "lambda:UpdateFunctionCode",
-                    "lambda:GetFunctionConfiguration"
+                    "lambda:GetFunctionConfiguration",
+                    
+                    "cloudformation:DeleteStack",
+                    "lambda:DeleteFunction",
+                    "iam:ListPolicyVersions",
+                    "iam:DetachRolePolicy",
+                    "iam:DeletePolicy",
+                    "iam:DeleteRole"
                 ],
                 "Resource": [
                     "*"
@@ -74,7 +83,7 @@ Configure your IAM user with the following policy and make sure that you have co
 
 You no longer have to clone the repo to install!
 
-Simply <a href="https://s3-eu-west-1.amazonaws.com/apigatewaycloudformation/install/v1.1.0.zip">download the installation package</a>, unzip it and run the following command from your shell:
+Simply <a href="https://s3-eu-west-1.amazonaws.com/apigatewaycloudformation/install/latest.zip">download the installation package</a>, unzip it and run the following command from your shell:
 
     npm run installation
 
