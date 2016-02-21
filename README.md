@@ -83,43 +83,42 @@ Configure your IAM user with the following policy and make sure that you have co
 
 You no longer have to clone the repo to install!
 
-Simply <a href="https://s3-eu-west-1.amazonaws.com/apigatewaycloudformation/install/latest.zip">download the installation package</a>, unzip it and run the following command from your shell:
+Simply <a href="https://s3-eu-west-1.amazonaws.com/apigatewaycloudformation/install/latest.zip">download the installation package</a>, unzip it and follow the OS specific instuctions below.
 
-    npm run installation
+####Unix
+First, you hve to install the infrastructure:
+
+    ./install.sh
 
 Installation takes a couple of minutes and when it completes it will output the Custom Resource Lambda function ARN.
-Save this value, it is the value of the ServiceToken parameter that each Custom Resource requires in your CloudFormation templates.
+Save this value, it is the value of the ServiceToken parameter that each Custom Resource requires in your CloudFormation templates. 
+
 Once installation is done, run the following command to deploy the code:
 
-    npm run deploy
+    ./deploy.sh
 
-####Options
+#####Options
 
-If you want a custom name for your installation (default is ApiGatewayCloudFormation) you can set it by prepending 
-the commands with NAME=MyCustomName. Note that the custom name has to be provided to all scripts.
+**-n NAME**<br/>
+Sets a custom name for your installation. The default is ApiGatewayCloudFormation). Note that the custom name has to be provided to all scripts.
 
-    NAME=MyCustomName npm run installation
-    NAME=MyCustomName npm run deploy
-
-You can also install a specific version if you do not want to install the latest by specifying VERSION:
-
-    VERSION=1.2.3 {NAME=MyCustomName} npm run deploy
+**-v VERSION**<br/>
+If you don't want to deploy the latest version you can supply it by passing it as an argument with -v.
 
 For a list of available versions, please see the <a href="#change-log">Change Log</a>.
 
 ####Uninstallation
 If you want to uninstall the setup you simply run:
 
-    npm run uninstall
+    ./uninstall.sh
 
-After you've run this command you can install a new environment if you want.
-Note that uninstallation may take a minute or two.
-
-If you provided a custom name during installation you have to provide the same name during un-installation:
- 
-    NAME=SomeOtherName npm run uninstall
+If you provided a custom name during installation you have to provide the same name during un-installation with the -n argument
 
 **Note:** If you reinstall the setup you have to update the ServiceToken in your CloudFormation templates. 
+
+####Windows
+
+TODO
 
 #Usage   
 
