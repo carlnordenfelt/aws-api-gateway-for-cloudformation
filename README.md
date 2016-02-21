@@ -483,7 +483,7 @@ Response models are represented as a key/value map, with a content type as the k
 
 ###CloudFormation example:
     "TestApiMethod" : {
-        "Type" : "Custom::ApiGateway_ApiMethod",
+        "Type" : "Custom::ApiMethod",
         "Properties" : {
             "ServiceToken": "{Lambda_Function_ARN}",
             "restApiId": "q1w2e3r4t5y6",
@@ -512,7 +512,7 @@ Response models are represented as a key/value map, with a content type as the k
             },
             "responses": {
                 "default": {
-                    "statusCode": "200"
+                    "statusCode": "200",
                     "headers": {
                         "X-Custom-Header": "'hardcodedValue'"
                     }
