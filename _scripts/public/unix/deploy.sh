@@ -20,25 +20,16 @@ while getopts ":n:v:" opt; do
   esac
 done
 
-lambdaArn="";
-while IFS=' ' read -ra outputs; do
-    for output in "${outputs[@]}"; do
-        key=$(echo "${output}" |cut -f1);
-        if [ "${key}" == "${lambdaOutputKey}" ]; then
-            lambdaArn=$(echo "${output}" |cut -f2);
-        fi;
-    done;
-done <<< "$(aws cloudformation describe-stacks --stack-name ${stackName} --output text --query Stacks[*].Outputs)";
-
-if [[ ${lambdaArn} != arn* ]] ; then
+lambdaArn=$(aws cloudformation describe-stacks --stack-name ${stackName} --output text --query "Stacks[0].Outputs[?OutputKey=='${lambdaOutputKey}'].{Value:OutputValue}")
+if [ "${lambdaArn}" == "" ]; then
     echo "You have to run make install before deploying";
     exit 1;
 fi
 
-rm -f latest
+rm -f ${version}
 wget http://apigatewaycloudformation.s3-website-eu-west-1.amazonaws.com/builds/${version}
 aws lambda update-function-code --function-name "${lambdaArn}" --zip-file fileb://${version} --publish
-rm -f latest
+rm -f ${version}
 
-echo "Lambda updated"
+echo "ApiGateway for CloudFormation has been updated"
 echo "ServiceToken for CloudFormation: ${lambdaArn}"
