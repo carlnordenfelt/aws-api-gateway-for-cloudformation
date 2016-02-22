@@ -38,7 +38,7 @@ printf "Installing..."
 while [ "${stackStatus}" != "CREATE_COMPLETE" ]; do
     printf "."
     sleep 5
-    stackStatus=$(aws cloudformation describe-stacks --stack-name ${stackId} --output text |head -n1|cut -f7)
+    stackStatus=$(aws cloudformation describe-stacks --stack-name ${stackId} --output text --query Stacks[0].StackStatus)
     if [ "${stackStatus}" == "ROLLBACK_IN_PROGRESS" ] || [ "${stackStatus}" == "ROLLBACK_COMPLETE" ]; then
         echo "Installation failed. See the AWS CloudFormation Console for detailed information"
         exit 1
@@ -46,14 +46,5 @@ while [ "${stackStatus}" != "CREATE_COMPLETE" ]; do
 done;
 echo "Installation complete"
 
-lambdaArn="";
-while IFS=' ' read -ra outputs; do
-    for output in "${outputs[@]}"; do
-        key=$(echo "${output}" |cut -f1);
-        if [ "${key}" == "${lambdaOutputKey}" ]; then
-            lambdaArn=$(echo "${output}" |cut -f2);
-        fi;
-    done;
-done <<< "$(aws cloudformation describe-stacks --stack-name ${stackId} --output text --query Stacks[*].Outputs)";
-
+lambdaArn=$(aws cloudformation describe-stacks --stack-name ${stackId} --output text --query "Stacks[0].Outputs[?OutputKey=='${lambdaOutputKey}'].{Value:OutputValue}")
 echo "Service Token: ${lambdaArn}"
