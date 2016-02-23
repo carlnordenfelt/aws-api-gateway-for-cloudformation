@@ -16,9 +16,9 @@ if (!$?) {
 while($true) {
     $status = &"aws" cloudformation describe-stacks --stack-name $stackId --query Stacks[0].StackStatus
     "Status: $status"
-    if ($status -eq "DELETE_COMPLETE") {
+    if ($status.Equals("DELETE_COMPLETE")) {
         Break;
-    } elseif ($status -eq "DELETE_FAILED") {
+    } elseif ($status.Equals("DELETE_FAILED")) {
         "Installation failed. See the AWS CloudFormation console for further details"
         Exit
     }

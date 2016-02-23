@@ -16,7 +16,7 @@ $stackId = &"aws" cloudformation create-stack --stack-name $name --template-url 
 while($true) {
     $status = &"aws" cloudformation describe-stacks --stack-name $stackId --query Stacks[0].StackStatus
     "Status: $status"
-    if ($status -eq "CREATE_COMPLETE") {
+    if ($status.Equals("CREATE_COMPLETE")) {
         Break;
     } elseif ($status.IndexOf("ROLLBACK") -gt -1) {
         "Installation failed. See the AWS CloudFormation console for further details"
