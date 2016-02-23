@@ -23,7 +23,7 @@ while($true) {
         "Installation failed. See the AWS CloudFormation console for further details"
         Exit
     }
-    Start-Sleep -s 5
+    Start-Sleep -s 10
 }
 
 $lambdaArn = &"aws" cloudformation describe-stacks --stack-name $stackId --output text --query "Stacks[0].Outputs[?OutputKey=='$lambdaOutputKey'].{Value:OutputValue}"
