@@ -15,7 +15,10 @@ while getopts ":n:" opt; do
 done
 
 stackId=$(aws cloudformation describe-stacks --stack-name "${stackName}" --output text --query Stacks[0].StackId)
-
+if [ $? -ne 0 ]; then
+    echo "AGFCF is not installed under the given name. Exiting"
+    exit 0
+fi
 aws cloudformation delete-stack --stack-name "${stackId}"
 if [ $? -ne 0 ]; then
     echo "An error occurred while un-installing"

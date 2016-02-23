@@ -27,7 +27,7 @@ if [ "${lambdaArn}" == "" ]; then
 fi
 
 rm -f ${version}
-wget http://apigatewaycloudformation.s3-website-eu-west-1.amazonaws.com/builds/${version}
+curl -O -L http://apigatewaycloudformation.s3-website-eu-west-1.amazonaws.com/builds/${version}
 aws lambda update-function-code --function-name "${lambdaArn}" --zip-file fileb://${version} --publish
 rm -f ${version}
 
