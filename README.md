@@ -28,7 +28,7 @@ The project is inspired by [AWS Labs API Gateway Swagger Importer](https://githu
 
 ##A note on terminology before we begin
 Throughout this document there are references to *resources* and *API Resources*.
-It is very important to distinguish the difference between the two:
+It is very important to distinguish between the two:
 
 * A *resource* is a CloudFormation term and can refer to any AWS resource.
 * An *API Resource* is a specific type of AWS resource (Custom::ApiResource) which is called "Resource" in API Gateway.
@@ -100,7 +100,7 @@ Note that the custom name has to be provided to all scripts.
 
 **-v VERSION**<br/>
 If you don't want to deploy the latest version you can supply another version name by passing it as an argument with -v.
-Available versions follow this naming convention: v{versionNumber}.zip. 
+Available versions follow this naming convention: v{versionNumber}.zip
 -v is only supported by the deploy script.
 
 For a list of available versions, please see the <a href="#change-log">Change Log</a>.
@@ -346,7 +346,7 @@ Request models are represented as a key/value map, with a content type as the ke
 * Update: No interruption
 
 **method.parameters**
-Represent request parameters that are sent with the backend request. 
+Represents request parameters that are sent with the backend request. 
 Request parameters are represented as a string array of parameter destinations. 
 The destination must match the pattern {location}.{name}, where location is either querystring, 
 path, or header. name must be a valid, unique parameter name.
@@ -410,7 +410,7 @@ More complex templates can be expressed as a string.
 * Update: No interruption
 
 **integration.requestParameters**: 
-Represent request parameters that are sent with the backend request. 
+Represents request parameters that are sent with the backend request. 
 Request parameters are represented as a key/value map, with a destination as the key and a source as the value. 
 A source must match an existing method request parameter, or a static value. 
 Static values must be enclosed with single quotes, and be pre-encoded based on their destination in the request. 
@@ -422,7 +422,7 @@ path, or header. name must be a valid, unique parameter name.
 * Update: No interruption
 
 **integration.uri**
-URI to the backend service.
+URI to the backend service. Can be a url to another service, a Lambda ARN etc.
 
 * Required: conditional, must be set if *integration.type* is not set to MOCK.
 * Type: String
