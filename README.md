@@ -116,7 +116,39 @@ If you provided a custom name during installation you have to provide the same n
 
 ####Windows
 
-TODO
+Install the infrastructure:
+
+    windows\install.ps1
+
+Installation takes a couple of minutes and when it completes it will output the Custom Resource Lambda function ARN.
+Save this value, it is the value of the ServiceToken parameter that each Custom Resource requires in your CloudFormation templates. 
+
+Once installation is done, run the following command to deploy the code:
+
+    windows\deploy.ps1
+
+#####Options
+
+**-name NAME**<br/>
+Sets a custom name for your installation (the default is ApiGatewayCloudFormation). 
+Note that the custom name has to be provided to all scripts.
+
+**-version VERSION**<br/>
+If you don't want to deploy the latest version you can supply another version name by passing it as an argument with -version.
+Available versions follow this naming convention: v{versionNumber}.zip
+-version is only supported by the deploy script.
+
+For a list of available versions, please see the <a href="#change-log">Change Log</a>.
+
+#####Uninstall
+If you want to uninstall the setup you simply run:
+
+    windows\uninstall.ps1
+
+If you provided a custom name during installation you have to provide the same name during un-installation with the -name argument
+
+**Note:** If you reinstall the setup you have to update the ServiceToken in your CloudFormation templates. 
+
 
 #Usage   
 
@@ -779,6 +811,9 @@ http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createAut
     }
 
 #Change Log
+
+## <a href="https://s3-eu-west-1.amazonaws.com/apigatewaycloudformation/builds/v1.1.4.zip">1.1.4</a> (2016-02-21)
+* Added installation scripts for windows (powershell).
 
 ## <a href="https://s3-eu-west-1.amazonaws.com/apigatewaycloudformation/builds/v1.1.3.zip">1.1.3</a> (2016-02-21)
 * Added installation scripts for unix that do not require npm or node to be installed.
