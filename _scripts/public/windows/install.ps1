@@ -1,7 +1,7 @@
 param([string]$name="ApiGatewayCloudFormation")
 
-lambdaOutputKey="LambdaFunction"
-templateName="ApiGatewayCloudFormation-1.0.0.template"
+$lambdaOutputKey="LambdaFunction"
+$templateName="ApiGatewayCloudFormation-1.0.0.template"
 
 "Making sure AGFCF has not already been installed"
 aws cloudformation describe-stacks --stack-name $name
