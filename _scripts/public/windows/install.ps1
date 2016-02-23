@@ -4,21 +4,21 @@ lambdaOutputKey="LambdaFunction"
 templateName="ApiGatewayCloudFormation-1.0.0.template"
 
 "Making sure AGFCF has not already been installed"
-aws cloudformation describe-stacks --stack-name $name --region eu-west-1
+aws cloudformation describe-stacks --stack-name $name
 if ($?) {
     "Already installed, exiting installation"
     Exit
 }
 
 $stackId = &"aws cloudformation create-stack `
-    --region eu-west-1 `
     --stack-name $name `
     --template-url https://s3-eu-west-1.amazonaws.com/apigatewaycloudformation/$templateName `
     --capabilities CAPABILITY_IAM `
     --output text"
 
+"Installing..."
 while($true) {
-    $status = &aws cloudformation describe-stacks --stack-name $stackId --query Stacks[0].StackStatus --region eu-west-1
+    $status = &aws cloudformation describe-stacks --stack-name $stackId --query Stacks[0].StackStatus
     if ($status.IndexOf("CREATE_COMPLETE") > -1) {
         Break;
     } elseif ($status.IndexOf("ROLLBACK") > -1) {
