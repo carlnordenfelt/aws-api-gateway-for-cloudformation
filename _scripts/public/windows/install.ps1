@@ -27,5 +27,5 @@ while($true) {
     }
 }
 
-$lambdaArn = &aws cloudformation describe-stacks --stack-name $stackId --output text --query "Stacks[0].Outputs[?OutputKey=='$lambdaOutputKey'].{Value:OutputValue}")
+$lambdaArn = &aws cloudformation describe-stacks --stack-name $stackId --output text --query "Stacks[0].Outputs[?OutputKey=='$lambdaOutputKey'].{Value:OutputValue}"
 "Service Token: $lambdaArn"
