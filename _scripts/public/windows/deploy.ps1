@@ -8,7 +8,7 @@ if ($lambdaArn.Equals("") ) {
     Exit
 }
 
-rm $version
+rm $version 2>&1 | out-null
 curl -O $version http://apigatewaycloudformation.s3-website-eu-west-1.amazonaws.com/builds/$version
 aws lambda update-function-code --function-name "$lambdaArn" --zip-file fileb://$version --publish
 rm $version
