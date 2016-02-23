@@ -9,7 +9,7 @@ if ($lambdaArn.Equals("") ) {
 }
 
 Remove-Item $version
-wget http://apigatewaycloudformation.s3-website-eu-west-1.amazonaws.com/builds/$version -OutFile $version
+curl -O $version http://apigatewaycloudformation.s3-website-eu-west-1.amazonaws.com/builds/$version
 aws lambda update-function-code --function-name "$lambdaArn" --zip-file fileb://$version --publish
 Remove-Item $version
 
