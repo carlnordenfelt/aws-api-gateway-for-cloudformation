@@ -28,14 +28,14 @@ The project is inspired by [AWS Labs API Gateway Swagger Importer](https://githu
 
 ##A note on terminology before we begin
 Throughout this document there are references to *resources* and *API Resources*.
-It is very important to distinguish between the two:
+It is very important to distinguish the difference between the two:
 
 * A *resource* is a CloudFormation term and can refer to any AWS resource.
 * An *API Resource* is a specific type of AWS resource (Custom::ApiResource) which is called "Resource" in API Gateway.
 
 ##Installation
-##Prerequisites
-* You'll need an [Amazon AWS Account](http://aws.amazon.com).
+###Prerequisites
+* You need an [Amazon AWS Account](http://aws.amazon.com).
 * You need an IAM user with access/secret key, see required permissions below.
 * You have to install & configure the [AWS-CLI](http://docs.aws.amazon.com/cli/latest/userguide)
 
@@ -100,12 +100,12 @@ Note that the custom name has to be provided to all scripts.
 
 **-v VERSION**<br/>
 If you don't want to deploy the latest version you can supply another version name by passing it as an argument with -v.
-Available versions follow this naming convention: v{versionNumber}.zip
+Available versions follow this naming convention: v{versionNumber}.zip. 
 -v is only supported by the deploy script.
 
 For a list of available versions, please see the <a href="#change-log">Change Log</a>.
 
-#####Uninstallation
+#####Uninstall
 If you want to uninstall the setup you simply run:
 
     unix/uninstall.sh
@@ -123,7 +123,7 @@ TODO
 ##Overview
 This setup allows you to manage the majority of the API Gateway related resources. Below you'll find (hopefully) exhaustive documentation on how to use each resource type.
 
-One thing that is not currently supported are API deployments. There is a bit of a catch-22 thing happening with the SDK and deployments where I can't create a stage without a deployment and I can create a deployment without a stage. I have this on the TODO list but for now you'll have to mange API deployment outside of this project.
+One thing that is not currently supported are API deployments. There is a bit of a catch-22 thing happening with the SDK and deployments where I can't create a stage without a deployment and I can't create a deployment without a stage. I have this on the TODO list but for now you'll have to manage API deployment outside of this project.
 
 Also note that some resources may be flagged as experimental which means that they haven't been tested thoroughly.
 
@@ -174,7 +174,7 @@ http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createRes
 
 **Note:** If you delete an API Resource from your CloudFormation template, all child resources are deleted by API Gateway.
 This may create certain data inconsistencies between the actual API and what is believed to be setup from the Custom Resource perspective.
-I therefor recommend that if you remove an API Resource from a tempalte, remove all child resources at the same time to ensure a consistent data model.
+I therefore recommend that if you remove an API Resource from a template, remove all child resources at the same time to ensure a consistent data model.
 
 ###Parameters
 **restApiId:**
@@ -215,8 +215,8 @@ A list of HTTP methods that allow CORS requests under this API Resource.
 
 **corsConfiguration.allowHeaders**
 List of headers that the server allows the user-agent to send in requests.
-If this property is not set it is defaulted to the headers that Amazon recommends: Content-Type,X-Amz-Date,Authorization,X-Api-Key
-If it is set it will override the default headers and not include them. See *corsConfiguration.allowDefaultHeaders* for further details.
+If this property is not set it will default to the headers that Amazon recommends: Content-Type,X-Amz-Date,Authorization,X-Api-Key.
+If it is set it will override the default headers and exclude them. See *corsConfiguration.allowDefaultHeaders* for further details.
  
 * Required: no
 * Type: String array
@@ -346,7 +346,7 @@ Request models are represented as a key/value map, with a content type as the ke
 * Update: No interruption
 
 **method.parameters**
-Represents requests parameters that are sent with the backend request. 
+Represent request parameters that are sent with the backend request. 
 Request parameters are represented as a string array of parameter destinations. 
 The destination must match the pattern {location}.{name}, where location is either querystring, 
 path, or header. name must be a valid, unique parameter name.
@@ -410,7 +410,7 @@ More complex templates can be expressed as a string.
 * Update: No interruption
 
 **integration.requestParameters**: 
-Represents request parameters that are sent with the backend request. 
+Represent request parameters that are sent with the backend request. 
 Request parameters are represented as a key/value map, with a destination as the key and a source as the value. 
 A source must match an existing method request parameter, or a static value. 
 Static values must be enclosed with single quotes, and be pre-encoded based on their destination in the request. 
@@ -422,7 +422,7 @@ path, or header. name must be a valid, unique parameter name.
 * Update: No interruption
 
 **integration.uri**
-URI if the backend service.
+URI to the backend service.
 
 * Required: conditional, must be set if *integration.type* is not set to MOCK.
 * Type: String
@@ -442,8 +442,8 @@ http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#putMethod
 * Update: Not available 
 
 **response.statusCode**
-The HTTP Status Code that this response configuration maps to
-Must be unique within the scope on each API Method definition.
+The HTTP Status Code that this response configuration maps to.
+Must be unique within the scope of each API Method definition.
 
 * Required: *yes*
 * Type: Integer
@@ -562,7 +562,7 @@ Description of the model.
 * Update: No interruption
 
 **schema:**
-The model schema. This can be represented either a JSON object or a valid JSON string. 
+The model schema. This can be represented by either a JSON object or a valid JSON string. 
 
 * Required: no, default is an empty object
 * Type: String or object
@@ -803,7 +803,7 @@ http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createAut
 
 **Update notes**
 If you are updating from 0.0.1 you have to delete all your APIs and your existing installation of Api Gateway for CloudFormation.
-This update is not backwards compatible.
+This update is not backward compatible.
 
 ## 0.0.1 (2016-01-04)
 **Note:** This version is no longer available and cannot be installed.
