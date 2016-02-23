@@ -14,7 +14,7 @@ if (!$?) {
 
 "Un-installing..."
 while($true) {
-    $status = &"aws" cloudformation describe-stacks --stack-name $stackId --query Stacks[0].StackStatus
+    $status = &"aws" cloudformation describe-stacks --stack-name $stackId --output text --query Stacks[0].StackStatus
     "Status: $status"
     if ($status.Equals("DELETE_COMPLETE")) {
         Break;
