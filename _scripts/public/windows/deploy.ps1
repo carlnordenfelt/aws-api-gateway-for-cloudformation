@@ -2,7 +2,7 @@ param([string]$name="ApiGatewayCloudFormation",$version="latest")
 
 lambdaOutputKey="LambdaFunction"
 
-lambdaArn = &"aws" cloudformation describe-stacks --stack-name $name --output text --query "Stacks[0].Outputs[?OutputKey=='$lambdaOutputKey'].{Value:OutputValue}"
+$lambdaArn = &"aws" cloudformation describe-stacks --stack-name $name --output text --query "Stacks[0].Outputs[?OutputKey=='$lambdaOutputKey'].{Value:OutputValue}"
 if ($lambdaArn.Equals("") ) {
     "You have to run make install before deploying"
     Exit
