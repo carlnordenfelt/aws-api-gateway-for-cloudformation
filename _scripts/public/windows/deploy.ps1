@@ -1,6 +1,6 @@
 param([string]$name="ApiGatewayCloudFormation",$version="latest")
 
-lambdaOutputKey="LambdaFunction"
+$lambdaOutputKey="LambdaFunction"
 
 $lambdaArn = &"aws" cloudformation describe-stacks --stack-name $name --output text --query "Stacks[0].Outputs[?OutputKey=='$lambdaOutputKey'].{Value:OutputValue}"
 if ($lambdaArn.Equals("") ) {
