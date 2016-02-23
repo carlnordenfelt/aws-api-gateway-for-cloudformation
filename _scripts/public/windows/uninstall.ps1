@@ -1,13 +1,12 @@
 param([string]$name="ApiGatewayCloudFormation")
 
-"Making sure AGFCF has not already been installed"
-aws cloudformation describe-stacks --stack-name $name
+$stackId = &"aws" cloudformation describe-stacks --stack-name $name --query Stacks[0].StackId
 if (!$?) {
     "AGFCF has not been installed, exiting"
     Exit
 }
 
-$stackId = &"aws cloudformation delete-stack --stack-name $name
+aws cloudformation delete-stack --stack-name $name 2>&1 | out-null
 if (!$?) {
     "An error occurred when uninstalling, exiting"
     Exit
@@ -15,13 +14,15 @@ if (!$?) {
 
 "Un-installing..."
 while($true) {
-    $status = &aws cloudformation describe-stacks --stack-name $stackId --query Stacks[0].StackStatus
+    $status = &"aws" cloudformation describe-stacks --stack-name $stackId --query Stacks[0].StackStatus
+    "Status: $status"
     if ($status == "DELETE_COMPLETE") {
         Break;
     } elseif ($status == "DELETE_FAILED") {
         "Installation failed. See the AWS CloudFormation console for further details"
         Exit
     }
+    Start-Sleep -s 5
 }
 
 "Un-install complete"
