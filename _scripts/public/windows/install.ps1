@@ -17,6 +17,7 @@ while($true) {
     $status = &"aws" cloudformation describe-stacks --stack-name $stackId --query Stacks[0].StackStatus
     "Status: $status"
     if ($status.Equals("CREATE_COMPLETE")) {
+        "BREAK"
         Break;
     } elseif ($status.IndexOf("ROLLBACK") -gt -1) {
         "Installation failed. See the AWS CloudFormation console for further details"
