@@ -29,7 +29,13 @@ fi
 rm -f ${version}
 curl -O -L http://apigatewaycloudformation.s3-website-eu-west-1.amazonaws.com/builds/${version}
 aws lambda update-function-code --function-name "${lambdaArn}" --zip-file fileb://${version} --publish
-rm -f ${version}
 
-echo "ApiGateway for CloudFormation has been updated"
-echo "ServiceToken for CloudFormation: ${lambdaArn}"
+if [ $? -ne 0 ]; then
+    echo "An error occurred when updating Lambda code"
+    rm -f ${version}
+    exit 1;
+else
+    echo "ApiGateway for CloudFormation has been updated"
+    echo "ServiceToken for CloudFormation: ${lambdaArn}"
+    rm -f ${version}
+fi
