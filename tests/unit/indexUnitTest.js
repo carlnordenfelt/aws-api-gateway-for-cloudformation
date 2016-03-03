@@ -54,9 +54,27 @@ describe('Index', function () {
         beforeEach(function () {
             context = {};
             event = {
-                ResourceType: 'Custom::validCommand'
+                ResourceType: 'Custom::validCommand',
+                ResourceProperties: {}
             }
         });
+
+        it('should clean bad properties from logging', function (done) {
+            event.RequestType = 'Create';
+            event.ResourceProperties = {
+                certificatePrivateKey: 'xyz'
+            };
+            registerCfnResponseMock(function (event, context, responseStatus, responseData, physicalResourceId) {
+                expect(responseStatus).to.equal('SUCCESS');
+                expect(responseData).not.to.be.an.Error;
+                expect(createResourceStub.called).to.be.true;
+                expect(deleteResourceStub.called).to.be.false;
+                expect(updateResourceStub.called).to.be.false;
+                done();
+            });
+            testSubject.handler(event, context);
+        });
+
         it('should successfully invoke createResource on a command', function (done) {
             event.RequestType = 'Create';
             registerCfnResponseMock(function (event, context, responseStatus, responseData, physicalResourceId) {
@@ -93,7 +111,6 @@ describe('Index', function () {
             });
             testSubject.handler(event, context);
         });
-
 
         it('should fail if getParameters returns an error', function (done) {
             registerCfnResponseMock(function (event, context, responseStatus, responseData, physicalResourceId) {
