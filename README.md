@@ -618,8 +618,6 @@ http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createMod
 
 ##Create a Domain Name
 
-**This resource is experimental**
-
 Creates a new Api Gateway Domain Name
 http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createDomainName-property
 
@@ -690,8 +688,6 @@ http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createDom
 
 ##Create a Base Path Mapping
 
-**This resource is experimental**
-
 Creates a new Api Gateway Base Path Mapping
 http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createBasePathMapping-property
 
@@ -743,6 +739,8 @@ http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createBas
     }
 
 ##Create an Authorizer
+
+**This resource is experimental**
 
 Creates a new Api Gateway Authorizer
 http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createAuthorizer-property
@@ -822,7 +820,7 @@ http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createAut
 
 #Change Log
 
-## <a href="https://s3-eu-west-1.amazonaws.com/apigatewaycloudformation/builds/v1.1.4.zip">1.1.6</a> (2016-02-26)
+## <a href="https://s3-eu-west-1.amazonaws.com/apigatewaycloudformation/builds/v1.1.6.zip">1.1.6</a> (2016-02-26)
 * Added error logging to deploy script.
 
 ## <a href="https://s3-eu-west-1.amazonaws.com/apigatewaycloudformation/builds/v1.1.4.zip">1.1.4</a> (2016-02-21)
@@ -861,8 +859,6 @@ This update is not backward compatible.
 #TODO
 
 * Enable deployment management
-* Test installation on linux & windows
-* Create packages for installation so repo no longer has to be cloned to install.
 
 #Contribute
 I gladly accepts PRs, issues and comments. Anything that will help improve stability, reduce complexity or add more 

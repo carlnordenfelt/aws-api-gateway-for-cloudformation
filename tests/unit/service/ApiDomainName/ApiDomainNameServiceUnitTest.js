@@ -115,7 +115,7 @@ describe('ApiDomainNameService', function () {
     });
 
     describe('patchDomain', function () {
-        it('should patch nothing', function (done) {
+        it('should patch everything', function (done) {
             var event = {
                 params: {
                     certificateBody: 'CertificateBody',
@@ -134,7 +134,30 @@ describe('ApiDomainNameService', function () {
             };
             testSubject.patchDomain('DomainName', event, function (error) {
                 expect(error).to.be.undefined;
+                expect(updateDomainNameStub.called).to.be.true;
+                done();
+            });
+        });
+        it('should patch noting', function (done) {
+            var event = {
+                params: { domainName: 'DomainName' },
+                old: { domainName: 'DomainName' }
+            };
+            testSubject.patchDomain('DomainName', event, function (error) {
+                expect(error).to.be.undefined;
                 expect(updateDomainNameStub.called).to.be.false;
+                done();
+            });
+        });
+        it('should return error', function (done) {
+            var event = {
+                params: { domainName: 'DomainName' },
+                old: { domainName: 'DomainName2' }
+            };
+            updateDomainNameStub.yields({ code: 'BadRequestException' });
+            testSubject.patchDomain('DomainName', event, function (error) {
+                expect(error.code).to.equal('BadRequestException');
+                expect(updateDomainNameStub.called).to.be.true;
                 done();
             });
         });
