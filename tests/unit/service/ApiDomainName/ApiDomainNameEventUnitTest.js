@@ -12,34 +12,41 @@ describe('ApiDomainNameEvent', function () {
         beforeEach(function () {
             event = {
                 ResourceProperties: {
-                    certificateBody: 'CertificateBody',
-                    certificateChain: 'CertificateChain',
+                    certificateBody: '-----BEGIN CERTIFICATE-----CertificateBody-----END CERTIFICATE-----',
+                    certificateChain: '-----BEGIN CERTIFICATE-----CertificateChain-----END CERTIFICATE-----',
                     certificateName: 'CertificateName',
-                    certificatePrivateKey: 'CertificatePrivateKey',
+                    certificatePrivateKey: '-----BEGIN RSA PRIVATE KEY-----CertificatePrivateKey-----END RSA PRIVATE KEY-----',
                     domainName: 'DomainName'
                 },
                 OldResourceProperties: {
-                    certificateBody: 'CertificateBody2',
-                    certificateChain: 'CertificateChain2',
+                    certificateBody: '-----BEGIN CERTIFICATE-----CertificateBody2-----END CERTIFICATE-----',
+                    certificateChain: '-----BEGIN CERTIFICATE-----CertificateChain2-----END CERTIFICATE-----',
                     certificateName: 'CertificateName2',
-                    certificatePrivateKey: 'CertificatePrivateKey2',
+                    certificatePrivateKey: '-----BEGIN RSA PRIVATE KEY-----CertificatePrivateKey2-----END RSA PRIVATE KEY-----',
                     domainName: 'DomainName2'
                 }
             };
         });
         it('should give both old and new parameters', function (done) {
             var parameters = testSubject.getParameters(event);
-            expect(parameters.params.certificateBody).to.equal('CertificateBody');
-            expect(parameters.params.certificateChain).to.equal('CertificateChain');
+            expect(parameters.params.certificateBody).to.equal('-----BEGIN CERTIFICATE-----\nCertificateBody\n-----END CERTIFICATE-----');
+            expect(parameters.params.certificateChain).to.equal('-----BEGIN CERTIFICATE-----\nCertificateChain\n-----END CERTIFICATE-----');
             expect(parameters.params.certificateName).to.equal('CertificateName');
-            expect(parameters.params.certificatePrivateKey).to.equal('CertificatePrivateKey');
+            expect(parameters.params.certificatePrivateKey).to.equal('-----BEGIN RSA PRIVATE KEY-----\nCertificatePrivateKey\n-----END RSA PRIVATE KEY-----');
             expect(parameters.params.domainName).to.equal('DomainName');
 
-            expect(parameters.old.certificateBody).to.equal('CertificateBody2');
-            expect(parameters.old.certificateChain).to.equal('CertificateChain2');
+            expect(parameters.old.certificateBody).to.equal('-----BEGIN CERTIFICATE-----\nCertificateBody2\n-----END CERTIFICATE-----');
+            expect(parameters.old.certificateChain).to.equal('-----BEGIN CERTIFICATE-----\nCertificateChain2\n-----END CERTIFICATE-----');
             expect(parameters.old.certificateName).to.equal('CertificateName2');
-            expect(parameters.old.certificatePrivateKey).to.equal('CertificatePrivateKey2');
+            expect(parameters.old.certificatePrivateKey).to.equal('-----BEGIN RSA PRIVATE KEY-----\nCertificatePrivateKey2\n-----END RSA PRIVATE KEY-----');
             expect(parameters.old.domainName).to.equal('DomainName2');
+            done();
+        });
+        it('should not yield old properties if not in event', function (done) {
+            delete event.OldResourceProperties;
+            var parameters = testSubject.getParameters(event);
+            expect(parameters.params).to.be.an('object');
+            expect(parameters.old).to.be.undefined;
             done();
         });
         it('should yield an error due to missing certificateBody', function (done) {

@@ -640,6 +640,9 @@ The name of the certificate.
 
 **certificateBody:**
 The body of the server certificate provided by your certificate authority.
+You can provide it in two different of formats:
+* As a single line where " " (space) denotes a new line (header/footer are excepted). E.g: -----BEGIN CERT-----line1 line2 ... -----END CERT-----
+* As a single line where "\n" denotes a new line. E.g: -----BEGIN CERT-----line1\nline2\n...\n-----END CERT-----
 
 * Required: *yes*
 * Type: String
@@ -647,12 +650,19 @@ The body of the server certificate provided by your certificate authority.
 
 **certificatePrivateKey:**
 Your certificate's private key.
+* As a single line where " " (space) denotes a new line (header/footer are excepted). E.g: -----BEGIN RSA PRIVATE KEY-----line1 line2 ... -----END RSA PRIVATE KEY-----
+* As a single line where "\n" denotes a new line. E.g: -----BEGIN RSA PRIVATE KEY-----line1\nline2\n...\n-----END RSA PRIVATE KEY-----
 
 * Required: *yes*
 * Type: String
 * Update: Not supported
 
 **certificateChain:**
+The certificate chain provided by your certificate authority.
+You can provide it in two different of formats:
+* As a single line where " " (space) denotes a new line (header/footer are excepted). E.g: -----BEGIN CERTIFICATE-----line1 line2 ... -----END CERTIFICATE-----
+* As a single line where "\n" denotes a new line. E.g: -----BEGIN CERTIFICATE-----line1\nline2\n...\n-----END CERTIFICATE-----
+
 The intermediate certificates and optionally the root certificate, one after the other without any blank lines. 
 If you include the root certificate, your certificate chain must start with intermediate certificates and end with 
 the root certificate. Use the intermediate certificates that were provided by your certificate authority. 
@@ -672,9 +682,9 @@ http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createDom
             "ServiceToken": "{Lambda_Function_ARN}",
             "domainName": "example.com",
             "certificateName": "testCertificate",
-            "certificateBody": "...",
-            "certificatePrivateKey": "...",
-            "certificateChain": "..."
+            "certificateBody": "-----BEGIN CERTIFICATE-----line1 line2 ... -----END CERTIFICATE-----",
+            "certificateChain": "-----BEGIN CERTIFICATE-----line1 line2 ... -----END CERTIFICATE-----",
+            "certificatePrivateKey": "-----BEGIN RSA PRIVATE KEY-----line1 line2 ... -----END RSA PRIVATE KEY-----"
         }
     }
 
