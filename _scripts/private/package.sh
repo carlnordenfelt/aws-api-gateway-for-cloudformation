@@ -6,6 +6,11 @@ if [ $? != 0 ]; then
     exit 1;
 fi;
 
+if [ "$1" == "help" ]; then
+    echo "./package {version}. Version is the name of the package"
+    exit 0;
+fi
+
 npm prune --production
 
 npmVersion=""
