@@ -57,19 +57,43 @@ describe('ApiBasePathMappingEvent', function () {
             expect(parameters.message).to.contain('{domainName}');
             done();
         });
+        it('should yield an error due to missing stage', function (done) {
+            var event = {
+                ResourceProperties: {
+                    restApiId: 'RestApiId',
+                    domainName: "DomainName"
+                }
+            };
+            var parameters = testSubject.getParameters(event);
+            expect(parameters).to.be.an.Error;
+            expect(parameters.message).to.contain('{stage}');
+            done();
+        });
 
         it('should get parameters with defaults', function (done) {
             var event = {
                 ResourceProperties: {
                     restApiId: 'RestApiId',
-                    domainName: 'DomainName'
+                    domainName: 'DomainName',
+                    stage: "Stage"
                 }
             };
             var parameters = testSubject.getParameters(event);
             expect(parameters.params.restApiId).to.equal('RestApiId');
             expect(parameters.params.domainName).to.equal('DomainName');
+            expect(parameters.params.stage).to.equal('Stage');
             expect(parameters.params.basePath).to.equal('');
-            expect(parameters.params.stage).to.be.undefined;
+            done();
+        });
+        it('should not validate parameters id RequestType is Delete', function (done) {
+            var event = {
+                RequestType: 'Delete',
+                ResourceProperties: {
+                    restApiId: 'RestApiId'
+                }
+            };
+            var parameters = testSubject.getParameters(event);
+            expect(parameters.params.restApiId).to.equal('RestApiId');
             done();
         });
     });

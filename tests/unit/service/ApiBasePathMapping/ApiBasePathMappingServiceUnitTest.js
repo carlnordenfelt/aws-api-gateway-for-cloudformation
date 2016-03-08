@@ -12,6 +12,8 @@ describe('ApiBasePathMappingService', function () {
     var createBasePathMappingStub;
     var deleteBasePathMappngStub;
     var updateBasePathMappingStub;
+    var createDeploymentStub;
+    var getStageStub;
 
     after(function () {
         mockery.deregisterAll();
@@ -27,6 +29,8 @@ describe('ApiBasePathMappingService', function () {
         createBasePathMappingStub = sinon.stub();
         deleteBasePathMappngStub = sinon.stub();
         updateBasePathMappingStub = sinon.stub();
+        createDeploymentStub = sinon.stub();
+        getStageStub = sinon.stub();
 
         var awsSdkStub = {
             APIGateway: function () {
@@ -34,6 +38,8 @@ describe('ApiBasePathMappingService', function () {
                 this.createBasePathMapping = createBasePathMappingStub;
                 this.deleteBasePathMapping = deleteBasePathMappngStub;
                 this.updateBasePathMapping = updateBasePathMappingStub;
+                this.createDeployment = createDeploymentStub;
+                this.getStage = getStageStub;
             }
         };
 
@@ -49,6 +55,10 @@ describe('ApiBasePathMappingService', function () {
         deleteBasePathMappngStub.yields(undefined, {});
         updateBasePathMappingStub.reset().resetBehavior();
         updateBasePathMappingStub.yields(undefined, {});
+        createDeploymentStub.reset().resetBehavior();
+        createDeploymentStub.yields(undefined, {});
+        getStageStub.reset().resetBehavior();
+        getStageStub.yields(undefined, {});
     });
 
     describe('getForResponse', function () {
@@ -81,6 +91,9 @@ describe('ApiBasePathMappingService', function () {
         });
         it('should create an api base path mapping', function (done) {
             testSubject.createBasePathMapping(params, function (error) {
+                expect(getStageStub.called).to.be.true;
+                expect(createDeploymentStub.called).to.be.false;
+                expect(createBasePathMappingStub.called).to.be.true;
                 expect(error).to.be.undefined;
                 done();
             });
@@ -88,7 +101,52 @@ describe('ApiBasePathMappingService', function () {
         it('should return an error when creating base path mapping', function (done) {
             createBasePathMappingStub.yields({});
             testSubject.createBasePathMapping(params, function (error) {
+                expect(getStageStub.called).to.be.true;
+                expect(createDeploymentStub.called).to.be.false;
+                expect(createBasePathMappingStub.called).to.be.true;
                 expect(error).to.be.an.Error;
+                done();
+            });
+        });
+        it('should return an error when get stage fails', function (done) {
+            getStageStub.yields({});
+            testSubject.createBasePathMapping(params, function (error) {
+                expect(error).to.be.an.Error;
+                expect(getStageStub.called).to.be.true;
+                expect(createDeploymentStub.called).to.be.false;
+                expect(createBasePathMappingStub.called).to.be.false;
+                done();
+            });
+        });
+        it('should return success after creating a deployment', function (done) {
+            getStageStub.yields();
+            testSubject.createBasePathMapping(params, function (error) {
+                expect(error).to.be.an.Error;
+                expect(getStageStub.called).to.be.true;
+                expect(createDeploymentStub.called).to.be.true;
+                expect(createBasePathMappingStub.called).to.be.true;
+                done();
+            });
+        });
+        it('should return an error when create deployment fails', function (done) {
+            getStageStub.yields({ code: 'NotFoundException' });
+            createDeploymentStub.yields({});
+            testSubject.createBasePathMapping(params, function (error) {
+                expect(error).to.be.an.Error;
+                expect(getStageStub.called).to.be.true;
+                expect(createDeploymentStub.called).to.be.true;
+                expect(createBasePathMappingStub.called).to.be.false;
+                done();
+            });
+        });
+        it('should return an error when create deployment fails but get stage yeilds no error', function (done) {
+            getStageStub.yields();
+            createDeploymentStub.yields({});
+            testSubject.createBasePathMapping(params, function (error) {
+                expect(error).to.be.an.Error;
+                expect(getStageStub.called).to.be.true;
+                expect(createDeploymentStub.called).to.be.true;
+                expect(createBasePathMappingStub.called).to.be.false;
                 done();
             });
         });

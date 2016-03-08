@@ -104,7 +104,7 @@ describe('ApiBasePathMappingCommand', function () {
 
     describe('deleteResource', function () {
         it('should delete resource', function (done) {
-            testSubject.deleteResource({}, {}, { params: {} }, function (error) {
+            testSubject.deleteResource({ PhysicalResourceId: 'www.example.com/test' }, {}, { params: {} }, function (error) {
                 expect(error).to.be.undefined;
                 expect(deleteBasePathMappingStub.called).to.be.true;
                 done();
@@ -112,9 +112,16 @@ describe('ApiBasePathMappingCommand', function () {
         });
         it('should fail delete resource', function (done) {
             deleteBasePathMappingStub.yields('deleteError');
-            testSubject.deleteResource({}, {}, { params: {} }, function (error, resource) {
+            testSubject.deleteResource({ PhysicalResourceId: 'www.example.com/' }, {}, { params: {} }, function (error, resource) {
                 expect(error).to.equal('deleteError');
                 expect(resource).to.be.undefined;
+                expect(deleteBasePathMappingStub.called).to.be.true;
+                done();
+            });
+        });
+        it('should delete resource with default provided values', function (done) {
+            testSubject.deleteResource({ PhysicalResourceId: 'invalid' }, {}, { params: {} }, function (error, resource) {
+                expect(error).to.be.undefined;
                 expect(deleteBasePathMappingStub.called).to.be.true;
                 done();
             });

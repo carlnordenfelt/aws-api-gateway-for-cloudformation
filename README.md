@@ -691,6 +691,10 @@ http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createDom
 Creates a new Api Gateway Base Path Mapping
 http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createBasePathMapping-property
 
+**Note:** When you create an ApiBasePathMapping your API will be automatically deployed to the stage you've provided.
+If the stage does not exist it will be created for you. However, if you delete the ApiBasePathMapping the stage will 
+not be deleted and your API will remain deployed at the given stage.
+
 ###Parameters
 **domainName:**
 The domain name of the BasePathMapping resource to create.
@@ -710,6 +714,8 @@ Reference to the REST API in which you want to create this API Base Path Mapping
 The base path name that callers of the API must provide as part of the URL after the domain name. 
 This value must be unique for all of the mappings across a single API. 
 Exclude this if you do not want callers to specify a base path name after the domain name.
+*Note:* The basePath replaces the stage name the ApiBasePathMapping is connected to.
+*Note:* If you exclude this parameter, or leave it empty, you can only create one base path mapping for the given Rest API.
 
 * Required: no
 * Type: String
@@ -717,9 +723,8 @@ Exclude this if you do not want callers to specify a base path name after the do
 
 **stage:**
 The name of the API stage that you want to use for this mapping. 
-Exclude this if you do not want callers to explicitly specify the stage name after any base path name.
 
-* Required: no
+* Required: *yes*
 * Type: String
 * Update: No interruption
 

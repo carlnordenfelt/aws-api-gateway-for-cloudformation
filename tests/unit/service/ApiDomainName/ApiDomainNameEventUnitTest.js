@@ -85,6 +85,17 @@ describe('ApiDomainNameEvent', function () {
             expect(parameters.message).to.contain('{domainName}');
             done();
         });
+        it('should not validate parameters id RequestType is Delete', function (done) {
+            var event = {
+                RequestType: 'Delete',
+                ResourceProperties: {
+                    domainName: 'DomainName'
+                }
+            };
+            var parameters = testSubject.getParameters(event);
+            expect(parameters.params.domainName).to.equal('DomainName');
+            done();
+        });
     });
 
     describe('getPatchOperations', function () {
