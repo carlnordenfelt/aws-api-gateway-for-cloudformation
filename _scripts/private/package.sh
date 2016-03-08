@@ -1,7 +1,7 @@
 #!/bin/sh
 
-#npm run clean
-#npm run test
+npm run clean
+npm run test
 if [ $? != 0 ]; then
     exit 1;
 fi;
@@ -22,13 +22,13 @@ fi
 
 if [ "${npmVersion}" != "" ]; then
     version=$(npm version ${npmVersion})
-    version=$(echo ${version:1})
+    #version=$(echo ${version:1})
 else
     version=$1
 fi
 
 echo "Packaging version: ${version}"
-exit;
+
 echo "Packaging source code"
 zip -r package.zip lib/* lib/*/** node_modules/*/** package.json > /dev/null 2>&1
 aws s3 cp package.zip s3://apigatewaycloudformation/builds/${version}.zip

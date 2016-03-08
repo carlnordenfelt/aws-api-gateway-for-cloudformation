@@ -183,8 +183,9 @@ describe('ApiBasePathMappingService', function () {
     });
 
     describe('patchBasePathMapping', function () {
-        it('should patch nothing', function (done) {
-            var event = {
+        var event;
+        beforeEach(function () {
+            event = {
                 params: {
                     domainName: 'DomainName',
                     restApiId: 'RestApiId',
@@ -198,9 +199,55 @@ describe('ApiBasePathMappingService', function () {
                     stage: 'Stage2'
                 }
             };
+        });
+        it('should patch everything', function (done) {
+            getStageStub.yields();
+            testSubject.patchBasePathMapping('BasePath', 'DomainName', event, function (error) {
+                expect(error).to.be.undefined;
+                expect(updateBasePathMappingStub.called).to.be.true;
+                expect(createDeploymentStub.called).to.be.true;
+                expect(getStageStub.called).to.be.true;
+                done();
+            });
+        });
+        it('should patch nothing', function (done) {
+            event.old = event.params;
             testSubject.patchBasePathMapping('BasePath', 'DomainName', event, function (error) {
                 expect(error).to.be.undefined;
                 expect(updateBasePathMappingStub.called).to.be.false;
+                expect(createDeploymentStub.called).to.be.false;
+                expect(getStageStub.called).to.be.false;
+                done();
+            });
+        });
+        it('should patch without creating stage', function (done) {
+            event.old.stage = 'Stage';
+            testSubject.patchBasePathMapping('BasePath', 'DomainName', event, function (error) {
+                expect(error).to.be.undefined;
+                expect(updateBasePathMappingStub.called).to.be.true;
+                expect(createDeploymentStub.called).to.be.false;
+                expect(getStageStub.called).to.be.false;
+                done();
+            });
+        });
+        it('should return error if patch fails', function (done) {
+            event.old.stage = 'Stage';
+            updateBasePathMappingStub.yields({ code: 'NotFoundException' });
+            testSubject.patchBasePathMapping('BasePath', 'DomainName', event, function (error) {
+                expect(error.code).to.equal('NotFoundException');
+                expect(updateBasePathMappingStub.called).to.be.true;
+                expect(createDeploymentStub.called).to.be.false;
+                expect(getStageStub.called).to.be.false;
+                done();
+            });
+        });
+        it('should return error if get stage fails', function (done) {
+            getStageStub.yields('CreateDeploymentError');
+            testSubject.patchBasePathMapping('BasePath', 'DomainName', event, function (error) {
+                expect(error).to.equal('CreateDeploymentError');
+                expect(updateBasePathMappingStub.called).to.be.false;
+                expect(createDeploymentStub.called).to.be.false;
+                expect(getStageStub.called).to.be.true;
                 done();
             });
         });
