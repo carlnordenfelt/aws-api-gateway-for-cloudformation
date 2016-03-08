@@ -21,7 +21,8 @@ elif [ "$1" = "patch" ] || [ "$1" = "minor" ] || [ "$1" = "major" ]; then
 fi
 
 if [ "${npmVersion}" != "" ]; then
-    version=echo $(npm version ${npmVersion}):1
+    version=$(npm version ${npmVersion})
+    version = $(echo ${version:1})
 else
     version=$1
 fi
