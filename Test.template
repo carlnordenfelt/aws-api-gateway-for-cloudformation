@@ -5,6 +5,52 @@
         "ServiceToken": {
             "Type": "String",
             "Description": "CustomResource Lambda ARN"
+        },
+        "ApiDns": {
+            "Type": "String",
+            "Description": "Domain name where the API will be available at. e.g api.example.com. Omit if you do not want to create a custom domain name.",
+            "Default": ""
+        },
+        "DnsHostedZoneId": {
+            "Type": "String",
+            "Description": "HostedZoneId where your custom domain name alias will be created. Required only if you want to create a custom domain name.",
+            "Default": ""
+        },
+        "CertificateBody": {
+            "Type": "String",
+            "Description": "Certificate body. Required only if you want to create a custom domain name.",
+            "Default": ""
+        },
+        "CertificateChain": {
+            "Type": "String",
+            "Description": "Certificate body. Required only if you want to create a custom domain name.",
+            "Default": ""
+        },
+        "CertificatePrivateKey": {
+            "Type": "String",
+            "Description": "Certificate body. Required only if you want to create a custom domain name.",
+            "NoEcho": true,
+            "Default": ""
+        },
+        "BasePath": {
+            "Type": "String",
+            "Description": "Base path of the API, to be appended after the custom domain name. Required only if you want to create a custom domain name. Can be empty.",
+            "Default": ""
+
+        },
+        "StageName": {
+            "Type": "String",
+            "Description": "Name of the stage (existing or not) that you want the API to be deployed in. Required only if you want to create a custom domain name."
+        }
+    },
+    "Conditions": {
+        "CreateDomain": { "Fn::Not": [{ "Fn::Equals": [{ "Ref": "ApiDns" }, ""] }] }
+    },
+    "Mappings": {
+        "CloudFront": {
+            "HostedZone": {
+                "Id": "Z2FDTNDATAQYW2"
+            }
         }
     },
     "Resources": {
@@ -16,18 +62,6 @@
                 "description": "This is a test API with a new description"
             }
         },
-        "TestAuthorizer": {
-            "Type": "Custom::ApiAuthorizer",
-            "Properties": {
-                "ServiceToken": { "Ref": "ServiceToken" },
-                "restApiId": { "Fn::GetAtt": ["TestRestApi", "id"] },
-                "authorizerUri": "{AUTHORIZER_LAMBDA_INVOCATION_ARN}",
-                "identitySource": "method.request.header.x-auth-token",
-                "name": "TestAuthorizer",
-                "authorizerResultTtlInSeconds": 30,
-                "authorizerCredentials": "{API_GATEWAY_INVOKE_LAMBDA_IAM_ROLE_ARN}"
-            }
-        },
         "TestApiResource" : {
             "Type" : "Custom::ApiResource",
             "Properties" : {
@@ -35,24 +69,6 @@
                 "restApiId": { "Fn::GetAtt": ["TestRestApi", "id"] },
                 "parentId": { "Fn::GetAtt": ["TestRestApi", "parentResourceId"] },
                 "pathPart": "test-resource",
-                "corsConfiguration": {
-                    "allowMethods": ["GET", "POST"],
-                    "allowHeaders": ["x-my-header", "some-other-header"],
-                    "allowDefaultHeaders": true,
-                    "allowOrigin": "www.example.com",
-                    "exposeHeaders": ["some-header", "x-another-header"],
-                    "maxAge": 1800,
-                    "allowCredentials": true
-                }
-            }
-        },
-        "TestApiResource2" : {
-            "Type" : "Custom::ApiResource",
-            "Properties" : {
-                "ServiceToken": { "Ref": "ServiceToken" },
-                "restApiId": { "Fn::GetAtt": ["TestRestApi", "id"] },
-                "parentId": { "Fn::GetAtt": ["TestRestApi", "parentResourceId"] },
-                "pathPart": "test-resource2",
                 "corsConfiguration": {
                     "allowMethods": ["GET", "POST"],
                     "allowHeaders": ["x-my-header", "some-other-header"],
@@ -110,10 +126,8 @@
             "Properties" : {
                 "ServiceToken": { "Ref": "ServiceToken" },
                 "restApiId": { "Fn::GetAtt": ["TestRestApi", "id"] },
-                "resourceId": { "Fn::GetAtt": ["TestApiResource2", "id"] },
+                "resourceId": { "Fn::GetAtt": ["TestApiResource", "id"] },
                 "method": {
-                    "authorizationType": "CUSTOM",
-                    "authorizerId": { "Fn::GetAtt": ["TestAuthorizer", "id"] },
                     "httpMethod": "GET",
                     "apiKeyRequired": "true",
                     "requestModels": {
@@ -145,6 +159,43 @@
                         "statusCode": "404"
                     }
                 }
+            }
+        },
+        "TestDomainName": {
+            "Type": "Custom::ApiDomainName",
+            "Condition": "CreateDomain",
+            "Properties": {
+                "ServiceToken": { "Ref": "ServiceToken" },
+                "domainName": { "Ref": "ApiDns" },
+                "certificateName": "testCertificate",
+                "certificateBody": { "Ref": "CertificateBody" },
+                "certificateChain": { "Ref": "CertificateChain" },
+                "certificatePrivateKey": { "Ref": "CertificatePrivateKey" }
+            }
+        },
+        "TestBasePathMapping": {
+            "Type": "Custom::ApiBasePathMapping",
+            "Condition": "CreateDomain",
+            "Properties": {
+                "ServiceToken": { "Ref": "ServiceToken" },
+                "restApiId": { "Ref": "TestRestApi" },
+                "domainName": { "Fn::GetAtt": ["TestDomainName", "domainName"] },
+                "basePath": { "Ref": "BasePath"},
+                "stage": { "Ref": "StageName" }
+            },
+            "DependsOn": ["TestApiMethod"]
+        },
+        "TestDnsRecord": {
+            "Type": "AWS::Route53::RecordSet",
+            "Condition": "CreateDomain",
+            "Properties": {
+                "AliasTarget": {
+                    "DNSName": { "Fn::GetAtt": ["TestDomainName", "distributionDomainName"] },
+                    "HostedZoneId": { "Fn::FindInMap": ["CloudFront", "HostedZone", "Id"] }
+                },
+                "HostedZoneId": { "Ref": "DnsHostedZoneId" },
+                "Name": { "Fn::GetAtt": ["TestDomainName", "domainName"] },
+                "Type": "A"
             }
         }
     },

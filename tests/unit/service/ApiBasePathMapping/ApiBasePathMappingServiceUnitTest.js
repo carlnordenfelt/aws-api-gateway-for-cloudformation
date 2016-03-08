@@ -174,7 +174,8 @@ describe('ApiBasePathMappingService', function () {
             });
         });
         it('should not return an error when resource is not found', function (done) {
-            deleteBasePathMappngStub.yields({ code : 'NotFoundException' });
+            // Test poor error message from AWS
+            deleteBasePathMappngStub.yields({ message : 'Unexpected token <' });
             testSubject.deleteBasePathMapping(params, function (error) {
                 expect(error).to.be.undefined;
                 done();

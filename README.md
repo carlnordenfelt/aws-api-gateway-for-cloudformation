@@ -621,6 +621,9 @@ http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createMod
 Creates a new Api Gateway Domain Name
 http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createDomainName-property
 
+Once the domain name has been created you have to create a Route53 alias record that points to 
+{ "Fn::GetAtt": ["TestApiDomainName", "distributionDomainName"] }
+
 ###Parameters
 **domainName:**
 The name of the DomainName resource.
@@ -695,6 +698,8 @@ http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createBas
 If the stage does not exist it will be created for you. However, if you delete the ApiBasePathMapping the stage will 
 not be deleted and your API will remain deployed at the given stage.
 
+**Note:** Since creating a BasePathMapping will automatically deploy your API you have to ensure that it DependsOn all methods created in the API.
+
 ###Parameters
 **domainName:**
 The domain name of the BasePathMapping resource to create.
@@ -708,18 +713,19 @@ Reference to the REST API in which you want to create this API Base Path Mapping
 
 * Required: *yes*
 * Type: String
-* Update: Not supported
+* Update: No interruption
 
 **basePath:**
 The base path name that callers of the API must provide as part of the URL after the domain name. 
 This value must be unique for all of the mappings across a single API. 
 Exclude this if you do not want callers to specify a base path name after the domain name.
-*Note:* The basePath replaces the stage name the ApiBasePathMapping is connected to.
-*Note:* If you exclude this parameter, or leave it empty, you can only create one base path mapping for the given Rest API.
 
-* Required: no
+* *Note:* The basePath replaces the stage name the ApiBasePathMapping is connected to, even if you leave it empty.
+* *Note:* If you exclude this parameter, or leave it empty, you can only create one base path mapping for the given Rest API.
+
+* Required: no, default is empty string
 * Type: String
-* Update: Not supported
+* Update: No interruption
 
 **stage:**
 The name of the API stage that you want to use for this mapping. 

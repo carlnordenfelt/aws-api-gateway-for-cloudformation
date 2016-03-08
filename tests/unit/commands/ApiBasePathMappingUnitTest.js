@@ -119,10 +119,10 @@ describe('ApiBasePathMappingCommand', function () {
                 done();
             });
         });
-        it('should delete resource with default provided values', function (done) {
+        it('should not delete resource if physicalResourceId is invalid', function (done) {
             testSubject.deleteResource({ PhysicalResourceId: 'invalid' }, {}, { params: {} }, function (error, resource) {
                 expect(error).to.be.undefined;
-                expect(deleteBasePathMappingStub.called).to.be.true;
+                expect(deleteBasePathMappingStub.called).to.be.false;
                 done();
             });
         });
