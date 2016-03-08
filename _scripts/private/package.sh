@@ -22,7 +22,7 @@ fi
 
 if [ "${npmVersion}" != "" ]; then
     version=$(npm version ${npmVersion})
-    version = $(echo ${version:1})
+    version=$(echo ${version:1})
 else
     version=$1
 fi
