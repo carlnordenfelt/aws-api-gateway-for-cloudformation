@@ -78,15 +78,22 @@ describe('ApiBasePathMappingEvent', function () {
         it('should give only valid patch operations', function (done) {
             var event = {
                 params: {
-                    domainName: 'newDomainName'
+                    domainName: 'DomainName',
+                    restApiId: 'RestApiId',
+                    basePath: 'BasePath',
+                    stage: 'Stage'
                 },
                 old: {
-                    domainName: 'oldDomainName'
+
+                    domainName: 'DomainName2',
+                    restApiId: 'RestApiId2',
+                    basePath: 'BasePath2',
+                    stage: 'Stage2'
                 }
             };
             var patchOperations = testSubject.getPatchOperations(event);
             expect(patchOperations).to.be.an.Array;
-            expect(patchOperations.length).to.equal(0);
+            expect(patchOperations.length).to.equal(3);
             done();
         });
     });
