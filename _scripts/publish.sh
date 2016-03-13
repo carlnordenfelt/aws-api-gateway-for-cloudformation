@@ -18,28 +18,24 @@ sourceFileName="source.zip"
 # All other values will be used as is.
 function parseVersion() {
     npmVersionCommand=""
-    if [ "$1" == "" ]; then
+    if [ "${1}" == "" ]; then
         npmVersionCommand="patch"
-    elif [ "$1" == "patch" ] || [ "$1" == "minor" ] || [ "$1" == "major" ]; then
-        npmVersionCommand=$1
+    elif [ "${1}" == "patch" ] || [ "${1}" == "minor" ] || [ "${1}" == "major" ]; then
+        npmVersionCommand=${1}
     fi
 
     if [ "${npmVersionCommand}" != "" ]; then
         version=$(npm version ${npmVersionCommand})
-        version=echo ${version:1}
+        version=${version:1}
         if [ $? -ne 0 ]; then
             exit 1;
         fi
     else
-        version=$1
+        version=${1}
     fi
 
     echo ${version}
 }
-
-version=$(parseVersion ${version})
-echo ${version}
-exit 1;
 
 # Packages the source code to a zip file (source.zip)
 function package() {
@@ -104,7 +100,6 @@ while getopts ":a:v:" opt; do
     ;;
   esac
 done
-
 
 package
 
