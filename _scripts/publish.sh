@@ -1,5 +1,6 @@
 #!/bin/sh
 
+
 # Regions where AWS Lambda is available
 regions=( eu-west-1 us-west-1 us-east-1 ap-northeast-1 )
 # Local path to the CFN template file
@@ -25,6 +26,7 @@ function parseVersion() {
 
     if [ "${npmVersionCommand}" != "" ]; then
         version=$(npm version ${npmVersionCommand})
+        version=echo ${version:1}
         if [ $? -ne 0 ]; then
             exit 1;
         fi
@@ -34,6 +36,10 @@ function parseVersion() {
 
     echo ${version}
 }
+
+version=$(parseVersion ${version})
+echo ${version}
+exit 1;
 
 # Packages the source code to a zip file (source.zip)
 function package() {
