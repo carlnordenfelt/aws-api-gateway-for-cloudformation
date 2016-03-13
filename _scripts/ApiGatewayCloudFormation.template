@@ -1,14 +1,26 @@
 {
     "AWSTemplateFormatVersion": "2010-09-09",
-    "Description": "Creates Lambda function API Gateway CustomResource CloudFormation handler",
+    "Description": "Creates Lambda function API Gateway CustomResource CloudFormation handler. Version {VERSION}",
+    "Parameters": {
+        "MemoryAllocation": {
+            "Type": "Number",
+            "Default": 256,
+            "Description": "Lambda memory allocation"
+        },
+        "ExecutionTimeout": {
+            "Type": "Number",
+            "Default": 10,
+            "Description": "Lambda execution timeout"
+        }
+    },
     "Resources": {
         "LambdaBasePolicy": {
             "Type": "AWS::IAM::ManagedPolicy",
             "Properties": {
-                "Description" : "managed Policy for API Gateway Lambda function",
-                "Path" : "/infrastructure/base/lambda/",
+                "Description": "Managed Policy for API Gateway Lambda function",
+                "Path": "/infrastructure/base/lambda/",
                 "PolicyDocument": {
-                    "Version" : "2012-10-17",
+                    "Version": "2012-10-17",
                     "Statement": [
                         {
                             "Effect": "Allow",
@@ -59,20 +71,24 @@
             "Type": "AWS::Lambda::Function",
             "Properties": {
                 "Code": {
-                    "ZipFile": "exports.handler = function(event, context) { context.fail('Not Implemented'); };"
+                    "S3Bucket": { "Fn::Join": [".", ["apigatewaycloudformation", { "Ref": "AWS::Region" }]] },
+                    "S3Key": "{VERSION}/source.zip"
                 },
-                "Description": "Api Gateway CloudFormation.",
+                "Description": "API Gateway CloudFormation.",
                 "Handler": "lib/index.handler",
-                "MemorySize": 256,
+                "MemorySize": { "Ref": "MemoryAllocation" },
                 "Role": { "Fn::GetAtt": ["LambdaFunctionRole", "Arn"] },
                 "Runtime": "nodejs",
-                "Timeout": 10
+                "Timeout": { "Ref": "ExecutionTimeout" }
             }
         }
     },
     "Outputs": {
         "LambdaFunction": {
             "Value": { "Fn::GetAtt": ["LambdaFunction", "Arn"] }
+        },
+        "SourceVersion": {
+            "Value": "{VERSION}"
         }
     }
 }
