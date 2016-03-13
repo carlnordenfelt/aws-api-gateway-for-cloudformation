@@ -773,10 +773,10 @@ http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createAut
 * API BasePathMappings and Custom Domain Names
 
 **Regional Templates** 
-* <a href="https://s3.amazonaws.com/apigatewaycloudformation.eu-west-1/1.2.0/ApiGatewayCloudFormation.template">eu-west-1 template</a>
-* <a href="https://s3.amazonaws.com/apigatewaycloudformation.us-west-1/1.2.0/ApiGatewayCloudFormation.template">us-west-1 template</a>
-* <a href="https://s3.amazonaws.com/apigatewaycloudformation.us-east-1/1.2.0/ApiGatewayCloudFormation.template">us-east-1 template</a>
-* <a href="https://s3.amazonaws.com/apigatewaycloudformation.ap-northeast-1/1.2.0/ApiGatewayCloudFormation.template">ap-northeast-1 template</a>
+* <a href="https://s3.amazonaws.com/apigatewaycloudformation.eu-west-1/1.2.0/ApiGatewayCloudFormation.template">eu-west-1</a>
+* <a href="https://s3.amazonaws.com/apigatewaycloudformation.us-west-1/1.2.0/ApiGatewayCloudFormation.template">us-west-1</a>
+* <a href="https://s3.amazonaws.com/apigatewaycloudformation.us-east-1/1.2.0/ApiGatewayCloudFormation.template">us-east-1</a>
+* <a href="https://s3.amazonaws.com/apigatewaycloudformation.ap-northeast-1/1.2.0/ApiGatewayCloudFormation.template">ap-northeast-1</a>
 
 ## <a href="https://s3-eu-west-1.amazonaws.com/apigatewaycloudformation/builds/v1.1.6.zip">1.1.6</a> (2016-02-26)
 * Added error logging to deploy script.
