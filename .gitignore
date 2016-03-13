@@ -7,3 +7,4 @@ node_modules/**/*
 customResources.zip
 tmp/**/*
 lambda-arn
+Test2.template
