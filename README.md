@@ -765,12 +765,11 @@ http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createAut
 * Improved error logging when AWS calls fails
 * API BasePathMappings and Custom Domain Names
 
+**Regional Templates** 
 *  
 * 
 *
 *
-
-
 
 ## <a href="https://s3-eu-west-1.amazonaws.com/apigatewaycloudformation/builds/v1.1.4.zip">1.1.6</a> (2016-02-26)
 * Added error logging to deploy script.
