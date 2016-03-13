@@ -72,7 +72,7 @@ function publish() {
 
         aws s3 cp ${sourceFileName} s3://${bucketName}/${version}/${sourceFileName} --region ${region} > /dev/null 2>&1
         aws s3 cp ${templatePath}/${templateName} s3://${bucketName}/${version}/${templateName} --region ${region} > /dev/null 2>&1
-        echo "https://s3.amazonaws.com/${bucketName}/${version}/${templateName}"
+        echo "* <a href=\"https://s3.amazonaws.com/${bucketName}/${version}/${templateName}\">${region} template</a>"
     done
 
     rm -f ${sourceFileName}

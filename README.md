@@ -12,7 +12,7 @@ The project is inspired by [AWS Labs API Gateway Swagger Importer](https://githu
 
 ##Contents
 1. <a href="#a-note-on-terminology-before-we-begin">A note on terminology before we begin</a>
-1. <a href="#installation">Installation</a>
+1. <a href="#setup">Setup</a>
 1. <a href="#usage">Usage</a>
     1. <a href="#overview">Overview</a>
     1. <a href="#create-an-api">Create an API</a>
@@ -33,13 +33,13 @@ It is very important to distinguish between the two:
 * A *resource* is a CloudFormation term and can refer to any AWS resource.
 * An *API Resource* is a specific type of AWS resource (Custom::ApiResource) which is called "Resource" in API Gateway.
 
-##Installation
+##Setup
 ###Prerequisites
 * You need an [Amazon AWS Account](http://aws.amazon.com).
 * You need an IAM user with access/secret key, see required permissions below.
 * You have to install & configure the [AWS-CLI](http://docs.aws.amazon.com/cli/latest/userguide)
 
-###Setup IAM permissions
+####Setup IAM permissions
 To be able to install the Custom Resource library you require a set of permissions.
 Configure your IAM user with the following policy and make sure that you have configured your aws-cli with access and secret key. 
 
@@ -76,72 +76,20 @@ Configure your IAM user with the following policy and make sure that you have co
         ]
     }
 
-###Download the installation package
+###Install
 
-<a href="http://apigatewaycloudformation.s3-website-eu-west-1.amazonaws.com/install/latest">Download the installation package</a>, unzip it and follow the OS specific instructions below.
+1. Pick which version you want from the <a href="#change-log">Change log</a>. The latest is usually the one you want.
+1. Copy the template link that corresponds to the region you want to deploy your Lambda in.
+1. Open our AWS CloudFormation Console and choose "Create stack".
+1. Select "Specify an Amazon S3 template URL" and paste the template link.
+1. Select the Lambda allocation and execution timeout. The default should suffice.
+1. Approve the IAM resource creation and create the stack.
 
-####Unix
-Install the infrastructure:
+###Update
+Follow the steps above but instead of creating a new stack you update your existing stack.
 
-    unix/install.sh
-
-Installation takes a couple of minutes and when it completes it will output the Custom Resource Lambda function ARN.
-Save this value, it is the value of the ServiceToken parameter that each Custom Resource requires in your CloudFormation templates. 
-
-Once installation is done, run the following command to deploy the code:
-
-    unix/deploy.sh
-
-#####Options
-
-**-n NAME**<br/>
-Sets a custom name for your installation (the default is ApiGatewayCloudFormation). 
-Note that the custom name has to be provided to all scripts.
-
-**-v VERSION**<br/>
-If you don't want to deploy the latest version you can supply another version name by passing it as an argument with -v.
-Available versions follow this naming convention: v{versionNumber}.zip
--v is only supported by the deploy script.
-
-For a list of available versions, please see the <a href="#change-log">Change Log</a>.
-
-#####Uninstall
-If you want to uninstall the setup you simply run:
-
-    unix/uninstall.sh
-
-If you provided a custom name during installation you have to provide the same name during un-installation with the -n argument
-
-**Note:** If you reinstall the setup you have to update the ServiceToken in your CloudFormation templates. 
-
-####Windows
-
-Install the infrastructure:
-
-    windows\install.ps1
-
-Installation takes a couple of minutes and when it completes it will output the Custom Resource Lambda function ARN.
-Save this value, it is the value of the ServiceToken parameter that each Custom Resource requires in your CloudFormation templates. 
-
-Once installation is done, run the following command to deploy the code:
-
-    windows\deploy.ps1
-
-#####Options
-
-**-name NAME**<br/>
-Sets a custom name for your installation (the default is ApiGatewayCloudFormation). 
-Note that the custom name has to be provided to all scripts.
-
-**-version VERSION**<br/>
-If you don't want to deploy the latest version you can supply another version name by passing it as an argument with -version.
-Available versions follow this naming convention: v{versionNumber}.zip
--version is only supported by the deploy script.
-
-For a list of available versions, please see the <a href="#change-log">Change Log</a>.
-
-#####Uninstall
-If you want to uninstall the setup you simply run:
+###Uninstall
+Simple delete the stack from your AWS CloudFormation Console.
 
     windows\uninstall.ps1
 
@@ -811,6 +759,18 @@ http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createAut
     }
 
 #Change Log
+
+## 1.2.0 (2016-03-13)
+* New deploy procedure via CFN insteadof bash/powershell
+* Improved error logging when AWS calls fails
+* API BasePathMappings and Custom Domain Names
+
+*  
+* 
+*
+*
+
+
 
 ## <a href="https://s3-eu-west-1.amazonaws.com/apigatewaycloudformation/builds/v1.1.4.zip">1.1.6</a> (2016-02-26)
 * Added error logging to deploy script.
