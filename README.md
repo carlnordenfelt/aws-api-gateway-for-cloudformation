@@ -618,10 +618,11 @@ http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createMod
 
 ##Create a Domain Name
 
-**This resource is experimental**
-
 Creates a new Api Gateway Domain Name
 http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createDomainName-property
+
+Once the domain name has been created you have to create a Route53 alias record that points to 
+{ "Fn::GetAtt": ["TestApiDomainName", "distributionDomainName"] }
 
 ###Parameters
 **domainName:**
@@ -640,6 +641,9 @@ The name of the certificate.
 
 **certificateBody:**
 The body of the server certificate provided by your certificate authority.
+You can provide it in two different of formats:
+* As a single line where " " (space) denotes a new line (header/footer are excepted). E.g: -----BEGIN CERT-----line1 line2 ... -----END CERT-----
+* As a single line where "\n" denotes a new line. E.g: -----BEGIN CERT-----line1\nline2\n...\n-----END CERT-----
 
 * Required: *yes*
 * Type: String
@@ -647,12 +651,19 @@ The body of the server certificate provided by your certificate authority.
 
 **certificatePrivateKey:**
 Your certificate's private key.
+* As a single line where " " (space) denotes a new line (header/footer are excepted). E.g: -----BEGIN RSA PRIVATE KEY-----line1 line2 ... -----END RSA PRIVATE KEY-----
+* As a single line where "\n" denotes a new line. E.g: -----BEGIN RSA PRIVATE KEY-----line1\nline2\n...\n-----END RSA PRIVATE KEY-----
 
 * Required: *yes*
 * Type: String
 * Update: Not supported
 
 **certificateChain:**
+The certificate chain provided by your certificate authority.
+You can provide it in two different of formats:
+* As a single line where " " (space) denotes a new line (header/footer are excepted). E.g: -----BEGIN CERTIFICATE-----line1 line2 ... -----END CERTIFICATE-----
+* As a single line where "\n" denotes a new line. E.g: -----BEGIN CERTIFICATE-----line1\nline2\n...\n-----END CERTIFICATE-----
+
 The intermediate certificates and optionally the root certificate, one after the other without any blank lines. 
 If you include the root certificate, your certificate chain must start with intermediate certificates and end with 
 the root certificate. Use the intermediate certificates that were provided by your certificate authority. 
@@ -672,18 +683,22 @@ http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createDom
             "ServiceToken": "{Lambda_Function_ARN}",
             "domainName": "example.com",
             "certificateName": "testCertificate",
-            "certificateBody": "...",
-            "certificatePrivateKey": "...",
-            "certificateChain": "..."
+            "certificateBody": "-----BEGIN CERTIFICATE-----line1 line2 ... -----END CERTIFICATE-----",
+            "certificateChain": "-----BEGIN CERTIFICATE-----line1 line2 ... -----END CERTIFICATE-----",
+            "certificatePrivateKey": "-----BEGIN RSA PRIVATE KEY-----line1 line2 ... -----END RSA PRIVATE KEY-----"
         }
     }
 
 ##Create a Base Path Mapping
 
-**This resource is experimental**
-
 Creates a new Api Gateway Base Path Mapping
 http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createBasePathMapping-property
+
+**Note:** When you create an ApiBasePathMapping your API will be automatically deployed to the stage you've provided.
+If the stage does not exist it will be created for you. However, if you delete the ApiBasePathMapping the stage will 
+not be deleted and your API will remain deployed at the given stage.
+
+**Note:** Since creating a BasePathMapping will automatically deploy your API you have to ensure that it DependsOn all methods created in the API.
 
 ###Parameters
 **domainName:**
@@ -698,22 +713,24 @@ Reference to the REST API in which you want to create this API Base Path Mapping
 
 * Required: *yes*
 * Type: String
-* Update: Not supported
+* Update: No interruption
 
 **basePath:**
 The base path name that callers of the API must provide as part of the URL after the domain name. 
 This value must be unique for all of the mappings across a single API. 
 Exclude this if you do not want callers to specify a base path name after the domain name.
 
-* Required: no
+* *Note:* The basePath replaces the stage name the ApiBasePathMapping is connected to, even if you leave it empty.
+* *Note:* If you exclude this parameter, or leave it empty, you can only create one base path mapping for the given Rest API.
+
+* Required: no, default is empty string
 * Type: String
-* Update: Not supported
+* Update: No interruption
 
 **stage:**
 The name of the API stage that you want to use for this mapping. 
-Exclude this if you do not want callers to explicitly specify the stage name after any base path name.
 
-* Required: no
+* Required: *yes*
 * Type: String
 * Update: No interruption
 
@@ -733,6 +750,8 @@ http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createBas
     }
 
 ##Create an Authorizer
+
+**This resource is experimental**
 
 Creates a new Api Gateway Authorizer
 http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createAuthorizer-property
@@ -812,7 +831,7 @@ http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createAut
 
 #Change Log
 
-## <a href="https://s3-eu-west-1.amazonaws.com/apigatewaycloudformation/builds/v1.1.4.zip">1.1.6</a> (2016-02-26)
+## <a href="https://s3-eu-west-1.amazonaws.com/apigatewaycloudformation/builds/v1.1.6.zip">1.1.6</a> (2016-02-26)
 * Added error logging to deploy script.
 
 ## <a href="https://s3-eu-west-1.amazonaws.com/apigatewaycloudformation/builds/v1.1.4.zip">1.1.4</a> (2016-02-21)
@@ -851,8 +870,6 @@ This update is not backward compatible.
 #TODO
 
 * Enable deployment management
-* Test installation on linux & windows
-* Create packages for installation so repo no longer has to be cloned to install.
 
 #Contribute
 I gladly accepts PRs, issues and comments. Anything that will help improve stability, reduce complexity or add more 

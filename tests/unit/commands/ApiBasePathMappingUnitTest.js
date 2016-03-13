@@ -104,7 +104,7 @@ describe('ApiBasePathMappingCommand', function () {
 
     describe('deleteResource', function () {
         it('should delete resource', function (done) {
-            testSubject.deleteResource({}, {}, { params: {} }, function (error) {
+            testSubject.deleteResource({ PhysicalResourceId: 'www.example.com/test' }, {}, { params: {} }, function (error) {
                 expect(error).to.be.undefined;
                 expect(deleteBasePathMappingStub.called).to.be.true;
                 done();
@@ -112,10 +112,17 @@ describe('ApiBasePathMappingCommand', function () {
         });
         it('should fail delete resource', function (done) {
             deleteBasePathMappingStub.yields('deleteError');
-            testSubject.deleteResource({}, {}, { params: {} }, function (error, resource) {
+            testSubject.deleteResource({ PhysicalResourceId: 'www.example.com/' }, {}, { params: {} }, function (error, resource) {
                 expect(error).to.equal('deleteError');
                 expect(resource).to.be.undefined;
                 expect(deleteBasePathMappingStub.called).to.be.true;
+                done();
+            });
+        });
+        it('should not delete resource if physicalResourceId is invalid', function (done) {
+            testSubject.deleteResource({ PhysicalResourceId: 'invalid' }, {}, { params: {} }, function (error, resource) {
+                expect(error).to.be.undefined;
+                expect(deleteBasePathMappingStub.called).to.be.false;
                 done();
             });
         });
@@ -123,7 +130,7 @@ describe('ApiBasePathMappingCommand', function () {
 
     describe('updateResource', function () {
         it('should update resource', function (done) {
-            testSubject.updateResource({}, {}, { params: {} }, function (error, resource) {
+            testSubject.updateResource({ PhysicalResourceId: 'www.example.com/' }, {}, { params: {} }, function (error, resource) {
                 expect(error).to.be.undefined;
                 expect(resource).to.be.an('object');
                 expect(patchBasePathMappingStub.called).to.be.true;
@@ -133,7 +140,7 @@ describe('ApiBasePathMappingCommand', function () {
         });
         it('should update resource', function (done) {
             patchBasePathMappingStub.yields('updateError');
-            testSubject.updateResource({}, {}, { params: {} }, function (error, resource) {
+            testSubject.updateResource({ PhysicalResourceId: 'www.example.com/' }, {}, { params: {} }, function (error, resource) {
                 expect(error).to.equal('updateError');
                 expect(resource).to.be.undefined;
                 expect(patchBasePathMappingStub.called).to.be.true;
@@ -143,7 +150,7 @@ describe('ApiBasePathMappingCommand', function () {
         });
         it('should fail if get for response fails', function (done) {
             getForResponseStub.yields('getForResponseError');
-            testSubject.updateResource({}, {}, { params: {} }, function (error, resource) {
+            testSubject.updateResource({ PhysicalResourceId: 'www.example.com/' }, {}, { params: {} }, function (error, resource) {
                 expect(error).to.equal('getForResponseError');
                 expect(resource).to.be.undefined;
                 expect(patchBasePathMappingStub.called).to.be.true;

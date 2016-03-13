@@ -1,6 +1,6 @@
 {
   "name": "AWS-APIGateway-for-CloudFormation",
-  "version": "1.1.6",
+  "version": "1.1.9",
   "description": "AWS Api Gateway CloudFormation",
   "author": "carl@nordenfelt.com",
   "repository": {
@@ -10,8 +10,8 @@
   "license": "MIT",
   "scripts": {
     "clean": "rm -rf node_modules *.zip coverage && npm install",
-    "test": "npm run eslint && NODE_ENV=TEST npm run unittest && npm run checkcoverage",
-    "unittest": "istanbul cover --include-all-sources true -x \"_scripts/**/*\" ./node_modules/mocha/bin/_mocha ./tests/unit -- --recursive",
+    "test": "npm run eslint && npm run unittest && npm run checkcoverage",
+    "unittest": "NODE_ENV=TEST  istanbul cover --include-all-sources true -x \"_scripts/**/*\" ./node_modules/mocha/bin/_mocha ./tests/unit -- --recursive",
     "checkcoverage": "istanbul check-coverage --statement 100 --branches 100 --functions 100 --lines 100",
     "eslint": "eslint --max-warnings 0 lib"
   },
