@@ -43,7 +43,7 @@ It is very important to distinguish between the two:
 To be able to install the Custom Resource library you require a set of permissions.
 Configure your IAM user with the following policy and make sure that you have configured your aws-cli with access and secret key. 
 
-**Note:** This Role contains delete permissions. If you do not want to give these permissions you can omit the last 6 permissions in the policy. If you do so, uninstallation cannot be done via the provided scripts.
+**Note:** This Role contains delete permissions. If you do not want to give these permissions you can omit the last 6 permissions in the policy. If you do so,  you won't be able to delete the installation.
 
     {
         "Version": "2012-10-17",
@@ -80,9 +80,9 @@ Configure your IAM user with the following policy and make sure that you have co
 
 1. Pick which version you want from the <a href="#change-log">Change log</a>. The latest is usually the one you want.
 1. Copy the template link that corresponds to the region you want to deploy your Lambda in.
-1. Open our AWS CloudFormation Console and choose "Create stack".
+1. Open your AWS CloudFormation Console and choose "Create stack".
 1. Select "Specify an Amazon S3 template URL" and paste the template link.
-1. Select the Lambda allocation and execution timeout. The default should suffice.
+1. Select the Lambda memory allocation and execution timeout. The defaults should suffice.
 1. Approve the IAM resource creation and create the stack.
 
 ###Update
