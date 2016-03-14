@@ -118,7 +118,6 @@ Name of the REST API.
 * Update: No interruption
 
 **description:**
-Name of the REST API. 
 An optional description of your REST API.
 
 * Required: no
@@ -766,6 +765,15 @@ http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createAut
     }
 
 #Change Log
+
+## 1.2.1 (2016-03-14)
+* Fix: Allow deletion of Api Resources that failed to create.
+
+**Regional Templates** 
+* <a href="https://s3.amazonaws.com/apigatewaycloudformation.eu-west-1/1.2.1/ApiGatewayCloudFormation.template">eu-west-1</a>
+* <a href="https://s3.amazonaws.com/apigatewaycloudformation.us-west-1/1.2.1/ApiGatewayCloudFormation.template">us-west-1</a>
+* <a href="https://s3.amazonaws.com/apigatewaycloudformation.us-east-1/1.2.1/ApiGatewayCloudFormation.template">us-east-1</a>
+* <a href="https://s3.amazonaws.com/apigatewaycloudformation.ap-northeast-1/1.2.1/ApiGatewayCloudFormation.template">ap-northeast-1</a>
 
 ## 1.2.0 (2016-03-13)
 * New deploy procedure via CFN insteadof bash/powershell

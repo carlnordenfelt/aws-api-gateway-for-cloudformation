@@ -125,6 +125,13 @@ describe('ApiResourceCommand', function () {
                 done();
             });
         });
+        it('should succeed if the resourceId is invalid', function (done) {
+            testSubject.deleteResource({ PhysicalResourceId: "2016/03/09/[$LATEST]e5aec1b058ac4c58bb09a41bc19d691f" }, {}, { params: {} }, function (error) {
+                expect(error).to.be.undefined;
+                expect(deleteResourceStub.called).to.be.false;
+                done();
+            });
+        });
     });
 
     describe('updateResource', function () {
