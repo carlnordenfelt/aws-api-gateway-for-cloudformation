@@ -1,10 +1,8 @@
-**Important Notice!**
-If you installed this prior to February 17 2016 you have to uninstall everything, including any APIs created using 
-these resources, before you upgrade. There has been a lot of changes made and they are not backward compatible!
-
 #API Gateway for CloudFormation
 API Gateway for CloudFormation is a set of Custom Resources that allows you to manage your API Gateway setup
-with CloudFormation. It is deployed with CloudFormation and runs on AWS Lambda.
+with CloudFormation. Yes, you read that right! Finally a way to integrate your backend services that you already create using CloudFormation with you APIs!
+
+It's deployed via the CloudFormation Console and runs on AWS Lambda.
 
 The project is inspired by [AWS Labs API Gateway Swagger Importer](https://github.com/awslabs/aws-apigateway-importer) so you will see a lot of familiar syntax in the setup.
 
@@ -43,7 +41,7 @@ It is very important to distinguish between the two:
 To be able to install the Custom Resource library you require a set of permissions.
 Configure your IAM user with the following policy and make sure that you have configured your aws-cli with access and secret key. 
 
-**Note:** This Role contains delete permissions. If you do not want to give these permissions you can omit the last 6 permissions in the policy. If you do so,  you won't be able to delete the installation.
+**Note:** This Role contains delete permissions. If you do not want to give these permissions you can omit the last 6 permissions in the policy. If you do so, you won't be able to delete the installation.
 
     {
         "Version": "2012-10-17",
@@ -79,35 +77,33 @@ Configure your IAM user with the following policy and make sure that you have co
 ###Install
 
 1. Pick which version you want from the <a href="#change-log">Change log</a>. The latest is usually the one you want.
-1. Copy the template link that corresponds to the region you want to deploy your Lambda in.
+1. Copy the template link that corresponds to the region you want to deploy your Lambda in (all Lambda supported regions are available).
 1. Open your AWS CloudFormation Console and choose "Create stack".
 1. Select "Specify an Amazon S3 template URL" and paste the template link.
 1. Select the Lambda memory allocation and execution timeout. The defaults should suffice.
 1. Approve the IAM resource creation and create the stack.
 
 ###Update
-Follow the steps above but instead of creating a new stack you update your existing stack.
+Follow the steps above but instead of creating a new stack you update your existing stack. Note that you need to change the template URL when updating.
 
 ###Uninstall
-Simple delete the stack from your AWS CloudFormation Console.
+Simply delete the stack from your AWS CloudFormation Console. Don't forget to revoke any unecessary IAM permissions you may have added during setup.
 
 #Usage   
 
 ##Overview
-This setup allows you to manage the majority of the API Gateway related resources. Below you'll find (hopefully) exhaustive documentation on how to use each resource type.
+This setup allows you to manage the majority of the API Gateway related resources. Below you'll find exhaustive (hopefully) documentation on how to use each resource type.
 
-One thing that is not currently supported are API deployments. There is a bit of a catch-22 thing happening with the SDK and deployments where I can't create a stage without a deployment and I can't create a deployment without a stage. I have this on the TODO list but for now you'll have to manage API deployment outside of this project.
-
-Also note that some resources may be flagged as experimental which means that they haven't been tested thoroughly.
+Note that some resources may be flagged as experimental which means that they haven't been tested thoroughly, it doesn't necessarily mean that they don't work.
 
 That said, on to what you can do.
 
 ##Create an API
 
-Creates a new Api Gateway REST API
+Creates a new API Gateway REST API
 http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createRestApi-property
 
-**Note:** The Custom Resource does not support API cloning. This is intentional.
+**Note:** API cloning. is not supported. This is intentional.
 
 ###Parameters
 **name:**
@@ -145,8 +141,7 @@ Creates a new API Resource in an existing API
 http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createResource-property
 
 **Note:** If you delete an API Resource from your CloudFormation template, all child resources are deleted by API Gateway.
-This may create certain data inconsistencies between the actual API and what is believed to be setup from the Custom Resource perspective.
-I therefore recommend that if you remove an API Resource from a template, remove all child resources at the same time to ensure a consistent data model.
+This may create certain data inconsistencies between the actual API and what is believed to be setup from the Custom Resource perspective. It's therefore recommend to remove any child resources associated with the API Resource you delete.
 
 ###Parameters
 **restApiId:**
@@ -157,7 +152,7 @@ Reference to the REST API in which you want to create this API Resource.
 * Update: Not supported
 
 **parentId** 
-Id of the parent API Resource under which you want to place this API Resource.
+Id of the parent API Resource under which you want to place this API Resource. If you are creating a top level resource, use the parentResourceId output from Custom::RestApi.
 
 * Required: *yes*
 * Type: String
@@ -172,7 +167,9 @@ The path suffix of this API Resource, appended to the full path of the parent AP
 
 **corsConfiguration**
 If you supply cors configuration this API Resource will enable CORS requests.
-For more information on CORS, please refer to http://www.w3.org/TR/cors/
+For more information on CORS, please refer to http://www.w3.org/TR/cors/.
+Changes made to the CORS configuraiton will have direct impact on the methods you list (or remove) in the CORS config.
+It will also create an OPTIONS method for you.
 
 * Required: no
 * Type: Object
@@ -197,13 +194,14 @@ If it is set it will override the default headers and exclude them. See *corsCon
 **corsConfiguration.allowDefaultHeaders**
 If you set *corsConfiguration.allowHeaders* and still want to include the default set of headers you can set this property
 to true and the default headers will be appended to the headers you specified in *corsConfiguration.allowHeaders*
+The default headers are: Content-Type,X-Amz-Date,Authorization,X-Api-Key.
 
 * Required: no
 * Type: Boolean
 * Update: No interruption
 
 **corsConfiguration.allowOrigin**
-If you supply cors configuration this API Resource will enable CORS requests.
+Origin from which CORS requests are allowed. If you omit it the origin will be set to * which means that any origin is allowed to call the Resource.
 
 * Required: no, default is *
 * Type: Object
@@ -217,7 +215,7 @@ A list of headers that are exposed to the client in the response, if present.
 * Update: No interruption
 
 **corsConfiguration.maxAge**
-Max age in seconds that a pre-flight check should be cached on the client.
+Max age in seconds that a pre-flight check (OPTIONS) should be cached on the client.
 If not supplied, the time that pre-flight requests are stored is at the discretion of the user agent.
 
 * Required: no
@@ -274,14 +272,14 @@ Id of the API Resource on which the API Method should be applied.
 * Update: No interruption
 
 **method**
-Basic method configuration object.
+Method configuration container.
 
 * Required: *yes*
 * Type: Object
-* Update: Not available
+* Update: Child properties may be changed according to documentation.
 
 **method.httpMethod**
-The HTTP verb that this method adheres to.
+The HTTP verb that this method adheres to. E.g POST, GET etc.
 
 * Required: *yes*
 * Type: String
@@ -289,7 +287,7 @@ The HTTP verb that this method adheres to.
 
 **method.authorizationType**
 API Method authorization type.
-Set to CUSTOM if you want to use an Api Authorizer.
+Set to CUSTOM if you want to use an <a href="#create-an-authorizer">API Authorizer</a>.
 
 * Required: no, default is NONE
 * Type: String
