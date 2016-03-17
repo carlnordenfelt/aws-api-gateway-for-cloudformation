@@ -74,7 +74,7 @@ function package() {
 function publish() {
     echo "Publishing version: ${version}"
 
-    if [[ " ${npmActions[@]} " =~ " ${1} " ]]; then
+    if [[ " ${npmActions[@]} " =~ " ${npmVersionCommand} " ]]; then
         sed -i '.original' "s/{VERSION}/${version}/g" ${templatePath}/${templateName}
         for region in "${regions[@]}"; do
             bucketName="${s3BucketName}.${region}"
