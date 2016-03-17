@@ -33,9 +33,9 @@ done
 
 # Parse version from version string.
 # Will run npm version methods if version is not provided or one of patch, minor or major.
-# All other values will be used as is.
+# All other values will be used as is but prefixed by test/.
+npmVersionCommand=""
 function parseVersion() {
-    npmVersionCommand=""
     if [[ " ${npmActions[@]} " =~ " ${1} " ]]; then
         npmVersionCommand=${1}
     fi
