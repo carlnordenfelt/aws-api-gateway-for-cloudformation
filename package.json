@@ -13,7 +13,9 @@
     "test": "npm install && npm run eslint && npm run unittest && npm run checkcoverage",
     "unittest": "NODE_ENV=TEST  istanbul cover --include-all-sources true -x \"_scripts/**/*\" ./node_modules/mocha/bin/_mocha ./tests/unit -- --recursive",
     "checkcoverage": "istanbul check-coverage --statement 100 --branches 100 --functions 100 --lines 100",
-    "eslint": "eslint --max-warnings 0 lib"
+    "eslint": "eslint --max-warnings 0 lib",
+    "testWindows": "npm install && npm run eslint && npm run unittestWindows && npm run checkcoverage",
+    "unittestWindows": "SET NODE_ENV=TEST&&istanbul cover --include-all-sources true -x \"_scripts/**/*\" ./node_modules/mocha/bin/_mocha ./tests/unit -- --recursive"
   },
   "dependencies": {
     "async": "1.5.0",
