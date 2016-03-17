@@ -3,6 +3,7 @@
 
 # Regions where AWS Lambda is available
 regions=( eu-west-1 us-west-1 us-east-1 ap-northeast-1 )
+npmActions=( patch minor major )
 # Local path to the CFN template file
 templatePath="_scripts"
 # Template file name
@@ -13,23 +14,39 @@ s3BucketName="apigatewaycloudformation"
 # Source file name
 sourceFileName="source.zip"
 
+action=""
+version=""
+testPublish=false
+while getopts ":a:v:" opt; do
+  case ${opt} in
+    a)
+        action="${OPTARG}"
+    ;;
+    v)
+        version="${OPTARG}"
+    ;;
+    \?)
+        echo "Invalid argument: -$OPTARG" >&2
+        exit 1;
+    ;;
+  esac
+done
+
 # Parse version from version string.
 # Will run npm version methods if version is not provided or one of patch, minor or major.
 # All other values will be used as is.
 function parseVersion() {
     npmVersionCommand=""
-    if [ "${1}" == "" ]; then
-        npmVersionCommand="patch"
-    elif [ "${1}" == "patch" ] || [ "${1}" == "minor" ] || [ "${1}" == "major" ]; then
+    if [[ " ${npmActions[@]} " =~ " ${1} " ]]; then
         npmVersionCommand=${1}
     fi
 
     if [ "${npmVersionCommand}" != "" ]; then
         version=$(npm version ${npmVersionCommand})
-        version=${version:1}
-        if [ $? -ne 0 ]; then
+        if [ -z ${version} ]; then
             exit 1;
         fi
+        version=${version:1}
     else
         version=${1}
     fi
@@ -57,25 +74,33 @@ function package() {
 # It will publish to all Lambda regions. If the bucket does not exist it is created.
 function publish() {
     echo "Publishing version: ${version}"
-    sed -i '.original' "s/{VERSION}/${version}/g" ${templatePath}/${templateName}
-    for region in "${regions[@]}"; do
-        bucketName="${s3BucketName}.${region}"
-        aws s3api head-bucket --bucket ${bucketName} --region ${region} > /dev/null 2>&1
 
-        if [ $? -ne 0 ]; then
-            if [ "${region}" == "us-east-1" ]; then
-                aws s3api create-bucket --bucket ${bucketName} --region ${region} > /dev/null 2>&1
-            else
-                aws s3api create-bucket --bucket ${bucketName} --region ${region} --create-bucket-configuration LocationConstraint=${region} > /dev/null 2>&1
+    if [[ " ${npmActions[@]} " =~ " ${1} " ]]; then
+        sed -i '.original' "s/{VERSION}/${version}/g" ${templatePath}/${templateName}
+        for region in "${regions[@]}"; do
+            bucketName="${s3BucketName}.${region}"
+            aws s3api head-bucket --bucket ${bucketName} --region ${region}
+
+            if [ $? -ne 0 ]; then
+                if [ "${region}" == "us-east-1" ]; then
+                    aws s3api create-bucket --bucket ${bucketName} --region ${region}
+                else
+                    aws s3api create-bucket --bucket ${bucketName} --region ${region} --create-bucket-configuration LocationConstraint=${region}
+                fi
+                sleep 3
+                aws s3api put-bucket-policy --bucket ${bucketName} --region ${region} --policy "{ \"Statement\": [ { \"Effect\": \"Allow\", \"Principal\": \"*\", \"Action\": \"s3:GetObject\", \"Resource\": \"arn:aws:s3:::${bucketName}/*\" } ] }"
             fi
-            sleep 3
-            aws s3api put-bucket-policy --bucket ${bucketName} --region ${region} --policy "{ \"Statement\": [ { \"Effect\": \"Allow\", \"Principal\": \"*\", \"Action\": \"s3:GetObject\", \"Resource\": \"arn:aws:s3:::${bucketName}/*\" } ] }"
-        fi
 
-        aws s3 cp ${sourceFileName} s3://${bucketName}/${version}/${sourceFileName} --region ${region} > /dev/null 2>&1
-        aws s3 cp ${templatePath}/${templateName} s3://${bucketName}/${version}/${templateName} --region ${region} > /dev/null 2>&1
-        echo "* <a href=\"https://s3.amazonaws.com/${bucketName}/${version}/${templateName}\">${region} template</a>"
-    done
+            aws s3 cp ${sourceFileName} s3://${bucketName}/${version}/${sourceFileName} --region ${region}
+            aws s3 cp ${templatePath}/${templateName} s3://${bucketName}/${version}/${templateName} --region ${region}
+            echo "* <a href=\"https://s3.amazonaws.com/${bucketName}/${version}/${templateName}\">${region} template</a>"
+        done
+    else
+        sed -i '.original' "s:{VERSION}:test/${version}:g" ${templatePath}/${templateName}
+        aws s3 cp ${sourceFileName} s3://${s3BucketName}.eu-west-1/test/${version}/${sourceFileName} --region eu-west-1
+        aws s3 cp ${templatePath}/${templateName} s3://${s3BucketName}.eu-west-1/test/${version}/${templateName} --region eu-west-1
+        echo "https://s3.amazonaws.com/${s3BucketName}.eu-west-1/test/${version}/${templateName}"
+    fi
 
     rm -f ${sourceFileName}
     rm -f ${templatePath}/${templateName}
@@ -84,26 +109,23 @@ function publish() {
     echo "Version ${version} published to AWS"
 }
 
+function usage() {
+    echo "Usage: publish.sh -a [package|publish] -v version"
+    echo "-v is required if -a is publish"
+    exit 1;
+}
 
-action="package"
-while getopts ":a:v:" opt; do
-  case ${opt} in
-    a)
-        action="${OPTARG}"
-    ;;
-    v)
-        version="${OPTARG}"
-    ;;
-    \?)
-        echo "Invalid argument: -$OPTARG" >&2
-        exit 1;
-    ;;
-  esac
-done
+if [ -z "${action}" ]; then
+    usage
+fi
 
-package
+if [[ "${action}" == "publish" && -z "${version}" ]]; then
+    usage
+fi
+
+package || exit 1;
 
 if [ "${action}" == "publish" ]; then
-    version=$(parseVersion ${version})
+    version=$(parseVersion ${version}) || exit 1;
     publish ${version}
 fi

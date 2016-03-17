@@ -12,6 +12,7 @@ describe('ApiDomainNameService', function () {
     var createDomainNameStub;
     var deleteDomainNameStub;
     var updateDomainNameStub;
+    var getServerCertificateStub;
 
     after(function () {
         mockery.deregisterAll();
@@ -27,6 +28,7 @@ describe('ApiDomainNameService', function () {
         createDomainNameStub = sinon.stub();
         deleteDomainNameStub = sinon.stub();
         updateDomainNameStub = sinon.stub();
+        getServerCertificateStub = sinon.stub();
 
         var awsSdkStub = {
             APIGateway: function () {
@@ -34,6 +36,9 @@ describe('ApiDomainNameService', function () {
                 this.createDomainName = createDomainNameStub;
                 this.deleteDomainName = deleteDomainNameStub;
                 this.updateDomainName = updateDomainNameStub;
+            },
+            IAM: function () {
+                this.getServerCertificate = getServerCertificateStub;
             }
         };
 
@@ -49,6 +54,8 @@ describe('ApiDomainNameService', function () {
         deleteDomainNameStub.yields(undefined, {});
         updateDomainNameStub.reset().resetBehavior();
         updateDomainNameStub.yields(undefined, {});
+        getServerCertificateStub.reset().resetBehavior();
+        getServerCertificateStub.yields(undefined, { ServerCertificate: { CertificateBody: 'ServerCertificateBody', CertificateChain: 'ServerCertificateChain' }});
     });
 
     describe('getForResponse', function () {
@@ -81,18 +88,46 @@ describe('ApiDomainNameService', function () {
             };
         });
         it('should create a domain name', function (done) {
-            delete params.schema;
-            testSubject.createDomain(params, function (error, apiModel) {
+            testSubject.createDomain(params, function (error, apiDomainName) {
                 expect(error).to.be.undefined;
-                expect(apiModel).to.be.an('object');
+                expect(getServerCertificateStub.called).to.be.false;
+                expect(createDomainNameStub.called).to.be.true;
+                expect(apiDomainName).to.be.an('object');
+                done();
+            });
+        });
+        it('should create a domain name by fetching certificate from IAM', function (done) {
+            delete params.certificateBody;
+            delete params.certificateChain;
+            params.iamServerCertificateName = 'IamServerCertificateName';
+            testSubject.createDomain(params, function (error, apiDomainName) {
+                expect(error).to.be.undefined;
+                expect(getServerCertificateStub.called).to.be.true;
+                expect(createDomainNameStub.called).to.be.true;
+                expect(apiDomainName).to.be.an('object');
                 done();
             });
         });
         it('should return an error when creating domain name', function (done) {
             createDomainNameStub.yields({});
-            testSubject.createDomain(params, function (error, apiModel) {
+            testSubject.createDomain(params, function (error, apiDomainName) {
                 expect(error).to.be.an.Error;
-                expect(apiModel).to.be.undefined;
+                expect(getServerCertificateStub.called).to.be.false;
+                expect(createDomainNameStub.called).to.be.true;
+                expect(apiDomainName).to.be.undefined;
+                done();
+            });
+        });
+        it('should return an error if getServerCertificate fails', function (done) {
+            delete params.certificateBody;
+            delete params.certificateChain;
+            params.iamServerCertificateName = 'IamServerCertificateName';
+            getServerCertificateStub.yields({});
+            testSubject.createDomain(params, function (error, apiDomainName) {
+                expect(error).to.be.an.Error;
+                expect(getServerCertificateStub.called).to.be.true;
+                expect(createDomainNameStub.called).to.be.false;
+                expect(apiDomainName).to.be.undefined;
                 done();
             });
         });
