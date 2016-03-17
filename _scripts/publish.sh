@@ -34,7 +34,6 @@ done
 # Parse version from version string.
 # Will run npm version methods if version is not provided or one of patch, minor or major.
 # All other values will be used as is but prefixed by test/.
-npmVersionCommand=""
 function parseVersion() {
     if [[ " ${npmActions[@]} " =~ " ${1} " ]]; then
         npmVersionCommand=${1}
@@ -47,7 +46,7 @@ function parseVersion() {
         fi
         version=${version:1}
     else
-        version=${1}
+        version=test/${1}
     fi
 
     echo ${version}
@@ -74,7 +73,7 @@ function package() {
 function publish() {
     echo "Publishing version: ${version} ${npmVersionCommand}"
 exit
-    if [[ " ${npmActions[@]} " =~ " ${npmVersionCommand} " ]]; then
+    if [[ " ${version} " != *"test/"* ]]; then
         sed -i '.original' "s/{VERSION}/${version}/g" ${templatePath}/${templateName}
         for region in "${regions[@]}"; do
             bucketName="${s3BucketName}.${region}"
@@ -96,9 +95,9 @@ exit
         done
     else
         sed -i '.original' "s:{VERSION}:test/${version}:g" ${templatePath}/${templateName}
-        aws s3 cp ${sourceFileName} s3://${s3BucketName}.eu-west-1/test/${version}/${sourceFileName} --region eu-west-1
-        aws s3 cp ${templatePath}/${templateName} s3://${s3BucketName}.eu-west-1/test/${version}/${templateName} --region eu-west-1
-        echo "https://s3.amazonaws.com/${s3BucketName}.eu-west-1/test/${version}/${templateName}"
+        aws s3 cp ${sourceFileName} s3://${s3BucketName}.eu-west-1/${version}/${sourceFileName} --region eu-west-1
+        aws s3 cp ${templatePath}/${templateName} s3://${s3BucketName}.eu-west-1/${version}/${templateName} --region eu-west-1
+        echo "https://s3.amazonaws.com/${s3BucketName}.eu-west-1/${version}/${templateName}"
     fi
 
     rm -f ${sourceFileName}
