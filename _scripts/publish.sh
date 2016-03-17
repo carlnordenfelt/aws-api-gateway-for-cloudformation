@@ -72,8 +72,8 @@ function package() {
 # Publishes the source file and CFN template to S3.
 # It will publish to all Lambda regions. If the bucket does not exist it is created.
 function publish() {
-    echo "Publishing version: ${version}"
-
+    echo "Publishing version: ${version} ${npmVersionCommand}"
+exit
     if [[ " ${npmActions[@]} " =~ " ${npmVersionCommand} " ]]; then
         sed -i '.original' "s/{VERSION}/${version}/g" ${templatePath}/${templateName}
         for region in "${regions[@]}"; do
@@ -122,7 +122,7 @@ if [[ "${action}" == "publish" && -z "${version}" ]]; then
     usage
 fi
 
-package || exit 1;
+#package || exit 1;
 
 if [ "${action}" == "publish" ]; then
     version=$(parseVersion ${version}) || exit 1;
