@@ -16,7 +16,6 @@ sourceFileName="source.zip"
 
 action=""
 version=""
-testPublish=false
 while getopts ":a:v:" opt; do
   case ${opt} in
     a)
