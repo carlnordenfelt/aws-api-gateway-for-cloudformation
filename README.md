@@ -1,6 +1,6 @@
 #API Gateway for CloudFormation
 API Gateway for CloudFormation is a set of Custom Resources that allows you to manage your API Gateway setup
-with CloudFormation. Yes, you read that right! Finally a way to integrate your backend services that you already create using CloudFormation with you APIs!
+with CloudFormation. Yes, you read that right! Finally a way to integrate your backend services that you already create using CloudFormation with your APIs!
 
 It's deployed via the CloudFormation Console and runs on AWS Lambda.
 
