@@ -771,6 +771,15 @@ http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createAut
 
 #Change Log
 
+## 1.3.1 (2016-03-17)
+* Fix: TooManyRequestsException not caught properly
+
+**Regional Templates** 
+* <a href="https://s3.amazonaws.com/apigatewaycloudformation.eu-west-1/1.3.1/ApiGatewayCloudFormation.template">eu-west-1</a>
+* <a href="https://s3.amazonaws.com/apigatewaycloudformation.us-west-1/1.3.1/ApiGatewayCloudFormation.template">us-west-1</a>
+* <a href="https://s3.amazonaws.com/apigatewaycloudformation.us-east-1/1.3.1/ApiGatewayCloudFormation.template">us-east-1</a>
+* <a href="https://s3.amazonaws.com/apigatewaycloudformation.ap-northeast-1/1.3.1/ApiGatewayCloudFormation.template">ap-northeast-1</a>
+
 ## 1.3.0 (2016-03-17)
 * New: Allow Api Domain name creation by specifying an IAM Server Certificate Name instead of the certificateBody & certificateChain.
 
@@ -779,6 +788,7 @@ http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createAut
 * <a href="https://s3.amazonaws.com/apigatewaycloudformation.us-west-1/1.3.0/ApiGatewayCloudFormation.template">us-west-1</a>
 * <a href="https://s3.amazonaws.com/apigatewaycloudformation.us-east-1/1.3.0/ApiGatewayCloudFormation.template">us-east-1</a>
 * <a href="https://s3.amazonaws.com/apigatewaycloudformation.ap-northeast-1/1.3.0/ApiGatewayCloudFormation.template">ap-northeast-1</a>
+
 
 ## 1.2.1 (2016-03-14)
 * Fix: Allow deletion of Api Resources that failed to create.
