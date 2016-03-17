@@ -577,13 +577,20 @@ The name of the certificate.
 * Type: String
 * Update: Not supported
 
+**iamServerCertificateName:**
+A name reference to an existing certificate that ahs already been uploaded to IAM.
+
+* Required: *conditional*, you have to specify the iamServerCertificateName or the certificateBody and certificateChain
+* Type: String
+* Update: Not supported
+
 **certificateBody:**
 The body of the server certificate provided by your certificate authority.
 You can provide it in two different of formats:
 * As a single line where " " (space) denotes a new line (header/footer are excepted). E.g: -----BEGIN CERT-----line1 line2 ... -----END CERT-----
 * As a single line where "\n" denotes a new line. E.g: -----BEGIN CERT-----line1\nline2\n...\n-----END CERT-----
 
-* Required: *yes*
+* Required: *conditional*, you have to specify the the certificateBody and certificateChain or an iamServerCertificateName
 * Type: String
 * Update: Not supported
 
@@ -592,7 +599,7 @@ Your certificate's private key.
 * As a single line where " " (space) denotes a new line (header/footer are excepted). E.g: -----BEGIN RSA PRIVATE KEY-----line1 line2 ... -----END RSA PRIVATE KEY-----
 * As a single line where "\n" denotes a new line. E.g: -----BEGIN RSA PRIVATE KEY-----line1\nline2\n...\n-----END RSA PRIVATE KEY-----
 
-* Required: *yes*
+* Required: *conditional*, you have to specify the the certificateBody and certificateChain or an iamServerCertificateName
 * Type: String
 * Update: Not supported
 
@@ -763,6 +770,15 @@ http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createAut
     }
 
 #Change Log
+
+## 1.3.0 (2016-03-17)
+* New: Allow Api Domain name creation by specifying an IAM Server Certificate Name instead of the certificateBody & certificateChain.
+
+**Regional Templates** 
+* <a href="https://s3.amazonaws.com/apigatewaycloudformation.eu-west-1/1.3.0/ApiGatewayCloudFormation.template">eu-west-1</a>
+* <a href="https://s3.amazonaws.com/apigatewaycloudformation.us-west-1/1.3.0/ApiGatewayCloudFormation.template">us-west-1</a>
+* <a href="https://s3.amazonaws.com/apigatewaycloudformation.us-east-1/1.3.0/ApiGatewayCloudFormation.template">us-east-1</a>
+* <a href="https://s3.amazonaws.com/apigatewaycloudformation.ap-northeast-1/1.3.0/ApiGatewayCloudFormation.template">ap-northeast-1</a>
 
 ## 1.2.1 (2016-03-14)
 * Fix: Allow deletion of Api Resources that failed to create.

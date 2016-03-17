@@ -45,6 +45,10 @@ describe('ApiDomainNameEvent', function () {
         it('should give both old and new parameters with iamServerCertificateName', function (done) {
             event.ResourceProperties.iamServerCertificateName = 'IamCertificateName';
             event.OldResourceProperties.iamServerCertificateName = 'IamCertificateName2';
+            delete event.ResourceProperties.certificateBody;
+            delete event.ResourceProperties.certificateChain;
+            delete event.OldResourceProperties.certificateBody;
+            delete event.OldResourceProperties.certificateChain;
             var parameters = testSubject.getParameters(event);
             expect(parameters.params.iamServerCertificateName).to.equal('IamCertificateName');
             expect(parameters.params.certificateName).to.equal('CertificateName');
