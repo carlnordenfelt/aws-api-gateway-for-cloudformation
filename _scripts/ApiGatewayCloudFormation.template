@@ -41,7 +41,8 @@
                         {
                             "Effect": "Allow",
                             "Action": [
-                                "iam:PassRole"
+                                "iam:PassRole",
+                                "iam:GetServerCertificate"
                             ],
                             "Resource": "*"
                         }
