@@ -51,6 +51,23 @@ describe('api-gateway-retry-wrapper', function () {
         });
     });
 
+    it('should handle retires when aws-sdk responds with concurrent modification exception', function (done) {
+        var params = {
+            restApiId: 'RestApiId',
+            parentId: 'ParentId2',
+            pathPart: '/pathPart'
+        };
+        getResourceStub.onCall(0).yields({ code: 'BadRequestException',
+                                           message: 'Unable to complete operation due to concurrent modification. Please try again later.' });
+        getResourceStub.onCall(1).yields(undefined, { result: 'success' });
+        testSubject.getResource(params, function (error, response) {
+            expect(error).to.be.undefined;
+            expect(response).to.be.an('object');
+            expect(response.result).to.equal('success');
+            done();
+        });
+    });
+
     it('should handle retires when aws-sdk responds with retryable = true', function (done) {
         var params = {
             restApiId: 'RestApiId',
