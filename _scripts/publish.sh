@@ -121,7 +121,7 @@ if [[ "${action}" == "publish" && -z "${version}" ]]; then
     usage
 fi
 
-#package || exit 1;
+package || exit 1;
 
 if [ "${action}" == "publish" ]; then
     version=$(parseVersion ${version}) || exit 1;
