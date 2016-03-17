@@ -35,13 +35,30 @@ describe('api-gateway-retry-wrapper', function () {
         getResourceStub.yields(undefined, {});
     });
 
-    it('should handle retires when aws-sdk responds with TooManyRequestsException', function (done) {
+    it('should handle retries when aws-sdk responds with TooManyRequestsException', function (done) {
         var params = {
             restApiId: 'RestApiId',
             parentId: 'ParentId2',
             pathPart: '/pathPart'
         };
         getResourceStub.onCall(0).yields({ code: 'TooManyRequestsException' });
+        getResourceStub.onCall(1).yields(undefined, { result: 'success' });
+        testSubject.getResource(params, function (error, response) {
+            expect(error).to.be.undefined;
+            expect(response).to.be.an('object');
+            expect(response.result).to.equal('success');
+            done();
+        });
+    });
+
+    it('should handle retries when aws-sdk responds with concurrent modification exception', function (done) {
+        var params = {
+            restApiId: 'RestApiId',
+            parentId: 'ParentId2',
+            pathPart: '/pathPart'
+        };
+        getResourceStub.onCall(0).yields({ code: 'BadRequestException',
+                                           message: 'Unable to complete operation due to concurrent modification. Please try again later.' });
         getResourceStub.onCall(1).yields(undefined, { result: 'success' });
         testSubject.getResource(params, function (error, response) {
             expect(error).to.be.undefined;
