@@ -74,8 +74,6 @@ function publish() {
     echo "Publishing version: ${version}"
 
     if [[ " ${version} " != *"test/"* ]]; then
-    echo "!"
-    exit
         sed -i '.original' "s/{VERSION}/${version}/g" ${templatePath}/${templateName}
         for region in "${regions[@]}"; do
             bucketName="${s3BucketName}.${region}"
@@ -96,8 +94,6 @@ function publish() {
             echo "* <a href=\"https://s3.amazonaws.com/${bucketName}/${version}/${templateName}\">${region} template</a>"
         done
     else
-    echo "?"
-    exit
         sed -i '.original' "s:{VERSION}:test/${version}:g" ${templatePath}/${templateName}
         aws s3 cp ${sourceFileName} s3://${s3BucketName}.eu-west-1/${version}/${sourceFileName} --region eu-west-1
         aws s3 cp ${templatePath}/${templateName} s3://${s3BucketName}.eu-west-1/${version}/${templateName} --region eu-west-1
