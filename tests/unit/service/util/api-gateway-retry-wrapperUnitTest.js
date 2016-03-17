@@ -35,7 +35,7 @@ describe('api-gateway-retry-wrapper', function () {
         getResourceStub.yields(undefined, {});
     });
 
-    it('should handle retires when aws-sdk responds with TooManyRequestsException', function (done) {
+    it('should handle retries when aws-sdk responds with TooManyRequestsException', function (done) {
         var params = {
             restApiId: 'RestApiId',
             parentId: 'ParentId2',
@@ -51,7 +51,7 @@ describe('api-gateway-retry-wrapper', function () {
         });
     });
 
-    it('should handle retires when aws-sdk responds with concurrent modification exception', function (done) {
+    it('should handle retries when aws-sdk responds with concurrent modification exception', function (done) {
         var params = {
             restApiId: 'RestApiId',
             parentId: 'ParentId2',
