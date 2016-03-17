@@ -42,11 +42,35 @@ describe('ApiDomainNameEvent', function () {
             expect(parameters.old.domainName).to.equal('DomainName2');
             done();
         });
+        it('should give both old and new parameters with iamServerCertificateName', function (done) {
+            event.ResourceProperties.iamServerCertificateName = 'IamCertificateName';
+            event.OldResourceProperties.iamServerCertificateName = 'IamCertificateName2';
+            var parameters = testSubject.getParameters(event);
+            expect(parameters.params.iamServerCertificateName).to.equal('IamCertificateName');
+            expect(parameters.params.certificateName).to.equal('CertificateName');
+            expect(parameters.params.certificatePrivateKey).to.equal('-----BEGIN RSA PRIVATE KEY-----\nCertificatePrivateKey\n-----END RSA PRIVATE KEY-----');
+            expect(parameters.params.domainName).to.equal('DomainName');
+
+            expect(parameters.old.iamServerCertificateName).to.equal('IamCertificateName2');
+            expect(parameters.old.certificateName).to.equal('CertificateName2');
+            expect(parameters.old.certificatePrivateKey).to.equal('-----BEGIN RSA PRIVATE KEY-----\nCertificatePrivateKey2\n-----END RSA PRIVATE KEY-----');
+            expect(parameters.old.domainName).to.equal('DomainName2');
+            done();
+        });
         it('should not yield old properties if not in event', function (done) {
             delete event.OldResourceProperties;
             var parameters = testSubject.getParameters(event);
             expect(parameters.params).to.be.an('object');
             expect(parameters.old).to.be.undefined;
+            done();
+        });
+        it('should yield an error due to missing certificateBody, certificateChain and iamServerCertificateName', function (done) {
+            delete event.ResourceProperties.certificateBody;
+            delete event.ResourceProperties.certificateChain;
+            delete event.OldResourceProperties;
+            var parameters = testSubject.getParameters(event);
+            expect(parameters).to.be.an.Error;
+            expect(parameters.message).to.contain('{iamServerCertificateName or certificateBody and certificateChain}');
             done();
         });
         it('should yield an error due to missing certificateBody', function (done) {
