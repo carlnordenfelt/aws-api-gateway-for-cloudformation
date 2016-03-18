@@ -105,6 +105,9 @@ http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createRes
 
 **Note:** API cloning. is not supported. This is intentional.
 
+###Type
+Custom:RestApi
+
 ###Parameters
 **name:**
 Name of the REST API.
@@ -142,6 +145,9 @@ http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createRes
 
 **Note:** If you delete an API Resource from your CloudFormation template, all child resources are deleted by API Gateway.
 This may create certain data inconsistencies between the actual API and what is believed to be setup from the Custom Resource perspective. It's therefore recommend to remove any child resources associated with the API Resource you delete.
+
+###Type
+Custom:ApiResource
 
 ###Parameters
 **restApiId:**
@@ -255,6 +261,9 @@ Outputs: http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#
 
 Creates a new Api Gateway Method including response, request and integration.
 http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#putMethod-property
+
+###Type
+Custom:ApiMethod
 
 ###Parameters
 **restApiId:**
@@ -502,6 +511,9 @@ http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#putMethod
 Creates a new Api Gateway Model
 http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createModel-property
 
+###Type
+Custom:ApiModel
+
 ###Parameters
 **restApiId:**
 Reference id to the Rest API.
@@ -561,6 +573,9 @@ http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createDom
 
 Once the domain name has been created you have to create a Route53 alias record that points to 
 { "Fn::GetAtt": ["TestApiDomainName", "distributionDomainName"] }
+
+###Type
+Custom:ApiDomainName
 
 ###Parameters
 **domainName:**
@@ -640,6 +655,9 @@ not be deleted and your API will remain deployed at the given stage.
 
 **Note:** Since creating a BasePathMapping will automatically deploy your API you have to ensure that it DependsOn all methods created in the API.
 
+###Type
+Custom:ApiBasePathMapping
+
 ###Parameters
 **domainName:**
 The domain name of the BasePathMapping resource to create.
@@ -695,6 +713,9 @@ http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createBas
 
 Creates a new Api Gateway Authorizer
 http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createAuthorizer-property
+
+###Type
+Custom:ApiAuthorizer
 
 ###Parameters
 **authorizerUri:**
