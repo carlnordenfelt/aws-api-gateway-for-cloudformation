@@ -2,7 +2,7 @@
 
 
 # Regions where AWS Lambda is available
-regions=( eu-west-1 us-west-1 us-east-1 ap-northeast-1 )
+regions=( eu-west-1 us-west-2 us-east-1 ap-northeast-1 )
 npmActions=( patch minor major )
 # Local path to the CFN template file
 templatePath="_scripts"
