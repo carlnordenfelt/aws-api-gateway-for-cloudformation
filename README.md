@@ -771,6 +771,15 @@ http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createAut
 
 #Change Log
 
+## 1.3.2 (2016-03-18)
+* Fix: Moved support from us-west-1 to us-west-2
+
+**Regional Templates** 
+* <a href="https://s3.amazonaws.com/apigatewaycloudformation.eu-west-1/1.3.2/ApiGatewayCloudFormation.template">eu-west-1</a>
+* <a href="https://s3.amazonaws.com/apigatewaycloudformation.us-east-1/1.3.2/ApiGatewayCloudFormation.template">us-east-1</a>
+* <a href="https://s3.amazonaws.com/apigatewaycloudformation.us-west-2/1.3.2/ApiGatewayCloudFormation.template">us-west-2</a>
+* <a href="https://s3.amazonaws.com/apigatewaycloudformation.ap-northeast-1/1.3.2/ApiGatewayCloudFormation.template">ap-northeast-1</a>
+
 ## 1.3.1 (2016-03-17)
 * Fix: TooManyRequestsException not caught properly
 
