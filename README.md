@@ -182,10 +182,10 @@ It will also create an OPTIONS method for you.
 * Update: No interruption
 
 **corsConfiguration.allowMethods**
-A list of HTTP methods that allow CORS requests under this API Resource.
+A list of HTTP methods that allow CORS requests under this API Resource or a wildcard string "*" which will allow all methods.
  
 * Required: *yes*
-* Type: String array
+* Type: String array or String "*"
 * Update: No interruption
 
 **corsConfiguration.allowHeaders**
@@ -791,6 +791,16 @@ http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createAut
     }
 
 #Change Log
+
+## 1.3.4 (2016-03-22)
+* New: Allw CORS wildcard methods
+
+**Regional Templates** 
+* <a href="https://s3.amazonaws.com/apigatewaycloudformation.eu-central-1/1.3.4/ApiGatewayCloudFormation.template">eu-central-1</a>
+* <a href="https://s3.amazonaws.com/apigatewaycloudformation.eu-west-1/1.3.4/ApiGatewayCloudFormation.template">eu-west-1</a>
+* <a href="https://s3.amazonaws.com/apigatewaycloudformation.us-east-1/1.3.4/ApiGatewayCloudFormation.template">us-east-1</a>
+* <a href="https://s3.amazonaws.com/apigatewaycloudformation.us-west-2/1.3.4/ApiGatewayCloudFormation.template">us-west-2</a>
+* <a href="https://s3.amazonaws.com/apigatewaycloudformation.ap-northeast-1/1.3.4/ApiGatewayCloudFormation.template">ap-northeast-1</a>
 
 ## 1.3.3 (2016-03-18)
 * New: Added support for eu-central-1
