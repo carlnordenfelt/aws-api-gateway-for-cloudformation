@@ -46,6 +46,13 @@ describe('ApiResourceEvent', function () {
             expect(parameters.old.corsConfig).to.be.an('object');
             done();
         });
+        it('should give all CORS methods with wildcard', function (done) {
+            event.ResourceProperties.corsConfiguration.allowMethods = '*';
+            var parameters = testSubject.getParameters(event);
+            expect(parameters.params.corsConfig.allowMethods).be.an.Array;
+            expect(parameters.params.corsConfig.allowMethods.length).to.equals(Constants.CORS_ALL_METHODS.length);
+            done();
+        });
         it('should give parameters without cors', function (done) {
             delete event.ResourceProperties.corsConfiguration;
             var parameters = testSubject.getParameters(event);

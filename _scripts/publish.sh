@@ -94,7 +94,7 @@ function publish() {
             echo "* <a href=\"https://s3.amazonaws.com/${bucketName}/${version}/${templateName}\">${region} template</a>"
         done
     else
-        sed -i '.original' "s:{VERSION}:test/${version}:g" ${templatePath}/${templateName}
+        sed -i '.original' "s:{VERSION}:${version}:g" ${templatePath}/${templateName}
         aws s3 cp ${sourceFileName} s3://${s3BucketName}.eu-west-1/${version}/${sourceFileName} --region eu-west-1
         aws s3 cp ${templatePath}/${templateName} s3://${s3BucketName}.eu-west-1/${version}/${templateName} --region eu-west-1
         echo "https://s3.amazonaws.com/${s3BucketName}.eu-west-1/${version}/${templateName}"
@@ -110,6 +110,7 @@ function publish() {
 function usage() {
     echo "Usage: publish.sh -a [package|publish] -v version"
     echo "-v is required if -a is publish"
+    echo "-v patch|minor|major will publish a new npm version, any other value will be used as is."
     exit 1;
 }
 
