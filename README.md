@@ -793,61 +793,58 @@ http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createAut
 #Change Log
 
 ## 1.3.4 (2016-03-22)
-* New: Allw CORS wildcard methods
+* New: Allow CORS wildcard methods
 
 **Regional Templates** 
-* <a href="https://s3.amazonaws.com/apigatewaycloudformation.eu-central-1/1.3.4/ApiGatewayCloudFormation.template">eu-central-1</a>
-* <a href="https://s3.amazonaws.com/apigatewaycloudformation.eu-west-1/1.3.4/ApiGatewayCloudFormation.template">eu-west-1</a>
-* <a href="https://s3.amazonaws.com/apigatewaycloudformation.us-east-1/1.3.4/ApiGatewayCloudFormation.template">us-east-1</a>
-* <a href="https://s3.amazonaws.com/apigatewaycloudformation.us-west-2/1.3.4/ApiGatewayCloudFormation.template">us-west-2</a>
-* <a href="https://s3.amazonaws.com/apigatewaycloudformation.ap-northeast-1/1.3.4/ApiGatewayCloudFormation.template">ap-northeast-1</a>
+* <a href="http://apigatewaycloudformation.eu-central-1.s3.amazonaws.com/1.3.4/ApiGatewayCloudFormation.template">eu-central-1</a>
+* <a href="http://apigatewaycloudformation.eu-west-1.s3.amazonaws.com/1.3.4/ApiGatewayCloudFormation.template">eu-central-1</a>
+* <a href="http://apigatewaycloudformation.us-east-1.s3.amazonaws.com/1.3.4/ApiGatewayCloudFormation.template">eu-central-1</a>
+* <a href="http://apigatewaycloudformation.us-west-2.s3.amazonaws.com/1.3.4/ApiGatewayCloudFormation.template">eu-central-1</a>
+* <a href="http://apigatewaycloudformation.ap-northeast-1.s3.amazonaws.com/1.3.4/ApiGatewayCloudFormation.template">eu-central-1</a>
 
 ## 1.3.3 (2016-03-18)
 * New: Added support for eu-central-1
 
 **Regional Templates** 
-* <a href="https://s3.amazonaws.com/apigatewaycloudformation.eu-central-1/1.3.3/ApiGatewayCloudFormation.template">eu-central-1</a>
-* <a href="https://s3.amazonaws.com/apigatewaycloudformation.eu-west-1/1.3.3/ApiGatewayCloudFormation.template">eu-west-1</a>
-* <a href="https://s3.amazonaws.com/apigatewaycloudformation.us-east-1/1.3.3/ApiGatewayCloudFormation.template">us-east-1</a>
-* <a href="https://s3.amazonaws.com/apigatewaycloudformation.us-west-2/1.3.3/ApiGatewayCloudFormation.template">us-west-2</a>
-* <a href="https://s3.amazonaws.com/apigatewaycloudformation.ap-northeast-1/1.3.3/ApiGatewayCloudFormation.template">ap-northeast-1</a>
+* <a href="http://apigatewaycloudformation.eu-central-1.s3.amazonaws.com/1.3.3/ApiGatewayCloudFormation.template">eu-central-1</a>
+* <a href="http://apigatewaycloudformation.eu-west-1.s3.amazonaws.com/1.3.3/ApiGatewayCloudFormation.template">eu-west-1</a>
+* <a href="http://apigatewaycloudformation.us-east-1.s3.amazonaws.com/1.3.3/ApiGatewayCloudFormation.template">us-east-1</a>
+* <a href="http://apigatewaycloudformation.us-west-2.s3.amazonaws.com/1.3.3/ApiGatewayCloudFormation.template">us-west-2</a>
+* <a href="http://apigatewaycloudformation.ap-northeast-1.s3.amazonaws.com/1.3.3/ApiGatewayCloudFormation.template">ap-northeast-1</a>
 
 ## 1.3.2 (2016-03-18)
 * Fix: Moved support from us-west-1 to us-west-2
 
 **Regional Templates** 
-* <a href="https://s3.amazonaws.com/apigatewaycloudformation.eu-west-1/1.3.2/ApiGatewayCloudFormation.template">eu-west-1</a>
-* <a href="https://s3.amazonaws.com/apigatewaycloudformation.us-east-1/1.3.2/ApiGatewayCloudFormation.template">us-east-1</a>
-* <a href="https://s3.amazonaws.com/apigatewaycloudformation.us-west-2/1.3.2/ApiGatewayCloudFormation.template">us-west-2</a>
-* <a href="https://s3.amazonaws.com/apigatewaycloudformation.ap-northeast-1/1.3.2/ApiGatewayCloudFormation.template">ap-northeast-1</a>
+* <a href="http://apigatewaycloudformation.eu-west-1.s3.amazonaws.com/1.3.2/ApiGatewayCloudFormation.template">eu-west-1</a>
+* <a href="http://apigatewaycloudformation.us-east-1.s3.amazonaws.com/1.3.2/ApiGatewayCloudFormation.template">us-east-1</a>
+* <a href="http://apigatewaycloudformation.us-west-2.s3.amazonaws.com/1.3.2/ApiGatewayCloudFormation.template">us-west-2</a>
+* <a href="http://apigatewaycloudformation.ap-northeast-1.s3.amazonaws.com/1.3.2/ApiGatewayCloudFormation.template">ap-northeast-1</a>
 
 ## 1.3.1 (2016-03-17)
 * Fix: TooManyRequestsException not caught properly
 
 **Regional Templates** 
-* <a href="https://s3.amazonaws.com/apigatewaycloudformation.eu-west-1/1.3.1/ApiGatewayCloudFormation.template">eu-west-1</a>
-* <a href="https://s3.amazonaws.com/apigatewaycloudformation.us-west-1/1.3.1/ApiGatewayCloudFormation.template">us-west-1</a>
-* <a href="https://s3.amazonaws.com/apigatewaycloudformation.us-east-1/1.3.1/ApiGatewayCloudFormation.template">us-east-1</a>
-* <a href="https://s3.amazonaws.com/apigatewaycloudformation.ap-northeast-1/1.3.1/ApiGatewayCloudFormation.template">ap-northeast-1</a>
+* <a href="http://apigatewaycloudformation.eu-west-1.s3.amazonaws.com/1.3.1/ApiGatewayCloudFormation.template">eu-west-1</a>
+* <a href="http://apigatewaycloudformation.us-east-1.s3.amazonaws.com/1.3.1/ApiGatewayCloudFormation.template">us-east-1</a>
+* <a href="http://apigatewaycloudformation.ap-northeast-1.s3.amazonaws.com/1.3.1/ApiGatewayCloudFormation.template">ap-northeast-1</a>
 
 ## 1.3.0 (2016-03-17)
 * New: Allow Api Domain name creation by specifying an IAM Server Certificate Name instead of the certificateBody & certificateChain.
 
 **Regional Templates** 
-* <a href="https://s3.amazonaws.com/apigatewaycloudformation.eu-west-1/1.3.0/ApiGatewayCloudFormation.template">eu-west-1</a>
-* <a href="https://s3.amazonaws.com/apigatewaycloudformation.us-west-1/1.3.0/ApiGatewayCloudFormation.template">us-west-1</a>
-* <a href="https://s3.amazonaws.com/apigatewaycloudformation.us-east-1/1.3.0/ApiGatewayCloudFormation.template">us-east-1</a>
-* <a href="https://s3.amazonaws.com/apigatewaycloudformation.ap-northeast-1/1.3.0/ApiGatewayCloudFormation.template">ap-northeast-1</a>
+* <a href="http://apigatewaycloudformation.eu-west-1.s3.amazonaws.com/1.3.0/ApiGatewayCloudFormation.template">eu-west-1</a>
+* <a href="http://apigatewaycloudformation.us-east-1.s3.amazonaws.com/1.3.0/ApiGatewayCloudFormation.template">us-east-1</a>
+* <a href="http://apigatewaycloudformation.ap-northeast-1.s3.amazonaws.com/1.3.0/ApiGatewayCloudFormation.template">ap-northeast-1</a>
 
 
 ## 1.2.1 (2016-03-14)
 * Fix: Allow deletion of Api Resources that failed to create.
 
 **Regional Templates** 
-* <a href="https://s3.amazonaws.com/apigatewaycloudformation.eu-west-1/1.2.1/ApiGatewayCloudFormation.template">eu-west-1</a>
-* <a href="https://s3.amazonaws.com/apigatewaycloudformation.us-west-1/1.2.1/ApiGatewayCloudFormation.template">us-west-1</a>
-* <a href="https://s3.amazonaws.com/apigatewaycloudformation.us-east-1/1.2.1/ApiGatewayCloudFormation.template">us-east-1</a>
-* <a href="https://s3.amazonaws.com/apigatewaycloudformation.ap-northeast-1/1.2.1/ApiGatewayCloudFormation.template">ap-northeast-1</a>
+* <a href="http://apigatewaycloudformation.eu-west-1.s3.amazonaws.com/1.2.1/ApiGatewayCloudFormation.template">eu-west-1</a>
+* <a href="http://apigatewaycloudformation.us-east-1.s3.amazonaws.com/1.2.1/ApiGatewayCloudFormation.template">us-east-1</a>
+* <a href="http://apigatewaycloudformation.ap-northeast-1.s3.amazonaws.com/1.2.1/ApiGatewayCloudFormation.template">ap-northeast-1</a>
 
 ## 1.2.0 (2016-03-13)
 * New deploy procedure via CFN insteadof bash/powershell
@@ -855,30 +852,43 @@ http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createAut
 * API BasePathMappings and Custom Domain Names
 
 **Regional Templates** 
-* <a href="https://s3.amazonaws.com/apigatewaycloudformation.eu-west-1/1.2.0/ApiGatewayCloudFormation.template">eu-west-1</a>
-* <a href="https://s3.amazonaws.com/apigatewaycloudformation.us-west-1/1.2.0/ApiGatewayCloudFormation.template">us-west-1</a>
-* <a href="https://s3.amazonaws.com/apigatewaycloudformation.us-east-1/1.2.0/ApiGatewayCloudFormation.template">us-east-1</a>
-* <a href="https://s3.amazonaws.com/apigatewaycloudformation.ap-northeast-1/1.2.0/ApiGatewayCloudFormation.template">ap-northeast-1</a>
+* <a href="http://apigatewaycloudformation.eu-west-1.s3.amazonaws.com/1.2.0/ApiGatewayCloudFormation.template">eu-west-1</a>
+* <a href="http://apigatewaycloudformation.us-east-1.s3.amazonaws.com/1.2.0/ApiGatewayCloudFormation.template">us-east-1</a>
+* <a href="http://apigatewaycloudformation.ap-northeast-1.s3.amazonaws.com/1.2.0/ApiGatewayCloudFormation.template">ap-northeast-1</a>
 
-## <a href="https://s3-eu-west-1.amazonaws.com/apigatewaycloudformation/builds/v1.1.6.zip">1.1.6</a> (2016-02-26)
+## 1.1.6 (2016-02-26)
+**Note:** This version is no longer supported
+
 * Added error logging to deploy script.
 
-## <a href="https://s3-eu-west-1.amazonaws.com/apigatewaycloudformation/builds/v1.1.4.zip">1.1.4</a> (2016-02-21)
+## 1.1.4 (2016-02-21)
+**Note:** This version is no longer supported
+
 * Added installation scripts for windows (powershell).
 
-## <a href="https://s3-eu-west-1.amazonaws.com/apigatewaycloudformation/builds/v1.1.3.zip">1.1.3</a> (2016-02-21)
+## 1.1.3 (2016-02-21)
+**Note:** This version is no longer supported
+
 * Added installation scripts for unix that do not require npm or node to be installed.
 
-## <a href="https://s3-eu-west-1.amazonaws.com/apigatewaycloudformation/builds/v1.1.0.zip">1.1.0</a> (2016-02-19)
+## 1.1.0 (2016-02-19)
+**Note:** This version is no longer supported
+
 * Introduced installation package so that you no longer have to clone the repo to install and deploy.
 
-## <a href="https://s3-eu-west-1.amazonaws.com/apigatewaycloudformation/builds/v1.0.4.zip">1.0.4</a>  (2016-02-18)
+## 1.0.4 (2016-02-18)
+**Note:** This version is no longer supported
+
 * Introducing API Authorizers (http://docs.aws.amazon.com/apigateway/latest/developerguide/use-custom-authorizer.html)
 
-## <a href="https://s3-eu-west-1.amazonaws.com/apigatewaycloudformation/builds/v1.0.2.zip">1.0.2</a>  (2016-02-18)
+## 1.0.2 (2016-02-18)
+**Note:** This version is no longer supported
+
 * Fix: Ensure that moving an API Method to another resource cleans up the old method.
 
-## <a href="https://s3-eu-west-1.amazonaws.com/apigatewaycloudformation/builds/1.0.1.zip">1.0.1</a> (2016-02-17)
+## 1.0.1 (2016-02-17)
+**Note:** This version is no longer supported
+
 * Added backoff and retries if failure due to concurrent modifications. <a href="https://github.com/carlnordenfelt/aws-api-gateway-for-cloudformation/pull/5">PR #5</a>
 * Rewrote installation and deploy scripts in nodejs and npm.
 * Removed Dynamo table for tracking resources, now tracked via the PhysicalResourceId. <a href="https://github.com/carlnordenfelt/aws-api-gateway-for-cloudformation/pull/4">PR #4</a>
@@ -892,7 +902,8 @@ If you are updating from 0.0.1 you have to delete all your APIs and your existin
 This update is not backward compatible.
 
 ## 0.0.1 (2016-01-04)
-**Note:** This version is no longer available and cannot be installed.
+**Note:** This version is no longer supported
+
 * Initial release
 
 
