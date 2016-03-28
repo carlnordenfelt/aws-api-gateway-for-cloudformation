@@ -974,7 +974,7 @@ To package and deploy your changes manually, follow these steps:
     npm install --production
     zip -r source.zip lib/* lib/*/** node_modules/*/**
 
-Go to the AWS Console -> Lambda -> {Your API Gateway function} -> Upload Code -> select source.zip
+Go to the AWS Console -> Lambda -> {Your API Gateway function} -> Code -> Upload a .ZIP file (select source.zip)
 
 
  
