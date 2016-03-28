@@ -5,7 +5,7 @@ var expect = chai.expect;
 
 var testSubject = require('../../../../lib/service/ApiMethod/ApiMethodEvent');
 
-describe('ApiModelEvent', function () {
+describe('ApiMethodEvent', function () {
 
     describe('getParameters', function () {
         var event;
