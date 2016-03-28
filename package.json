@@ -11,7 +11,7 @@
   "scripts": {
     "clean": "rm -rf node_modules *.zip coverage && npm install",
     "test": "npm install && npm run eslint && npm run unittest && npm run checkcoverage",
-    "unittest": "NODE_ENV=TEST  istanbul cover --include-all-sources true -x \"_scripts/**/*\" ./node_modules/mocha/bin/_mocha ./tests/unit -- --recursive",
+    "unittest": "NODE_ENV=TEST istanbul cover --include-all-sources true -x \"_scripts/**/*\" ./node_modules/mocha/bin/_mocha ./tests/unit -- --recursive && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
     "checkcoverage": "istanbul check-coverage --statement 100 --branches 100 --functions 100 --lines 100",
     "eslint": "eslint --max-warnings 0 lib",
     "testWindows": "npm install && npm run eslint && npm run unittestWindows && npm run checkcoverage",
@@ -24,14 +24,15 @@
     "lodash": "3.10.1"
   },
   "devDependencies": {
+    "chai": "3.5.0",
+    "coveralls": "^2.11.9",
+    "eslint": "1.10.1",
+    "eslint-config-defaults": "7.1.1",
+    "eslint-plugin-filenames": "0.2.0",
     "istanbul": "0.3.19",
     "mocha": "2.3.1",
     "mockery": "1.4.0",
     "should": "7.1.0",
-    "sinon": "1.16.1",
-    "chai": "3.5.0",
-    "eslint": "1.10.1",
-    "eslint-config-defaults": "7.1.1",
-    "eslint-plugin-filenames": "0.2.0"
+    "sinon": "1.16.1"
   }
 }
