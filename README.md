@@ -21,7 +21,6 @@ The project is inspired by [AWS Labs API Gateway Swagger Importer](https://githu
     1. <a href="#create-a-base-path-mapping">Create a Base Path Mapping</a>
     1. <a href="#create-an-authorizer">Create an Authorizer</a>
 1. <a href="#change-log">Change log</a>
-1. <a href="#todo">TODO</a>
 1. <a href="#contribute">Contribute</a>
 
 ##A note on terminology before we begin
@@ -963,12 +962,19 @@ This update is not backward compatible.
 
 * Initial release
 
-
-#TODO
-
-* Enable deployment management
-
 #Contribute
 I gladly accepts PRs, issues and comments. Anything that will help improve stability, reduce complexity or add more 
 functionality is appreciated. Please make sure that npm test does not fail before you push your PR. 
 There are strict requirements on es-lint and 100% unit test coverage for builds to succeed before they can be published.
+
+##Testing
+I highly recommend that you deploy your changes and test them "live" before submitting the PR.
+To package and deploy your changes manually, follow these steps:
+
+    npm install --production
+    zip -r source.zip lib/* lib/*/** node_modules/*/**
+
+Go to the AWS Console -> Lambda -> {Your API Gateway function} -> Upload Code -> select source.zip
+
+
+ 
