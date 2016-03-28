@@ -797,10 +797,10 @@ http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createAut
 
 **Regional Templates** 
 * <a href="http://apigatewaycloudformation.eu-central-1.s3.amazonaws.com/1.3.4/ApiGatewayCloudFormation.template">eu-central-1</a>
-* <a href="http://apigatewaycloudformation.eu-west-1.s3.amazonaws.com/1.3.4/ApiGatewayCloudFormation.template">eu-central-1</a>
-* <a href="http://apigatewaycloudformation.us-east-1.s3.amazonaws.com/1.3.4/ApiGatewayCloudFormation.template">eu-central-1</a>
-* <a href="http://apigatewaycloudformation.us-west-2.s3.amazonaws.com/1.3.4/ApiGatewayCloudFormation.template">eu-central-1</a>
-* <a href="http://apigatewaycloudformation.ap-northeast-1.s3.amazonaws.com/1.3.4/ApiGatewayCloudFormation.template">eu-central-1</a>
+* <a href="http://apigatewaycloudformation.eu-west-1.s3.amazonaws.com/1.3.4/ApiGatewayCloudFormation.template">eu-west-1</a>
+* <a href="http://apigatewaycloudformation.us-east-1.s3.amazonaws.com/1.3.4/ApiGatewayCloudFormation.template">us-east-1</a>
+* <a href="http://apigatewaycloudformation.us-west-2.s3.amazonaws.com/1.3.4/ApiGatewayCloudFormation.template">us-west-2</a>
+* <a href="http://apigatewaycloudformation.ap-northeast-1.s3.amazonaws.com/1.3.4/ApiGatewayCloudFormation.template">ap-northeast-1</a>
 
 ## 1.3.3 (2016-03-18)
 * New: Added support for eu-central-1
