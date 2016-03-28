@@ -384,8 +384,8 @@ Request templates are represented as a key/value map, with a content-type as the
 For simple mapping the template can be expressed as a JSON object.
 More complex templates can be expressed as a string.
 
-*Introduced in version 1.3.5*
-From version 1.3.5 you can specify the literal string 'input-pass-through' or 'input-pass-through-full' as the value
+*Introduced in version 1.4.0*
+From version 1.4.0 you can specify the literal string 'input-pass-through' or 'input-pass-through-full' as the value
 for your request templates. 'input-pass-through' will give you the request body (if present) and path, query and header parameters.
 'input-pass-through-full' will give you all of the above but also includes all stageVariables and everything available in $context.
 See http://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-mapping-template-reference.html for more information.
@@ -838,16 +838,16 @@ http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createAut
 
 #Change Log
 
-## 1.3.5 (2016-03-24)
+## 1.4.0 (2016-03-24)
 * New: Introducing ready-made pass-through templates for method integration request templates. @See <a href="#create-an-api-method">Create an API Method</a>
 * Fix: Improved CloudFormation error messages to give a direct indication to what went wrong in the AWS Console
 
 **Regional Templates** 
-* <a href="http://apigatewaycloudformation.eu-central-1.s3.amazonaws.com/1.3.5/ApiGatewayCloudFormation.template">eu-central-1</a>
-* <a href="http://apigatewaycloudformation.eu-west-1.s3.amazonaws.com/1.3.5/ApiGatewayCloudFormation.template">eu-west-1</a>
-* <a href="http://apigatewaycloudformation.us-east-1.s3.amazonaws.com/1.3.5/ApiGatewayCloudFormation.template">us-east-1</a>
-* <a href="http://apigatewaycloudformation.us-west-2.s3.amazonaws.com/1.3.5/ApiGatewayCloudFormation.template">us-west-2</a>
-* <a href="http://apigatewaycloudformation.ap-northeast-1.s3.amazonaws.com/1.3.5/ApiGatewayCloudFormation.template">ap-northeast-1</a>
+* <a href="http://apigatewaycloudformation.eu-central-1.s3.amazonaws.com/1.4.0/ApiGatewayCloudFormation.template">eu-central-1</a>
+* <a href="http://apigatewaycloudformation.eu-west-1.s3.amazonaws.com/1.4.0/ApiGatewayCloudFormation.template">eu-west-1</a>
+* <a href="http://apigatewaycloudformation.us-east-1.s3.amazonaws.com/1.4.0/ApiGatewayCloudFormation.template">us-east-1</a>
+* <a href="http://apigatewaycloudformation.us-west-2.s3.amazonaws.com/1.4.0/ApiGatewayCloudFormation.template">us-west-2</a>
+* <a href="http://apigatewaycloudformation.ap-northeast-1.s3.amazonaws.com/1.4.0/ApiGatewayCloudFormation.template">ap-northeast-1</a>
 
 ## 1.3.4 (2016-03-22)
 * New: Allow CORS wildcard methods
