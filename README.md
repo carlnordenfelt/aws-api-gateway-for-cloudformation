@@ -390,7 +390,13 @@ for your request templates. 'input-pass-through' will give you the request body 
 'input-pass-through-full' will give you all of the above but also includes all stageVariables and everything available in $context.
 See http://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-mapping-template-reference.html for more information.
 
-An example of a full pass through object as it is sent to the backend:
+*Addendum in version 1.4.1*
+From version 1.4.1 you may specify input-pass-through as an array where the first position is the literal string 'input-pass-through' or 'input-pass-through-full'
+and the second position is a custom JSON object or valid JSON string that you want to append to the backend request.
+A common use case is when you want to inject configuration from your CFN template in your backend requests.
+This JSON object is appended to the pass through request as the value of the key "custom".
+
+*An example of a full pass through request as it is sent to the backend:*
 
     {
         "body-json": {},
@@ -404,6 +410,9 @@ An example of a full pass through object as it is sent to the backend:
             "header": {
                 "myHeaderParam": "..."
             }
+        },
+        "custom": {
+            "myCustom": "configVariable"
         },
         "stage-variables": {
             "myStageVar": "...",
@@ -431,7 +440,11 @@ An example of a full pass through object as it is sent to the backend:
     }
 
 * Required: no
-* Type: Map[String{content-type},String{template}] or Map[String{content-type},Object{template}] or String 'input-pass-through|input-pass-through-full'
+* Type: 
+    * Map[String{content-type},String{template}] or
+    * Map[String{content-type},Object{template}] or 
+    * String 'input-pass-through|input-pass-through-full' or
+    * Array where the first position is String 'input-pass-through|input-pass-through-full' and the second is a custom JSON object or valid JSON string that is appended to the backend request.
 * Update: No interruption
 
 **integration.requestParameters**: 
@@ -837,6 +850,18 @@ http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createAut
     }
 
 #Change Log
+
+## 1.4.1 (2016-03-29)
+* New: Added custom configuration object to be passed along with input-pass-through request templates
+* Fix: Changed default Lambda timeout to 30 seconds from previous 10
+* Clean up: Parameter validation throws errors rather than returning them
+
+**Regional Templates** 
+* <a href="http://apigatewaycloudformation.eu-central-1.s3.amazonaws.com/1.4.1/ApiGatewayCloudFormation.template">eu-central-1</a>
+* <a href="http://apigatewaycloudformation.eu-west-1.s3.amazonaws.com/1.4.1/ApiGatewayCloudFormation.template">eu-west-1</a>
+* <a href="http://apigatewaycloudformation.us-east-1.s3.amazonaws.com/1.4.1/ApiGatewayCloudFormation.template">us-east-1</a>
+* <a href="http://apigatewaycloudformation.us-west-2.s3.amazonaws.com/1.4.1/ApiGatewayCloudFormation.template">us-west-2</a>
+* <a href="http://apigatewaycloudformation.ap-northeast-1.s3.amazonaws.com/1.4.1/ApiGatewayCloudFormation.template">ap-northeast-1</a>
 
 ## 1.4.0 (2016-03-24)
 * New: Introducing ready-made pass-through templates for method integration request templates. @See <a href="#create-an-api-method">Create an API Method</a>
