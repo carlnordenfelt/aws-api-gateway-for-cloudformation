@@ -65,30 +65,30 @@ describe('ApiResourceEvent', function () {
         it('should yield an error due to missing restApiId', function (done) {
             delete event.ResourceProperties.restApiId;
             delete event.OldResourceProperties;
-            var parameters = testSubject.getParameters(event);
-            expect(parameters).to.be.an.Error;
-            expect(parameters.message).to.contain('{restApiId}');
+            var fn = function () { testSubject.getParameters(event); };
+            expect(fn).to.throw(Error);
+            expect(fn).to.throw(/restApiId/);
             done();
         });
         it('should yield an error due to missing pathPart', function (done) {
             delete event.ResourceProperties.pathPart;
-            var parameters = testSubject.getParameters(event);
-            expect(parameters).to.be.an.Error;
-            expect(parameters.message).to.contain('{pathPart}');
+            var fn = function () { testSubject.getParameters(event); };
+            expect(fn).to.throw(Error);
+            expect(fn).to.throw(/pathPart/);
             done();
         });
         it('should yield an error due to missing parentId', function (done) {
             delete event.ResourceProperties.parentId;
-            var parameters = testSubject.getParameters(event);
-            expect(parameters).to.be.an.Error;
-            expect(parameters.message).to.contain('{parentId}');
+            var fn = function () { testSubject.getParameters(event); };
+            expect(fn).to.throw(Error);
+            expect(fn).to.throw(/parentId/);
             done();
         });
         it('should yield an error due to missing corsConfiguration.allowMethods', function (done) {
             delete event.ResourceProperties.corsConfiguration.allowMethods;
-            var parameters = testSubject.getParameters(event);
-            expect(parameters).to.be.an.Error;
-            expect(parameters.message).to.contain('{corsConfiguration.allowMethods}');
+            var fn = function () { testSubject.getParameters(event); };
+            expect(fn).to.throw(Error);
+            expect(fn).to.throw(/corsConfiguration.allowMethods/);
             done();
         });
         it('should not validate parameters if RequestType is Delete', function (done) {

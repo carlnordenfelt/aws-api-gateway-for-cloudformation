@@ -54,30 +54,30 @@ describe('ApiAuthorizerEvent', function () {
         });
         it('should yield an error due to missing restApiId', function (done) {
             delete event.ResourceProperties.restApiId;
-            var parameters = testSubject.getParameters(event);
-            expect(parameters).to.be.an.Error;
-            expect(parameters.message).to.contain('{restApiId}');
+            var fn = function () { testSubject.getParameters(event); };
+            expect(fn).to.throw(Error);
+            expect(fn).to.throw(/restApiId/);
             done();
         });
         it('should yield an error due to missing authorizerUri', function (done) {
             delete event.ResourceProperties.authorizerUri;
-            var parameters = testSubject.getParameters(event);
-            expect(parameters).to.be.an.Error;
-            expect(parameters.message).to.contain('{authorizerUri}');
+            var fn = function () { testSubject.getParameters(event); };
+            expect(fn).to.throw(Error);
+            expect(fn).to.throw(/authorizerUri/);
             done();
         });
         it('should yield an error due to missing identitySource', function (done) {
             delete event.ResourceProperties.identitySource;
-            var parameters = testSubject.getParameters(event);
-            expect(parameters).to.be.an.Error;
-            expect(parameters.message).to.contain('{identitySource}');
+            var fn = function () { testSubject.getParameters(event); };
+            expect(fn).to.throw(Error);
+            expect(fn).to.throw(/identitySource/);
             done();
         });
         it('should yield an error due to missing name', function (done) {
             delete event.ResourceProperties.name;
-            var parameters = testSubject.getParameters(event);
-            expect(parameters).to.be.an.Error;
-            expect(parameters.message).to.contain('{name}');
+            var fn = function () { testSubject.getParameters(event); };
+            expect(fn).to.throw(Error);
+            expect(fn).to.throw(/name/);
             done();
         });
         it('should set default ttl to 300', function (done) {

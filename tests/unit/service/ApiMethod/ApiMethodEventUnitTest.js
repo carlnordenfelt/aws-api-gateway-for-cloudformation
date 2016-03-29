@@ -61,30 +61,30 @@ describe('ApiMethodEvent', function () {
         it('should yield an error due to missing restApiId', function (done) {
             delete event.ResourceProperties.restApiId;
             delete event.OldResourceProperties;
-            var parameters = testSubject.getParameters(event);
-            expect(parameters).to.be.an.Error;
-            expect(parameters.message).to.contain('{restApiId}');
+            var fn = function () { testSubject.getParameters(event); };
+            expect(fn).to.throw(Error);
+            expect(fn).to.throw(/restApiId/);
             done();
         });
         it('should yield an error due to missing resourceId', function (done) {
             delete event.ResourceProperties.resourceId;
-            var parameters = testSubject.getParameters(event);
-            expect(parameters).to.be.an.Error;
-            expect(parameters.message).to.contain('{resourceId}');
+            var fn = function () { testSubject.getParameters(event); };
+            expect(fn).to.throw(Error);
+            expect(fn).to.throw(/resourceId/);
             done();
         });
         it('should yield an error due to missing method', function (done) {
             delete event.ResourceProperties.method;
-            var parameters = testSubject.getParameters(event);
-            expect(parameters).to.be.an.Error;
-            expect(parameters.message).to.contain('{method}');
+            var fn = function () { testSubject.getParameters(event); };
+            expect(fn).to.throw(Error);
+            expect(fn).to.throw(/method/);
             done();
         });
         it('should yield an error due to missing method.httpMethod', function (done) {
             delete event.ResourceProperties.method.httpMethod;
-            var parameters = testSubject.getParameters(event);
-            expect(parameters).to.be.an.Error;
-            expect(parameters.message).to.contain('{method.httpMethod}');
+            var fn = function () { testSubject.getParameters(event); };
+            expect(fn).to.throw(Error);
+            expect(fn).to.throw(/method.httpMethod/);
             done();
         });
         it('should not do validation if RequestType is set to delete', function (done) {
@@ -184,68 +184,68 @@ describe('ApiMethodEvent', function () {
             done();
         });
 
-        it('should yield an error due to missing restApiId', function (done) {
+        it('should throw an error due to missing restApiId', function (done) {
             delete params.restApiId;
-            var parameters = testSubject.validateParameters(params);
-            expect(parameters).to.be.an.Error;
-            expect(parameters.message).to.contain('{restApiId}');
+            var fn = function () { testSubject.validateParameters(params); };
+            expect(fn).to.throw(Error);
+            expect(fn).to.throw(/restApiId/);
             done();
         });
-        it('should yield an error due to missing resourceId', function (done) {
+        it('should throw an error due to missing resourceId', function (done) {
             delete params.resourceId;
-            var parameters = testSubject.validateParameters(params);
-            expect(parameters).to.be.an.Error;
-            expect(parameters.message).to.contain('{resourceId}');
+            var fn = function () { testSubject.validateParameters(params); };
+            expect(fn).to.throw(Error);
+            expect(fn).to.throw(/resourceId/);
             done();
         });
-        it('should yield an error due to missing method', function (done) {
+        it('should throw an error due to missing method', function (done) {
             delete params.method;
-            var parameters = testSubject.validateParameters(params);
-            expect(parameters).to.be.an.Error;
-            expect(parameters.message).to.contain('{method}');
+            var fn = function () { testSubject.validateParameters(params); };
+            expect(fn).to.throw(Error);
+            expect(fn).to.throw(/method/);
             done();
         });
-        it('should yield an error due to missing method.httpMethod', function (done) {
+        it('should throw an error due to missing method.httpMethod', function (done) {
             delete params.method.httpMethod;
-            var parameters = testSubject.validateParameters(params);
-            expect(parameters).to.be.an.Error;
-            expect(parameters.message).to.contain('{method.httpMethod}');
+            var fn = function () { testSubject.validateParameters(params); };
+            expect(fn).to.throw(Error);
+            expect(fn).to.throw(/method.httpMethod/);
             done();
         });
-        it('should yield an error due to missing integration.type', function (done) {
+        it('should throw an error due to missing integration.type', function (done) {
             delete params.integration.type;
-            var parameters = testSubject.validateParameters(params);
-            expect(parameters).to.be.an.Error;
-            expect(parameters.message).to.contain('{integration.type}');
+            var fn = function () { testSubject.validateParameters(params); };
+            expect(fn).to.throw(Error);
+            expect(fn).to.throw(/integration.type/);
             done();
         });
-        it('should yield an error due to missing integration.httpMethod', function (done) {
+        it('should throw an error due to missing integration.httpMethod', function (done) {
             delete params.integration.httpMethod;
-            var parameters = testSubject.validateParameters(params);
-            expect(parameters).to.be.an.Error;
-            expect(parameters.message).to.contain('{integration.httpMethod}');
+            var fn = function () { testSubject.validateParameters(params); };
+            expect(fn).to.throw(Error);
+            expect(fn).to.throw(/integration.httpMethod/);
             done();
         });
-        it('should yield an error due to missing integration.uri', function (done) {
+        it('should throw an error due to missing integration.uri', function (done) {
             delete params.integration.uri;
-            var parameters = testSubject.validateParameters(params);
-            expect(parameters).to.be.an.Error;
-            expect(parameters.message).to.contain('{integration.uri}');
+            var fn = function () { testSubject.validateParameters(params); };
+            expect(fn).to.throw(Error);
+            expect(fn).to.throw(/integration.uri/);
             done();
         });
-        it('should yield an error due to missing responses.statusCode', function (done) {
+        it('should throw an error due to missing responses.statusCode', function (done) {
             delete params.responses.ResponseKey.statusCode;
-            var parameters = testSubject.validateParameters(params);
-            expect(parameters).to.be.an.Error;
-            expect(parameters.message).to.contain('{responses.statusCode}');
+            var fn = function () { testSubject.validateParameters(params); };
+            expect(fn).to.throw(Error);
+            expect(fn).to.throw(/responses.statusCode/);
             done();
         });
-        it('should yield an error if authorizationType is CUSTOM and no authorizerId is set', function (done) {
+        it('should throw an error if authorizationType is CUSTOM and no authorizerId is set', function (done) {
             params.method.authorizationType = 'CUSTOM';
             delete params.method.authorizerId;
-            var parameters = testSubject.validateParameters(params);
-            expect(parameters).to.be.an.Error;
-            expect(parameters.message).to.contain('{method.authorizerId}');
+            var fn = function () { testSubject.validateParameters(params); };
+            expect(fn).to.throw(Error);
+            expect(fn).to.throw(/method.authorizerId/);
             done();
         });
     });

@@ -40,13 +40,10 @@ describe('ApiModelEvent', function () {
             done();
         });
         it('should yield an error due to missing restApiId', function (done) {
-            var event = {
-                ResourceProperties: {
-                }
-            };
-            var parameters = testSubject.getParameters(event);
-            expect(parameters).to.be.an.Error;
-            expect(parameters.message).to.contain('{restApiId}');
+            var event = { ResourceProperties: { } };
+            var fn = function () { testSubject.getParameters(event); };
+            expect(fn).to.throw(Error);
+            expect(fn).to.throw(/restApiId/);
             done();
         });
         it('should yield an error due to missing name', function (done) {
@@ -55,9 +52,9 @@ describe('ApiModelEvent', function () {
                     restApiId: 'RestApiId'
                 }
             };
-            var parameters = testSubject.getParameters(event);
-            expect(parameters).to.be.an.Error;
-            expect(parameters.message).to.contain('{name}');
+            var fn = function () { testSubject.getParameters(event); };
+            expect(fn).to.throw(Error);
+            expect(fn).to.throw(/name/);
             done();
         });
         it('should not validate parameters id RequestType is Delete', function (done) {

@@ -41,9 +41,9 @@ describe('ApiBasePathMappingEvent', function () {
                     domainName: 'DomainName'
                 }
             };
-            var parameters = testSubject.getParameters(event);
-            expect(parameters).to.be.an.Error;
-            expect(parameters.message).to.contain('{restApiId}');
+            var fn = function () { testSubject.getParameters(event); };
+            expect(fn).to.throw(Error);
+            expect(fn).to.throw(/restApiId/);
             done();
         });
         it('should yield an error due to missing domainName', function (done) {
@@ -52,9 +52,9 @@ describe('ApiBasePathMappingEvent', function () {
                     restApiId: 'RestApiId'
                 }
             };
-            var parameters = testSubject.getParameters(event);
-            expect(parameters).to.be.an.Error;
-            expect(parameters.message).to.contain('{domainName}');
+            var fn = function () { testSubject.getParameters(event); };
+            expect(fn).to.throw(Error);
+            expect(fn).to.throw(/domainName/);
             done();
         });
         it('should yield an error due to missing stage', function (done) {
@@ -64,9 +64,9 @@ describe('ApiBasePathMappingEvent', function () {
                     domainName: "DomainName"
                 }
             };
-            var parameters = testSubject.getParameters(event);
-            expect(parameters).to.be.an.Error;
-            expect(parameters.message).to.contain('{stage}');
+            var fn = function () { testSubject.getParameters(event); };
+            expect(fn).to.throw(Error);
+            expect(fn).to.throw(/stage/);
             done();
         });
 

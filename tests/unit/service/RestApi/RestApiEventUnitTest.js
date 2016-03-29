@@ -32,9 +32,9 @@ describe('RestAPiEvent', function () {
                     description: "ApiDesc"
                 }
             };
-            var parameters = testSubject.getParameters(event);
-            expect(parameters).to.be.an.Error;
-            expect(parameters.message).to.contain('{name}');
+            var fn = function () { testSubject.getParameters(event); };
+            expect(fn).to.throw(Error);
+            expect(fn).to.throw(/name/);
             done();
         });
         it('should not validate parameters if RequestType is Delete', function (done) {

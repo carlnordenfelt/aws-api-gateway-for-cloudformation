@@ -64,12 +64,6 @@ describe('ApiAuthorizerCommand', function () {
             expect(parameters.params).to.be.an('object');
             done();
         });
-        it('should get error', function (done) {
-            getParametersStub.returns(new Error());
-            var parameters = testSubject.getParameters();
-            expect(parameters.params).to.be.an.Error;
-            done();
-        });
     });
 
     describe('create authorizer', function () {

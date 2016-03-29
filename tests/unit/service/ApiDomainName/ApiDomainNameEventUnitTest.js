@@ -72,45 +72,45 @@ describe('ApiDomainNameEvent', function () {
             delete event.ResourceProperties.certificateBody;
             delete event.ResourceProperties.certificateChain;
             delete event.OldResourceProperties;
-            var parameters = testSubject.getParameters(event);
-            expect(parameters).to.be.an.Error;
-            expect(parameters.message).to.contain('{iamServerCertificateName or certificateBody and certificateChain}');
+            var fn = function () { testSubject.getParameters(event); };
+            expect(fn).to.throw(Error);
+            expect(fn).to.throw(/iamServerCertificateName or certificateBody and certificateChain/);
             done();
         });
         it('should yield an error due to missing certificateBody', function (done) {
             delete event.ResourceProperties.certificateBody;
             delete event.OldResourceProperties;
-            var parameters = testSubject.getParameters(event);
-            expect(parameters).to.be.an.Error;
-            expect(parameters.message).to.contain('{certificateBody}');
+            var fn = function () { testSubject.getParameters(event); };
+            expect(fn).to.throw(Error);
+            expect(fn).to.throw(/certificateBody/);
             done();
         });
         it('should yield an error due to missing certificateChain', function (done) {
             delete event.ResourceProperties.certificateChain;
-            var parameters = testSubject.getParameters(event);
-            expect(parameters).to.be.an.Error;
-            expect(parameters.message).to.contain('{certificateChain}');
+            var fn = function () { testSubject.getParameters(event); };
+            expect(fn).to.throw(Error);
+            expect(fn).to.throw(/certificateChain/);
             done();
         });
         it('should yield an error due to missing certificateName', function (done) {
             delete event.ResourceProperties.certificateName;
-            var parameters = testSubject.getParameters(event);
-            expect(parameters).to.be.an.Error;
-            expect(parameters.message).to.contain('{certificateName}');
+            var fn = function () { testSubject.getParameters(event); };
+            expect(fn).to.throw(Error);
+            expect(fn).to.throw(/certificateName/);
             done();
         });
         it('should yield an error due to missing certificatePrivateKey', function (done) {
             delete event.ResourceProperties.certificatePrivateKey;
-            var parameters = testSubject.getParameters(event);
-            expect(parameters).to.be.an.Error;
-            expect(parameters.message).to.contain('{certificatePrivateKey}');
+            var fn = function () { testSubject.getParameters(event); };
+            expect(fn).to.throw(Error);
+            expect(fn).to.throw(/certificatePrivateKey/);
             done();
         });
         it('should yield an error due to missing domainName', function (done) {
             delete event.ResourceProperties.domainName;
-            var parameters = testSubject.getParameters(event);
-            expect(parameters).to.be.an.Error;
-            expect(parameters.message).to.contain('{domainName}');
+            var fn = function () { testSubject.getParameters(event); };
+            expect(fn).to.throw(Error);
+            expect(fn).to.throw(/domainName/);
             done();
         });
         it('should not validate parameters id RequestType is Delete', function (done) {

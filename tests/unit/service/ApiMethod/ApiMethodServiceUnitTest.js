@@ -187,14 +187,12 @@ describe('ApiMethodService', function () {
             });
         });
 
-        it('should yield an error if getParameters fails', function (done) {
+        it('should throw an error if getParameters fails', function (done) {
             delete params.params.restApiId;
-            testSubject.createMethod(params, function (error, apiMethod) {
-                expect(error).to.be.an.Error;
-                expect(error.message).to.contain('{restApiId}');
-                expect(apiMethod).to.be.undefined;
-                done();
-            });
+            var fn = function () { testSubject.createMethod(params, function () {}); };
+            expect(fn).to.throw(Error);
+            expect(fn).to.throw(/restApiId/);
+            done();
         });
         it('should yield an error if getMethod for CorsOrigin fails', function (done) {
             params.params.method.httpMethod = 'GET';
