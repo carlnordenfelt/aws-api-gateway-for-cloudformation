@@ -131,6 +131,19 @@ describe('ApiDomainNameService', function () {
                 done();
             });
         });
+        it('should return an error if getServerCertificate does not contain a certificate chain', function (done) {
+            delete params.certificateBody;
+            delete params.certificateChain;
+            params.iamServerCertificateName = 'IamServerCertificateName';
+            getServerCertificateStub.yields(undefined, { ServerCertificate: { CertificateBody: 'ServerCertificateBody' }});
+            testSubject.createDomain(params, function (error, apiDomainName) {
+                expect(error).to.be.an.Error;
+                expect(getServerCertificateStub.called).to.be.true;
+                expect(createDomainNameStub.called).to.be.false;
+                expect(apiDomainName).to.be.undefined;
+                done();
+            });
+        });
     });
 
     describe('deleteDomain', function () {
