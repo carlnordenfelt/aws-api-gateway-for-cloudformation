@@ -851,6 +851,16 @@ http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createAut
 
 #Change Log
 
+## 1.4.2 (2016-03-31)
+* Fix: Ensure that the server certificate body & chain are set when gtting certificate from IAM.
+
+**Regional Templates** 
+* <a href="http://apigatewaycloudformation.eu-central-1.s3.amazonaws.com/1.4.2/ApiGatewayCloudFormation.template">eu-central-1</a>
+* <a href="http://apigatewaycloudformation.eu-west-1.s3.amazonaws.com/1.4.2/ApiGatewayCloudFormation.template">eu-west-1</a>
+* <a href="http://apigatewaycloudformation.us-east-1.s3.amazonaws.com/1.4.2/ApiGatewayCloudFormation.template">us-east-1</a>
+* <a href="http://apigatewaycloudformation.us-west-2.s3.amazonaws.com/1.4.2/ApiGatewayCloudFormation.template">us-west-2</a>
+* <a href="http://apigatewaycloudformation.ap-northeast-1.s3.amazonaws.com/1.4.2/ApiGatewayCloudFormation.template">ap-northeast-1</a>
+
 ## 1.4.1 (2016-03-29)
 * New: Added custom configuration object to be passed along with input-pass-through request templates
 * Fix: Changed default Lambda timeout to 30 seconds from previous 10
