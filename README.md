@@ -852,7 +852,7 @@ http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createAut
 #Change Log
 
 ## 1.4.2 (2016-03-31)
-* Fix: Ensure that the server certificate body & chain are set when gtting certificate from IAM.
+* Fix: Ensure that the server certificate body & chain are set when gtting certificate from IAM. Issue #35.
 
 **Regional Templates** 
 * <a href="http://apigatewaycloudformation.eu-central-1.s3.amazonaws.com/1.4.2/ApiGatewayCloudFormation.template">eu-central-1</a>
