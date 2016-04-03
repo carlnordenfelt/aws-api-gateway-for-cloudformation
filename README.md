@@ -108,14 +108,14 @@ http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createRes
 Custom:RestApi
 
 ###Parameters
-**name:**
+**name**  
 Name of the REST API.
 
 * Required: *yes*
 * Type: String
 * Update: No interruption
 
-**description:**
+**description**  
 An optional description of your REST API.
 
 * Required: no
@@ -149,28 +149,28 @@ This may create certain data inconsistencies between the actual API and what is 
 Custom:ApiResource
 
 ###Parameters
-**restApiId:**
+**restApiId**  
 Reference to the REST API in which you want to create this API Resource.
 
 * Required: *yes*
 * Type: String
 * Update: Not supported
 
-**parentId** 
+**parentId**  
 Id of the parent API Resource under which you want to place this API Resource. If you are creating a top level resource, use the parentResourceId output from Custom::RestApi.
 
 * Required: *yes*
 * Type: String
 * Update: No interruption, partial. You may add/change this property but not remove it. 
 
-**pathPart** 
+**pathPart**  
 The path suffix of this API Resource, appended to the full path of the parent API Resource.
 
 * Required: *yes*
 * Type: String
 * Update: No interruption, partial. You may add/change this property but not remove it. 
 
-**corsConfiguration**
+**corsConfiguration**  
 If you supply cors configuration this API Resource will enable CORS requests.
 For more information on CORS, please refer to http://www.w3.org/TR/cors/.
 Changes made to the CORS configuraiton will have direct impact on the methods you list (or remove) in the CORS config.
@@ -180,14 +180,14 @@ It will also create an OPTIONS method for you.
 * Type: Object
 * Update: No interruption
 
-**corsConfiguration.allowMethods**
+**corsConfiguration.allowMethods**  
 A list of HTTP methods that allow CORS requests under this API Resource or a wildcard string "*" which will allow all methods.
  
 * Required: *yes*
 * Type: String array or String "*"
 * Update: No interruption
 
-**corsConfiguration.allowHeaders**
+**corsConfiguration.allowHeaders**  
 List of headers that the server allows the user-agent to send in requests.
 If this property is not set it will default to the headers that Amazon recommends: Content-Type,X-Amz-Date,Authorization,X-Api-Key.
 If it is set it will override the default headers and exclude them. See *corsConfiguration.allowDefaultHeaders* for further details.
@@ -196,7 +196,7 @@ If it is set it will override the default headers and exclude them. See *corsCon
 * Type: String array
 * Update: No interruption
 
-**corsConfiguration.allowDefaultHeaders**
+**corsConfiguration.allowDefaultHeaders**  
 If you set *corsConfiguration.allowHeaders* and still want to include the default set of headers you can set this property
 to true and the default headers will be appended to the headers you specified in *corsConfiguration.allowHeaders*
 The default headers are: Content-Type,X-Amz-Date,Authorization,X-Api-Key.
@@ -205,21 +205,21 @@ The default headers are: Content-Type,X-Amz-Date,Authorization,X-Api-Key.
 * Type: Boolean
 * Update: No interruption
 
-**corsConfiguration.allowOrigin**
+**corsConfiguration.allowOrigin**  
 Origin from which CORS requests are allowed. If you omit it the origin will be set to * which means that any origin is allowed to call the Resource.
 
 * Required: no, default is *
 * Type: Object
 * Update: No interruption
 
-**corsConfiguration.exposeHeaders**
+**corsConfiguration.exposeHeaders**  
 A list of headers that are exposed to the client in the response, if present.
 
 * Required: no, default is none
 * Type: String array
 * Update: No interruption
 
-**corsConfiguration.maxAge**
+**corsConfiguration.maxAge**  
 Max age in seconds that a pre-flight check (OPTIONS) should be cached on the client.
 If not supplied, the time that pre-flight requests are stored is at the discretion of the user agent.
 
@@ -227,7 +227,7 @@ If not supplied, the time that pre-flight requests are stored is at the discreti
 * Type: Integer
 * Update: No interruption
 
-**corsConfiguration.allowCredentials**
+**corsConfiguration.allowCredentials**  
 Sets the Access-Control-Allow-Credentials header to true if this configuration is set to true.
 
 * Required: no, default value is false
@@ -265,35 +265,35 @@ http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#putMethod
 Custom:ApiMethod
 
 ###Parameters
-**restApiId:**
+**restApiId**  
 Reference id to the Rest API.
 
 * Required: *yes*
 * Type: String
 * Update: Not supported
 
-**resourceId** 
+**resourceId**  
 Id of the API Resource on which the API Method should be applied.
 
 * Required: *yes*
 * Type: String
 * Update: No interruption
 
-**method**
+**method**  
 Method configuration container.
 
 * Required: *yes*
 * Type: Object
 * Update: Child properties may be changed according to documentation.
 
-**method.httpMethod**
+**method.httpMethod**  
 The HTTP verb that this method adheres to. E.g POST, GET etc.
 
 * Required: *yes*
 * Type: String
 * Update: No interruption
 
-**method.authorizationType**
+**method.authorizationType**  
 API Method authorization type.
 Set to CUSTOM if you want to use an <a href="#create-an-authorizer">API Authorizer</a>.
 
@@ -301,21 +301,21 @@ Set to CUSTOM if you want to use an <a href="#create-an-authorizer">API Authoriz
 * Type: String
 * Update: No interruption
 
-**method.authorizerId**
+**method.authorizerId**  
 Authorizer Id if method.authorizationType is set to CUSTOM
 
 * Required: no
 * Type: String
 * Update: No interruption
 
-**method.apiKeyRequired**
+**method.apiKeyRequired**  
 Set to true if this API Method requires an API Key.
 
 * Required: no, default is false
 * Type: Boolean
 * Update: No interruption
 
-**method.requestModels**
+**method.requestModels**  
 Specifies the Model resources used for the request's content type. 
 Request models are represented as a key/value map, with a content type as the key and a Model name as the value.
 
@@ -323,7 +323,7 @@ Request models are represented as a key/value map, with a content type as the ke
 * Type: Map<String{content-type},String{model-name}>
 * Update: No interruption
 
-**method.parameters**
+**method.parameters**  
 Represents request parameters that are sent with the backend request. 
 Request parameters are represented as a string array of parameter destinations. 
 The destination must match the pattern {location}.{name}, where location is either querystring, 
@@ -333,7 +333,7 @@ path, or header. name must be a valid, unique parameter name.
 * Type: String Array
 * Update: No interruption
 
-**integration**
+**integration**  
 Backend integration configuration
 http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#putIntegration-property
 
@@ -341,55 +341,55 @@ http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#putIntegr
 * Type: Object, *required*
 * Update: Not available
 
-**integration.type**
+**integration.type**  
 Backend type
 
 * Required: *yes*
 * Type: String
 * Update: No interruption
 
-**integration.credentials**
+**integration.credentials**  
 AWS credentials used to invoke the (AWS) backend.
 
 * Required: no
 * Type: String
 * Update: No interruption
 
-**integration.cacheNamespace**
+**integration.cacheNamespace**  
 Integration input cache namespace
 
 * Required: no
 * Type: String
 * Update: No interruption
 
-**integration.cacheKeyParameters**
+**integration.cacheKeyParameters**  
 Integration input cache keys
 
 * Required: no
 * Type: String array
 * Update: No interruption
 
-**integration.httpMethod**
+**integration.httpMethod**  
 HTTP method of the backend integration request.
 
 * Required: conditional, must be set if *integration.type* is not set to MOCK.
 * Type: String
 * Update: No Interruption
 
-**integration.requestTemplates**
+**integration.requestTemplates**  
 Specifies the templates used to transform the method request body. 
 Request templates are represented as a key/value map, with a content-type as the key and a template as the value.
 
 For simple mapping the template can be expressed as a JSON object.
 More complex templates can be expressed as a string.
 
-*Introduced in version 1.4.0*
+*Introduced in version 1.4.0*  
 From version 1.4.0 you can specify the literal string 'input-pass-through' or 'input-pass-through-full' as the value
 for your request templates. 'input-pass-through' will give you the request body (if present) and path, query and header parameters.
 'input-pass-through-full' will give you all of the above but also includes all stageVariables and everything available in $context.
 See http://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-mapping-template-reference.html for more information.
 
-*Addendum in version 1.4.1*
+*Addendum in version 1.4.1*  
 From version 1.4.1 you may specify input-pass-through as an array where the first position is the literal string 'input-pass-through' or 'input-pass-through-full'
 and the second position is a custom JSON object or valid JSON string that you want to append to the backend request.
 A common use case is when you want to inject configuration from your CFN template in your backend requests.
@@ -446,7 +446,7 @@ This JSON object is appended to the pass through request as the value of the key
     * Array where the first position is String 'input-pass-through|input-pass-through-full' and the second is a custom JSON object or valid JSON string that is appended to the backend request.
 * Update: No interruption
 
-**integration.requestParameters**: 
+**integration.requestParameters**  
 Represents request parameters that are sent with the backend request. 
 Request parameters are represented as a key/value map, with a destination as the key and a source as the value. 
 A source must match an existing method request parameter, or a static value. 
@@ -458,14 +458,14 @@ path, or header. name must be a valid, unique parameter name.
 * Type: Map<String{destination},String{source}>
 * Update: No interruption
 
-**integration.uri**
+**integration.uri**  
 URI to the backend service. Can be a url to another service, a Lambda ARN etc.
 
 * Required: conditional, must be set if *integration.type* is not set to MOCK.
 * Type: String
 * Update: No interruption
 
-**responses** 
+**responses**  
 Configurations for both the IntegrationResponses and the MethodResponses.
 The key is the selection pattern used to map the response to a status code.
 There should be one selection pattern with the value "default" which acts as the default response.
@@ -478,7 +478,7 @@ http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#putMethod
 * Type: Map{String,Object}
 * Update: Not available 
 
-**response.statusCode**
+**response.statusCode**  
 The HTTP Status Code that this response configuration maps to.
 Must be unique within the scope of each API Method definition.
 
@@ -486,7 +486,7 @@ Must be unique within the scope of each API Method definition.
 * Type: Integer
 * Update: No interruptions
 
-**response.headers** 
+**response.headers**  
 Map of headers where the key is the header name and value is the source, or static value of the header.
 Static values are specified using enclosing single quotes, and backend response headers can be read 
 using the pattern integration.response.header.{name}.
@@ -498,7 +498,7 @@ Note that the key should only be the name of the header that will be exposed to 
 * Type Map{String,String}
 * Update: No interruptions
 
-**response.responseTemplates** 
+**response.responseTemplates**  
 Specifies the templates used to transform the integration response body. 
 Response templates are represented as a key/value map, with a content-type as the key and a template as the value.
 The template can be represented as a JSON string or a JSON object.
@@ -510,7 +510,7 @@ A template represented by an empty string is the equivalent of output pass-throu
 * Type: Map{String,String} or Map{String,Object}
 * Update: No interruptions
 
-**response.responseModels** 
+**response.responseModels**  
 Specifies the Model resources used for the response's content type. 
 Response models are represented as a key/value map, with a content type as the key and a Model name as the value.
 
@@ -573,35 +573,35 @@ http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createMod
 Custom:ApiModel
 
 ###Parameters
-**restApiId:**
+**restApiId**  
 Reference id to the Rest API.
 
 * Required: *yes*
 * Type: String
 * Update: Not supported
 
-**name:**
+**name**  
 Name of the model
 
 * Required: *yes*
 * Type: String
 * Update: Not supported 
 
-**contentType:**
+**contentType**  
 The content-type for the model.
 
 * Required: no, default is application/json
 * Type: String
 * Update: Not supported
 
-**description:**
+**description**  
 Description of the model.
 
 * Required: no, default is an empty string
 * Type: String
 * Update: No interruption
 
-**schema:**
+**schema**  
 The model schema. This can be represented by either a JSON object or a valid JSON string. 
 
 * Required: no, default is an empty object
@@ -636,28 +636,28 @@ Once the domain name has been created you have to create a Route53 alias record 
 Custom:ApiDomainName
 
 ###Parameters
-**domainName:**
+**domainName**  
 The name of the DomainName resource.
 
 * Required: *yes*
 * Type: String
 * Update: Not supported
 
-**certificateName:**
+**certificateName**  
 The name of the certificate.
 
 * Required: *yes*
 * Type: String
 * Update: Not supported
 
-**iamServerCertificateName:**
+**iamServerCertificateName**  
 A name reference to an existing certificate that ahs already been uploaded to IAM.
 
 * Required: *conditional*, you have to specify the iamServerCertificateName or the certificateBody and certificateChain
 * Type: String
 * Update: Not supported
 
-**certificateBody:**
+**certificateBody**  
 The body of the server certificate provided by your certificate authority.
 You can provide it in two different of formats:
 * As a single line where " " (space) denotes a new line (header/footer are excepted). E.g: -----BEGIN CERT-----line1 line2 ... -----END CERT-----
@@ -667,7 +667,7 @@ You can provide it in two different of formats:
 * Type: String
 * Update: Not supported
 
-**certificatePrivateKey:**
+**certificatePrivateKey**  
 Your certificate's private key.
 * As a single line where " " (space) denotes a new line (header/footer are excepted). E.g: -----BEGIN RSA PRIVATE KEY-----line1 line2 ... -----END RSA PRIVATE KEY-----
 * As a single line where "\n" denotes a new line. E.g: -----BEGIN RSA PRIVATE KEY-----line1\nline2\n...\n-----END RSA PRIVATE KEY-----
@@ -676,7 +676,7 @@ Your certificate's private key.
 * Type: String
 * Update: Not supported
 
-**certificateChain:**
+**certificateChain**  
 The certificate chain provided by your certificate authority.
 You can provide it in two different of formats:
 * As a single line where " " (space) denotes a new line (header/footer are excepted). E.g: -----BEGIN CERTIFICATE-----line1 line2 ... -----END CERTIFICATE-----
@@ -711,27 +711,27 @@ http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createBas
 If the stage does not exist it will be created for you. However, if you delete the ApiBasePathMapping the stage will 
 not be deleted and your API will remain deployed at the given stage.
 
-**Note:** Since creating a BasePathMapping will automatically deploy your API you have to ensure that it DependsOn all methods created in the API.
+**Note:** Becuase creating a BasePathMapping will automatically deploy your API you have to ensure that it DependsOn all methods created in the API.
 
 ###Type
 Custom:ApiBasePathMapping
 
 ###Parameters
-**domainName:**
+**domainName**  
 The domain name of the BasePathMapping resource to create.
 
 * Required: *yes*
 * Type: String
 * Update: Not supported
 
-**restApiId:**
+**restApiId**  
 Reference to the REST API in which you want to create this API Base Path Mapping.
 
 * Required: *yes*
 * Type: String
 * Update: No interruption
 
-**basePath:**
+**basePath**  
 The base path name that callers of the API must provide as part of the URL after the domain name. 
 This value must be unique for all of the mappings across a single API. 
 Exclude this if you do not want callers to specify a base path name after the domain name.
@@ -743,7 +743,7 @@ Exclude this if you do not want callers to specify a base path name after the do
 * Type: String
 * Update: No interruption
 
-**stage:**
+**stage**  
 The name of the API stage that you want to use for this mapping. 
 
 * Required: *yes*
@@ -776,7 +776,7 @@ http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createAut
 Custom:ApiAuthorizer
 
 ###Parameters
-**authorizerUri:**
+**authorizerUri**  
 Authorizer Api Gateway Lambda function invocation ARN.
 Example: arn:aws:apigateway:eu-west-1:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-1:1234:function:LambdaName/invocations
 
@@ -784,7 +784,7 @@ Example: arn:aws:apigateway:eu-west-1:lambda:path/2015-03-31/functions/arn:aws:l
 * Type: String
 * Update: No interruption
 
-**identitySource:**
+**identitySource**  
 Source header from where the token can be read.
 Must match the regexp 'method.request.header.[a-zA-Z0-9._-]+'
 
@@ -792,7 +792,7 @@ Must match the regexp 'method.request.header.[a-zA-Z0-9._-]+'
 * Type: String
 * Update: No interruption
 
-**name:**
+**name**  
 The base path name that callers of the API must provide as part of the URL after the domain name. 
 This value must be unique for all of the mappings across a single API. 
 Exclude this if you do not want callers to specify a base path name after the domain name.
@@ -801,28 +801,28 @@ Exclude this if you do not want callers to specify a base path name after the do
 * Type: String
 * Update: No interruption
 
-**restApiId:**
+**restApiId**  
 The domain name of the BasePathMapping resource to create.
 
 * Required: *yes*
 * Type: String
 * Update: Not supported
 
-**authorizerCredentials:**
+**authorizerCredentials**  
 IAM role that API Gateway will use to invoke the Lambda function.
 
 * Required: *yes*
 * Type: String
 * Update: No interruption
 
-**authorizerResultTtlInSeconds:**
+**authorizerResultTtlInSeconds**  
 The TTL of cached authorizer results.
 
 * Required: no, default is 300
 * Type: Integer
 * Update: No interruption
 
-**identityValidationExpression:**
+**identityValidationExpression**  
 Optional RegEx statement for API Gateway to validate the input token before calling the custom authorizer Lambda function.
 This helps you avoid or reduce the chances of being charged for processing invalid tokens.
 
