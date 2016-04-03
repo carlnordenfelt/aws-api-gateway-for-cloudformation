@@ -29,7 +29,7 @@ Throughout this document there are references to *resources* and *API Resources*
 It is very important to distinguish between the two:
 
 * A *resource* is a CloudFormation term and can refer to any AWS resource.
-* An *API Resource* is a specific type of AWS resource (Custom::ApiResource) which is called "Resource" in API Gateway.
+* An *API Resource* is a specific type of AWS resource (Custom::ApiResource) and is called "Resource" in API Gateway.
 
 ##Setup
 ###Prerequisites
