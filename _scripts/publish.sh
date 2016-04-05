@@ -1,15 +1,14 @@
 #!/bin/sh
 
-
-# Regions where AWS Lambda is available
+# Regions where AWS Lambda + API Gateway are available
 regions=( eu-central-1 eu-west-1 us-west-2 us-east-1 ap-northeast-1 )
+# Valid npm version arguments
 npmActions=( patch minor major )
 # Local path to the CFN template file
 templatePath="_scripts"
 # Template file name
 templateName="ApiGatewayCloudFormation.template"
-
-# S3 bucket name prefix (.region is appended to the name)
+# S3 bucket name prefix (.{region} is appended to the name)
 s3BucketName="apigatewaycloudformation"
 # Source file name
 sourceFileName="source.zip"
@@ -52,7 +51,7 @@ function parseVersion() {
     echo ${version}
 }
 
-# Packages the source code to a zip file (source.zip)
+# Packages the source code to a zip file (${sourceFileName})
 function package() {
     npm run clean
     npm run test
@@ -70,6 +69,7 @@ function package() {
 
 # Publishes the source file and CFN template to S3.
 # It will publish to all Lambda regions. If the bucket does not exist it is created.
+# If version matches *test/* it's only uploaded to eu-west-1 (the best region :)
 function publish() {
     echo "Publishing version: ${version}"
 
@@ -111,6 +111,7 @@ function usage() {
     echo "Usage: publish.sh -a [package|publish] -v version"
     echo "-v is required if -a is publish"
     echo "-v patch|minor|major will publish a new npm version, any other value will be used as is."
+    echo "default action is package"
     exit 1;
 }
 
