@@ -2,6 +2,7 @@
 
 var chai = require('chai');
 var expect = chai.expect;
+var _ = require('lodash');
 
 var testSubject = require('../../../../lib/service/ApiDeploy/ApiDeployEvent');
 var event;
@@ -111,14 +112,14 @@ describe('ApiDeployEvent', function () {
             expect(patchOperations).to.be.an.Array;
             expect(patchOperations.length).to.equal(8);
             console.log(patchOperations)
-            expect(patchOperations[0].path).to.equal('/cacheClusterEnabled');
-            expect(patchOperations[1].path).to.equal('/cacheClusterSize');
-            expect(patchOperations[2].path).to.equal('/description');
-            expect(patchOperations[3].path).to.equal('/variables/testVar1');
-            expect(patchOperations[4].path).to.equal('/variables/testVar2');
-            expect(patchOperations[5].path).to.equal('/*/*/metrics/enabled');
-            expect(patchOperations[6].path).to.equal('/*/*/logging/loglevel');
-            expect(patchOperations[7].path).to.equal('/~1no-params/GET/logging/loglevel');
+            expect(_.find(patchOperations, { path: '/cacheClusterEnabled' }).value).to.equal(true);
+            expect(_.find(patchOperations, { path: '/cacheClusterSize' }).value).to.equal(0.5);
+            expect(_.find(patchOperations, { path: '/description' }).value).to.equal('TestStage');
+            expect(_.find(patchOperations, { path: '/variables/testVar1' }).value).to.equal('TestValue1');
+            expect(_.find(patchOperations, { path: '/variables/testVar2' }).value).to.equal('TestValue2');
+            expect(_.find(patchOperations, { path: '/*/*/metrics/enabled' }).value).to.equal(true);
+            expect(_.find(patchOperations, { path: '/*/*/logging/loglevel' }).value).to.equal('ERROR');
+            expect(_.find(patchOperations, { path: '/~1no-params/GET/logging/loglevel' }).value).to.equal('INFO');
             done();
         });
         it('should give no patch operations for subset of config', function (done) {

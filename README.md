@@ -13,13 +13,11 @@ It's deployed via the CloudFormation Console and runs on AWS Lambda.
 
 ##Overview
 
-
 This setup allows you to manage the majority of the API Gateway related resources.  
 The installation will create a Lambda function in the region corresponding to the template location in your
 AWS account. This Lambda function is a CloudFormation Custom Resource and acts as a liaison between
 CloudFormation and API Gateway.  
 Once the Lambda function has been installed you can start writing your CloudFormation templates.
-
 
 If you want to learn more about CloudFormation, Custom Resources or API Gateway I suggest the following links:
 * [AWS CloudFormation](https://aws.amazon.com/cloudformation/)
