@@ -21,6 +21,7 @@ The project is inspired by [AWS Labs API Gateway Swagger Importer](https://githu
     1. <a href="#create-a-domain-name">Create a Domain Name</a>
     1. <a href="#create-a-base-path-mapping">Create a Base Path Mapping</a>
     1. <a href="#create-an-authorizer">Create an Authorizer</a>
+    1. <a href="#deploy-your-api">Deploy your API</a>
 1. <a href="#change-log">Change log</a>
 1. <a href="#contribute">Contribute</a>
 
@@ -802,7 +803,7 @@ Exclude this if you do not want callers to specify a base path name after the do
 * Update: No interruption
 
 **restApiId**  
-The domain name of the BasePathMapping resource to create.
+The Rest API this authorizer will be linked to.
 
 * Required: *yes*
 * Type: String
@@ -847,6 +848,91 @@ http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createAut
             "identityValidationExpression": "$[a-z]*"
         }
     }
+
+##Deploy your API
+When you have configured your API you have to deploy it for it to be available.  
+This resource will create a new deployment and set the desired stage configuration.  
+
+**Note:**  
+As previously mentioned, your API is deployed when you create a <a href="#create-a-base-path-mapping">Base Path Mapping</a>.
+If you provide the same stage name to this resource your API will be deployed to the same stage but with additional configuration options.
+
+**Note:**  
+Only resources that are created are made available when you deploy your API. This means that this resources has to depend
+on every API Method you want to be included in the deploy. This can be tricky as this list can be long but one strategy 
+to resolve this is to put your resource and method definitions in a sub-stack and let this resource depend on that sub-stack only.
+
+See 
+http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createDeployment-property &
+http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#updateStage-property
+for further details.
+
+###Type
+Custom:DeployApi
+
+###Parameters
+**restApiId**  
+The Rest API you want to deploy.
+
+* Required: *yes*
+* Type: String
+* Update: Not supported
+
+**stageName**  
+The name of the stage you want to deploy to. If the stage does not exist it will be created.  
+**Note:** You may change the name of the stage but that will have no impact on the existing stage, thus the existing stage will
+remain deployed.
+
+* Required: *yes*
+* Type: String
+* Update: No interruption
+
+**stageConfig**
+Key/value map of default stage configuration.
+
+* Required: *no*
+* Type: Map{String, String}
+* Update: No interruption
+
+**stageConfig.description**  
+Stage description
+
+* Required: *no*
+* Type: String
+* Update: No interruption
+
+**stageConfig.cacheClusterEnabled**
+Set to true to enable API caching
+
+Stage description
+
+* Required: *no*
+* Type: Booleanc
+* Update: No interruption
+
+**stageConfig.cacheClusterSize**
+Cache cluster size
+
+* Required: *no*
+* Type: Double, one of 0.5 | 1.6 | 6.1 | 13.5 | 28.4 | 58.2 | 118 | 237
+* Update: No interruption
+
+
+**stageVariables**
+Key/value map of stage variables where the key is the name of the variable and the value is the value of that variable.
+
+* Required: *no*
+* Type: Map{String, String}
+* Update: No interruption
+
+**methodSettings**
+Method settings, global for the stage or specific for a method.
+
+* Required: *no*
+* Type: Map{String, Mixed}
+* Update: No interruption
+
+See http://docs.aws.amazon.com/cli/latest/reference/apigateway/update-stage.html > *methodSettings* for further details
 
 #Change Log
 
