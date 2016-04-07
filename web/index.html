@@ -1,0 +1,2419 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <title>AWS API Gateway - CloudFormation</title>
+        <link rel="stylesheet" href="assets/vendor/css/bootstrap.min.css">
+        <link rel="stylesheet" href="assets/style.css">
+    </head>
+    <body data-spy="scroll" data-target=".scrollspy" data-offset="120">
+        <a href="https://github.com/you" class="hidden-xs"><img
+                style="position: fixed; top: -10px; right: 0; border: 0; z-index: 10000 !important"
+                src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67"
+                alt="Fork me on GitHub"
+                data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"></a>
+
+        <div class="navbar navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container-fluid">
+                    <div id="headline" class="brand">AWS API Gateway - CloudFormation</div>
+                    <ul class="nav navbar-nav navbar-right hidden-xs hidden-sm hidden-md" style="margin-right: 150px">
+                        <li class="github"><a class="github-button"
+                                              href="https://github.com/carlnordenfelt/aws-api-gateway-for-cloudformation"
+                                              data-icon="octicon-eye"
+                                              data-count-href="/carlnordenfelt/aws-api-gateway-for-cloudformation/watchers"
+                                              data-count-api="/repos/carlnordenfelt/aws-api-gateway-for-cloudformation#subscribers_count"
+                                              data-count-aria-label="# watchers on GitHub"
+                                              aria-label="Watch carlnordenfelt/aws-api-gateway-for-cloudformation on GitHub">Watch</a>
+                        </li>
+                        <li class="github"><a class="github-button"
+                                              href="https://github.com/carlnordenfelt/aws-api-gateway-for-cloudformation"
+                                              data-icon="octicon-star"
+                                              data-count-href="/carlnordenfelt/aws-api-gateway-for-cloudformation/stargazers"
+                                              data-count-api="/repos/carlnordenfelt/aws-api-gateway-for-cloudformation#stargazers_count"
+                                              data-count-aria-label="# stargazers on GitHub"
+                                              aria-label="Star carlnordenfelt/aws-api-gateway-for-cloudformation on GitHub">Star</a>
+                        </li>
+                        <li class="github"><a class="github-button"
+                                              href="https://github.com/carlnordenfelt/aws-api-gateway-for-cloudformation/fork"
+                                              data-icon="octicon-repo-forked"
+                                              data-count-href="/carlnordenfelt/aws-api-gateway-for-cloudformation/network"
+                                              data-count-api="/repos/carlnordenfelt/aws-api-gateway-for-cloudformation#forks_count"
+                                              data-count-aria-label="# forks on GitHub"
+                                              aria-label="Fork carlnordenfelt/aws-api-gateway-for-cloudformation on GitHub">Fork</a>
+                        </li>
+                        <li class="github"><a class="github-button"
+                                              href="https://github.com/carlnordenfelt/aws-api-gateway-for-cloudformation/issues"
+                                              data-icon="octicon-issue-opened"
+                                              data-count-api="/repos/carlnordenfelt/aws-api-gateway-for-cloudformation#open_issues_count"
+                                              data-count-aria-label="# issues on GitHub"
+                                              aria-label="Issue carlnordenfelt/aws-api-gateway-for-cloudformation on GitHub">Issue</a>
+                        </li>
+                        <li><a href="https://travis-ci.org/carlnordenfelt/aws-api-gateway-for-cloudformation"><img
+                                src="https://travis-ci.org/carlnordenfelt/aws-api-gateway-for-cloudformation.svg?branch=master"
+                                alt="Build Status"></a></li>
+                        <li>
+                            <a href="https://coveralls.io/github/carlnordenfelt/aws-api-gateway-for-cloudformation?branch=master"><img
+                                    src="https://coveralls.io/repos/github/carlnordenfelt/aws-api-gateway-for-cloudformation/badge.svg?branch=master"
+                                    alt="Coverage Status"></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-2 scrollspy">
+            <ul id="nav" class="nav hidden-xs hidden-sm" data-spy="affix">
+                <li><a href="#introduction">Introduction</a></li>
+                <li>
+                    <a href="#setup">Setup</a>
+                    <ul class="nav">
+                        <li><a href="#prerequisites"><span class="glyphicon glyphicon-chevron-right"></span>Prerequisites</a>
+                        </li>
+                        <li><a href="#install"><span class="glyphicon glyphicon-chevron-right"></span>Install</a></li>
+                        <li><a href="#update"><span class="glyphicon glyphicon-chevron-right"></span>Update</a></li>
+                        <li><a href="#uninstall"><span class="glyphicon glyphicon-chevron-right"></span>Uninstall</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#resources">Resources</a>
+                    <ul class="nav">
+                        <li><a href="#custom-RestApi"><span class="glyphicon glyphicon-chevron-right"></span>Rest API</a></li>
+                        <li><a href="#custom-ApiResource"><span class="glyphicon glyphicon-chevron-right"></span>API Resource</a></li>
+                        <li><a href="#custom-ApiMethod"><span class="glyphicon glyphicon-chevron-right"></span>API Method</a></li>
+                        <li><a href="#custom-ApiModel"><span class="glyphicon glyphicon-chevron-right"></span>API Model</a></li>
+                        <li><a href="#custom-ApiDomainName"><span class="glyphicon glyphicon-chevron-right"></span>API Domain Name</a></li>
+                        <li><a href="#custom-ApiBasePathMapping"><span class="glyphicon glyphicon-chevron-right"></span>API Base Path Mapping</a></li>
+                        <li><a href="#custom-ApiAuthorizer"><span class="glyphicon glyphicon-chevron-right"></span>API Authorizer</a></li>
+                        <!--<li><a href="#custom-DeployApi"><span class="glyphicon glyphicon-chevron-right"></span>Deploy API</a></li>-->
+                    </ul>
+                </li>
+                <li><a href="#change-log">Change log</a></li>
+                <li><a href="#contribute">Contribute</a></li>
+                <li><a href="#issues">Issues</a></li>
+                <li><a href="#license">License</a></li>
+            </ul>
+        </div>
+        <div class="col-md-10">
+            <section id="introduction">
+                <h1>API Gateway for CloudFormation</h1>
+
+                <p>
+                    API Gateway for CloudFormation is a set of Custom Resources that allows you to manage your API Gateway setup
+                    with CloudFormation. Yes, you read that right! Finally a way to integrate your backend services that you
+                    already create using CloudFormation with your APIs!
+                </p>
+
+                <p>
+                    It's deployed via the CloudFormation Console and runs on AWS Lambda.<br/>
+                    <a href="https://twitter.com/carl_nordenfelt">Follow me on Twitter</a> to get the latest news and updates
+                    (and the occasional random tweet about something else).
+                </p>
+
+                <h2>Overview</h2>
+
+                <p>
+                    This setup allows you to manage the majority of the API Gateway related resources.<br/>
+                    The installation will create a Lambda function in the region corresponding to the template location in your
+                    AWS account. This Lambda function is a CloudFormation Custom Resource and acts as a liaison between
+                    CloudFormation and API Gateway.<br/>
+                    Once the Lambda function has been installed you can start writing your CloudFormation templates using the
+                    resources described in this document.
+                </p>
+
+                <p>
+                    If you want to learn more about CloudFormation, Custom Resources or API Gateway I suggest the following
+                    links:
+                </p>
+                <ul>
+                    <li><a href="https://aws.amazon.com/cloudformation/">AWS CloudFormation</a></li>
+                    <li><a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/template-custom-resources.html">Custom
+                        Resources</a></li>
+                    <li><a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/template-reference.html">CloudFormation
+                        Template Reference</a></li>
+                    <li><a href="https://aws.amazon.com/api-gateway/">API Gateway</a></li>
+                    <li><a href="http://docs.aws.amazon.com/lambda/latest/dg/welcome.html">AWS Lambda</a></li>
+                </ul>
+
+                <div class="callout callout-warning">
+                    <h4>Experimental resources</h4>
+
+                    <p>
+                        Some resources may be flagged as experimental which means that they haven't been tested thoroughly,
+                        it doesn't necessarily mean that they don't work.<br/>
+                        If you use an experimental resource I am extra curious as to how it worked.
+                    </p>
+                </div>
+
+                <div class="callout callout-info">
+                    <h4>A note on terminology before we begin</h4>
+
+                    <p>
+                        Throughout this document there are references to <em>resources</em> and <em>API Resources</em>.
+                        It is very important to distinguish between the two:
+                    </p>
+                    <ul>
+                        <li>A <em>resource</em> is a CloudFormation term and can refer to any AWS resource.</li>
+                        <li>An <em>API Resource</em> is a specific type of AWS resource (Custom::ApiResource) and is called
+                            "Resource" in API Gateway.
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="setup">
+                <h2>Setup</h2>
+
+                <section id="prerequisites">
+                    <h3>Prerequisites</h3>
+                    <ul>
+                        <li>You need an <a href="http://aws.amazon.com">Amazon AWS Account</a></li>
+                        <li>You need an IAM user with the permissions described below</li>
+                    </ul>
+                    <h4>Setup IAM permissions</h4>
+
+                    <p>
+                        To be able to install the Custom Resource library you require a set of permissions.
+                        Configure your IAM user with the following policy:
+                    </p>
+
+                    <p>
+                        <strong>Note:</strong> This Policy contains delete permissions.
+                        If you do not want to give these permissions you can omit the last block of permissions in the policy.
+                        If you do so, the IAM user won't be able to delete the installation.
+                    </p>
+                    <pre>
+                        {
+                            "Version": "2012-10-17",
+                            "Statement": [
+                                {
+                                    "Effect": "Allow",
+                                    "Action": [
+                                        "cloudformation:CreateStack",
+                                        "cloudformation:DescribeStacks",
+                                        "iam:CreateRole",
+                                        "iam:CreatePolicy",
+                                        "iam:AttachRolePolicy",
+                                        "iam:GetRole",
+                                        "iam:PassRole",
+                                        "lambda:CreateFunction",
+                                        "lambda:UpdateFunctionCode",
+                                        "lambda:GetFunctionConfiguration",
+
+                                        "cloudformation:DeleteStack",
+                                        "lambda:DeleteFunction",
+                                        "iam:ListPolicyVersions",
+                                        "iam:DetachRolePolicy",
+                                        "iam:DeletePolicy",
+                                        "iam:DeleteRole"
+                                    ],
+                                    "Resource": [
+                                        "*"
+                                    ]
+                                }
+                            ]
+                        }
+                    </pre>
+                </section>
+                <section id="install">
+                    <h3>Install</h3>
+                    <ol>
+                        <li>Pick the version you want from the <a href="#change-log">Change log</a>. The latest is usually the
+                            one you want.
+                        </li>
+                        <li>Copy the template link that corresponds to the region you want to deploy your Lambda in.</li>
+                        <li>Open your AWS CloudFormation Console and choose "Create stack".</li>
+                        <li>Select "Specify an Amazon S3 template URL" and paste the template link.</li>
+                        <li>Enter the Lambda memory allocation and execution timeout. The defaults should suffice.</li>
+                        <li>Approve the IAM resource creation and create the stack.</li>
+                    </ol>
+                </section>
+
+                <section id="update">
+                    <h3>Update</h3>
+
+                    <p>Follow the steps above but instead of creating a new stack you update your existing stack. Note that you
+                        need to change the template URL when updating.</p>
+                </section>
+
+                <section id="uninstall">
+                    <h3>Uninstall</h3>
+
+                    <p>Simply delete the stack from your AWS CloudFormation Console. Don't forget to revoke any unecessary IAM
+                        permissions you may have added during setup.</p>
+                </section>
+            </section>
+
+            <section id="resources">
+                <h2>Resources</h2>
+
+                <section id="custom-RestApi">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                <span class="glyphicon glyphicon-chevron-down" data-collapse
+                                      title="click to collapse/expand"></span>
+                                Custom::RestApi
+                            </h3>
+                        </div>
+                        <div class="panel-body">
+                            <p>
+                                Creates a new API Gateway REST API<br/>
+                                <a href="http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createRestApi-property">http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createRestApi-property</a>
+                            </p>
+
+                            <h3>Parameters</h3>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        name
+                                        <span class="label label-danger pull-right">Required</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>Name of the REST API.</p>
+                                    <table class="table">
+                                        <tr>
+                                            <th>Type:</th>
+                                            <td>String</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Update:</th>
+                                            <td>No interruption</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        description
+                                        <span class="label label-info pull-right">Optional</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>An optional description of your REST API.</p>
+                                    <table class="table">
+                                        <tr>
+                                            <th>Type:</th>
+                                            <td>String</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Update:</th>
+                                            <td>No interruption, partial support. You may add/change this property but not
+                                                remove it.
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-footer">
+                            <h3>Outputs</h3>
+
+                            <p>
+                                <a href="http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createRestApi-property">http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createRestApi-property</a><br/>
+                                In addition, the parent resource id is also returned in the response:<br/>
+                                <code>Fn::GetAtt: ["TestRestApi", "parentResourceId"]</code>
+                            </p>
+
+                            <h3>CloudFormation Template Example</h3>
+                            <pre>
+                                "TestRestApi" : {
+                                    "Type" : "Custom::RestApi",
+                                    "Properties" : {
+                                        "ServiceToken": "{Lambda_Function_ARN}",
+                                        "name": "Test API",
+                                        "description": "This is a test API"
+                                    }
+                                }
+                            </pre>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="custom-ApiResource">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                <span class="glyphicon glyphicon-chevron-down" data-collapse title="click to collapse/expand"></span>
+                                Custom::ApiResource
+                            </h3>
+                        </div>
+                        <div class="panel-body">
+                            <p>
+                                Creates a new API Resource in an existing API.<br/>
+                                <a href="http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createResource-property">http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createResource-property</a>
+                            </p>
+
+                            <div class="callout callout-danger">
+                                If you delete an API Resource from your CloudFormation template, all child resources are deleted
+                                by API Gateway.
+                                This may create certain data inconsistencies between the actual API and what is believed to be
+                                setup from the Custom Resource perspective. It's therefore recommend to remove any child
+                                resources associated with the API Resource you delete.
+                            </div>
+
+                            <h3>Parameters</h3>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        restApiId
+                                        <span class="label label-danger pull-right">Required</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>Reference to the REST API in which you want to create this API Resource.</p>
+                                    <table class="table">
+                                        <tr><th>Type</th><td>String</td></tr>
+                                        <tr><th>Update</th><td>Not supported</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">parentId
+                                        <span class="label label-danger pull-right">Required</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>Id of the parent API Resource under which you want to place this API Resource. If you are
+                                        creating a top level resource, use the parentResourceId output from Custom::RestApi.</p>
+                                    <table class="table">
+                                        <tr>
+                                            <th>Type:</th>
+                                            <td>String</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Update:</th>
+                                            <td>No interruption, partial support. You may add/change this property but not
+                                                remove it.
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">pathPart
+                                        <span class="label label-danger pull-right">Required</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>The path suffix of this API Resource, appended to the full path of the parent API
+                                        Resource.</p>
+                                    <table class="table">
+                                        <tr>
+                                            <th>Type:</th>
+                                            <td>String</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Update:</th>
+                                            <td>No interruption, partial support. You may add/change this property but not
+                                                remove it.
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">corsConfiguration
+                                        <span class="label label-info pull-right">Optional</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>
+                                        If you supply cors configuration this API Resource will enable CORS requests.<br/>
+                                        For more information on CORS, please refer to <a href="http://www.w3.org/TR/cors/">http://www.w3.org/TR/cors/</a>.<br/>
+                                        Changes made to the CORS configuration will have direct impact on the methods you list
+                                        (or remove) in the CORS config.
+                                        It will also create an OPTIONS method for you.
+                                    </p>
+                                    <table class="table">
+                                        <tr>
+                                            <th>Type:</th>
+                                            <td>Object</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Update:</th>
+                                            <td>No interruption</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        corsConfiguration.allowMethods
+                                        <span class="label label-warning pull-right">Conditional</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>
+                                        A list of HTTP methods that allow CORS requests under this API Resource or a wildcard
+                                        string "*" which will allow all methods.<br/>
+                                        This parameter is required if you supply CORS configuration.
+                                    </p>
+                                    <table class="table">
+                                        <tr>
+                                            <th>Type:</th>
+                                            <td>String array or String "*"</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Update:</th>
+                                            <td> No interruption</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        corsConfiguration.allowHeaders
+                                        <span class="label label-info pull-right">Optional</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>
+                                        A list of headers that the server should allow the user-agent to send in requests.<br/>
+                                        If this property is not set it will default to the headers that Amazon recommends:
+                                        <code>Content-Type,X-Amz-Date,Authorization,X-Api-Key</code>.<br/>
+                                        If it is set it will override the default headers and exclude them. See <em>corsConfiguration.allowDefaultHeaders</em>
+                                        for further details.
+                                    </p>
+                                    <table class="table">
+                                        <tr>
+                                            <th>Type:</th>
+                                            <td>String array</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Update:</th>
+                                            <td>No interruption</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        corsConfiguration.allowDefaultHeaders
+                                        <span class="label label-info pull-right">Optional</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>
+                                        If you set <em>corsConfiguration.allowHeaders</em> and still want to include the default
+                                        set of headers you can set this property
+                                        to true and the default headers will be appended to the headers you specified in <em>corsConfiguration.allowHeaders</em><br/>
+                                        The default headers are: <code>Content-Type,X-Amz-Date,Authorization,X-Api-Key</code>.
+                                    </p>
+                                    <table class="table">
+                                        <tr>
+                                            <th>Type:</th>
+                                            <td>Boolean</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Update:</th>
+                                            <td>No interruption</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">corsConfiguration.allowOrigin
+                                        <span class="label label-info pull-right">Optional</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>
+                                        Origin from where CORS requests are allowed. If you omit it the origin will be set to *
+                                        which means that any origin is allowed to call the API Resource.
+                                    </p>
+                                    <table class="table">
+                                        <tr>
+                                            <th>Type:</th>
+                                            <td>Object</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Default:</th>
+                                            <td><code>*</code></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Update:</th>
+                                            <td>No interruption</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        corsConfiguration.exposeHeaders
+                                        <span class="label label-info pull-right">Optional</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>
+                                        A list of headers that are exposed to the client in the response.
+                                    </p>
+                                    <table class="table">
+                                        <tr><th>Type:</th><td>String array</td></tr>
+                                        <tr><th>Update:</th><td>No interruption</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        corsConfiguration.maxAge
+                                        <span class="label label-info pull-right">Optional</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>
+                                        Max age in seconds that a pre-flight check (OPTIONS) should be cached on the
+                                        client.<br/>
+                                        If not supplied, the time that pre-flight requests are stored is at the discretion of
+                                        the user agent.
+                                    </p>
+                                    <table class="table">
+                                        <tr>
+                                            <th>Type:</th>
+                                            <td>Integer</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Update:</th>
+                                            <td>No interruption</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        corsConfiguration.allowCredentials
+                                        <span class="label label-info pull-right">Optional</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>
+                                        Sets the Access-Control-Allow-Credentials header to true if this configuration is set to
+                                        true.
+                                    </p>
+                                    <table class="table">
+                                        <tr>
+                                            <th>Type:</th>
+                                            <td>Boolean</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Default:</th>
+                                            <td>False</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Update:</th>
+                                            <td>No interruption</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-footer">
+                            <h3>Outputs</h3>
+
+                            <p>
+                                <a href="http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createResource-property">http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createResource-property</a>
+                            </p>
+
+                            <h3>CloudFormation Template Example</h3>
+                            <pre>
+                                "TestApiResource" : {
+                                    "Type" : "Custom::ApiResource",
+                                    "Properties" : {
+                                        "ServiceToken": "{Lambda_Function_ARN}",
+                                        "restApiId": "xyz123",
+                                        "parentId": "abc456",
+                                        "pathPart": "test",
+                                        "corsConfiguration": {
+                                            "allowMethods": ["GET", "POST"],
+                                            "allowHeaders": ["x-my-header", "some-other-header"],
+                                            "allowDefaultHeaders": true,
+                                            "allowOrigin": "<a href="http://example.com">http://example.com</a>",
+                                            "exposeHeaders": ["some-header", "x-another-header"],
+                                            "maxAge": 1800,
+                                            "allowCredentials": true
+                                        }
+                                    }
+                                }
+                            </pre>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="custom-ApiMethod">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                <span class="glyphicon glyphicon-chevron-down" data-collapse title="click to collapse/expand"></span>
+                                Custom::ApiMethod
+                            </h3>
+                        </div>
+                        <div class="panel-body">
+                            <p>
+                                Creates a new Api Gateway Method including response, request and integration.<br/>
+                                <a href="http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#putMethod-property">http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#putMethod-property</a>
+                            </p>
+
+                            <h3>Parameters</h3>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        restApiId
+                                        <span class="label label-danger pull-right">Required</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>Reference id to the Rest API.</p>
+                                    <table class="table">
+                                        <tr><th>Type</th><td>String</td></tr>
+                                        <tr><th>Update</th><td>Not supported</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        resourceId
+                                        <span class="label label-danger pull-right">Required</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>Id of the API Resource on which the API Method should be applied.</p>
+                                    <table class="table">
+                                        <tr><th>Type</th><td>String</td></tr>
+                                        <tr><th>Update</th><td>No interruption</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        method
+                                        <span class="label label-danger pull-right">Required</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>Method configuration container.</p>
+                                    <table class="table">
+                                        <tr><th>Type</th><td>Object</td></tr>
+                                        <tr><th>Update</th><td>Update: Child properties may be changed according to documentation.</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        method.httpMethod
+                                        <span class="label label-danger pull-right">Required</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>The HTTP verb that this method adheres to. E.g POST, GET etc.</p>
+                                    <table class="table">
+                                        <tr><th>Type</th><td>String</td></tr>
+                                        <tr><th>Update</th><td>No interruption</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        method.authorizationType
+                                        <span class="label label-info pull-right">Optional</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>
+                                        API Method authorization type.<br/>
+                                        Set to <code>CUSTOM</code> if you want to use an <a href="#custom-ApiAuthorizer">API Authorizer</a>.
+                                    </p>
+                                    <table class="table">
+                                        <tr><th>Type</th><td>String</td></tr>
+                                        <tr><th>Default</th><td><code>NONE</code></td></tr>
+                                        <tr><th>Update</th><td>No interruption</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        method.authorizerId
+                                        <span class="label label-info pull-right">Optional</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>Authorizer Id if method.authorizationType is set to <code>CUSTOM</code>.</p>
+                                    <table class="table">
+                                        <tr><th>Type</th><td>String</td></tr>
+                                        <tr><th>Update</th><td>No interruption</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        method.apiKeyRequired
+                                        <span class="label label-info pull-right">Optional</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>Set to true if this API Method requires an API Key.</p>
+                                    <table class="table">
+                                        <tr><th>Type</th><td>String</td></tr>
+                                        <tr><th>Default</th><td><code>false</code></td></tr>
+                                        <tr><th>Update</th><td>No interruption</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        method.requestModels
+                                        <span class="label label-info pull-right">Optional</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>
+                                        Specifies the Model resources used for the request's content type.<br/>
+                                        Request models are represented as a key/value map, with a content type as the key and a Model name as
+                                        the value.
+                                    </p>
+                                    <table class="table">
+                                        <tr><th>Type</th><td>Map{String(content-type)},String(model-name)}</td></tr>
+                                        <tr><th>Update</th><td>No interruption</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        method.parameters
+                                        <span class="label label-info pull-right">Optional</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>
+                                        Represents request parameters that are sent with the backend request.<br/>
+                                        Request parameters are represented as a string array of parameter destinations.<br/>
+                                        The destination must match the pattern <code>{location}.{name}</code>, where <code>{location}</code> is either querystring,
+                                        path, or header. <code>{name}</code> must be a valid, unique parameter name.
+                                    </p>
+                                    <table class="table">
+                                        <tr><th>Type</th><td>String Array</td></tr>
+                                        <tr><th>Update</th><td>No interruption</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        integration
+                                        <span class="label label-danger pull-right">Required</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>
+                                        Backend integration configuration.<br/>
+                                        <a href="http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#putIntegration-property">http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#putIntegration-property</a>
+                                    </p>
+                                    <table class="table">
+                                        <tr><th>Type</th><td>Object</td></tr>
+                                        <tr><th>Update</th><td>Not available</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        integration.type
+                                        <span class="label label-danger pull-right">Required</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>Backend type.</p>
+                                    <table class="table">
+                                        <tr><th>Type</th><td>String</td></tr>
+                                        <tr><th>Update</th><td>No interruption</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        integration.credentials
+                                        <span class="label label-info pull-right">Optional</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>AWS credentials used to invoke the (AWS) backend.</p>
+                                    <table class="table">
+                                        <tr><th>Type</th><td>String</td></tr>
+                                        <tr><th>Update</th><td>No interruption</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        integration.cacheNamespace
+                                        <span class="label label-info pull-right">Optional</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>Integration input cache namespace.</p>
+                                    <table class="table">
+                                        <tr><th>Type</th><td>String</td></tr>
+                                        <tr><th>Update</th><td>No interruption</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        integration.cacheKeyParameters
+                                        <span class="label label-info pull-right">Optional</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>Integration input cache keys.</p>
+                                    <table class="table">
+                                        <tr><th>Type</th><td>String Array</td></tr>
+                                        <tr><th>Update</th><td>No interruption</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        integration.httpMethod
+                                        <span class="label label-warning pull-right">Conditional</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>
+                                        HTTP method of the backend integration request.<br/>
+                                        Must be set if the <code>integration.type</code> is set to <code>MOCK</code>.
+                                    </p>
+                                    <table class="table">
+                                        <tr><th>Type</th><td>String</td></tr>
+                                        <tr><th>Update</th><td>No Interruption</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        integration.requestTemplates
+                                        <span class="label label-info pull-right">Optional</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>
+                                        Specifies the templates used to transform the method request body.<br/>
+                                        Request templates are represented as a key/value map, with a content-type as the key and a template as
+                                        the value.
+                                    </p>
+
+                                    <p>
+                                        For simple mappings the template can be expressed as a JSON object.
+                                        More complex templates can be expressed as a string.
+                                    </p>
+
+                                    <div class="callout callout-info">
+                                        <h4>Introduced in version 1.4.0</h4>
+                                        From version 1.4.0 you can specify the literal string <code>input-pass-through</code> or <code>input-pass-through-full</code>
+                                        as the value
+                                        for your request templates. <code>input-pass-through</code> will give you the request body (if present) and path,
+                                        query and header parameters.
+                                        <code>input-pass-through-full</code> will give you all of the above but also includes all stageVariables and
+                                        everything available in $context.<br/>
+                                        See <a
+                                            href="http://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-mapping-template-reference.html">http://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-mapping-template-reference.html</a>
+                                        for more information.
+
+                                        <h4>Addendum in version 1.4.1</h4>
+                                        From version 1.4.1 you may specify input-pass-through as an array where the first position is the
+                                        literal string <code>input-pass-through</code> or <code>input-pass-through-full</code>
+                                        and the second position is a custom JSON object or valid JSON string that you want to append to the
+                                        backend request.
+                                        A common use case is when you want to inject configuration from your CFN template in your backend
+                                        requests.
+                                        This JSON object is appended to the pass through request as the value of the key <code>custom</code>.
+
+
+                                        <h4>An example of a full pass through request as it is sent to the backend:</h4>
+                                        <pre>
+                                            {
+                                                "body-json": {
+                                                    "bodyParam": "...
+                                                },
+                                                "params": {
+                                                    "path": {
+                                                        "myPathParam": "..."
+                                                    },
+                                                    "querystring": {
+                                                        "myQueryParam": "..."
+                                                    },
+                                                    "header": {
+                                                        "myHeaderParam": "..."
+                                                    }
+                                                },
+                                                "custom": {
+                                                    "myCustom": "configVariable"
+                                                },
+                                                "stage-variables": {
+                                                    "myStageVar": "...",
+                                                },
+                                                "context": {
+                                                    "account-id": "$context.identity.accountId",
+                                                    "api-id": "$context.apiId",
+                                                    "api-key": "$context.identity.apiKey",
+                                                    "authorizer-principal-id": "$context.authorizer.princialId",
+                                                    "caller": "$context.identity.caller",
+                                                    "cognito-authentication-provider": "$context.identity.cognitoAuthenticationProvider",
+                                                    "cognito-authentication-type": "$context.identity.cognitoAuthenticationType",
+                                                    "cognito-identity-id": "$context.identity.cognitoIdentityId",
+                                                    "cognito-identity-pool-id": "$context.identity.cognitoIdentityPoolId",
+                                                    "http-method": "$context.httpMethod",
+                                                    "stage": "$context.stage",
+                                                    "source-ip": "$context.identity.sourceIp",
+                                                    "user": "$context.identity.user",
+                                                    "user-agent": "$context.identity.userAgent",
+                                                    "user-arn": "$context.identity.userArn",
+                                                    "request-id": "$context.requestId",
+                                                    "resource-id": "$context.resourceId",
+                                                    "resource-path": "$context.resourcePath
+                                                }
+                                            }
+                                        </pre>
+                                    </div>
+
+                                    <table class="table">
+                                        <tr>
+                                            <th>Type</th>
+                                            <td>
+                                                <ul>
+                                                    <li>Map[String{content-type},String{template}] or</li>
+                                                    <li>Map[String{content-type},Object{template}] or</li>
+                                                    <li>String <code>input-pass-through|input-pass-through-full</code> or</li>
+                                                    <li>Array where the first position is String
+                                                        <code>input-pass-through|input-pass-through-full</code> and the second is a custom JSON
+                                                        object or valid JSON string that is appended to the backend request.
+                                                    </li>
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                        <tr><th>Update</th><td>No interruption</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        integration.requestParameters
+                                        <span class="label label-info pull-right">Optional</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>
+                                        Represents request parameters that are sent with the backend request.<br/>
+                                        Request parameters are represented as a key/value map, with a destination as the key and a source as the
+                                        value.<br/>
+                                        A source must match an existing method request parameter, or a static value.<br/>
+                                        Static values must be enclosed with single quotes, and be pre-encoded based on their destination in the
+                                        request.<br/>
+                                        The destination must match the pattern <code>integration.request.{location}.{name}</code>, where location is either
+                                        querystring,
+                                        path, or header. name must be a valid, unique parameter name.
+                                    </p>
+                                    <table class="table">
+                                        <tr><th>Type</th><td>Map{String(destination)},{String(source)}</td></tr>
+                                        <tr><th>Update</th><td>Not supported</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        integration.uri
+                                        <span class="label label-warning pull-right">Conditional</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>
+                                        URI to the backend service. Can be a url to another service, a Lambda ARN etc.<br/>
+                                        Must be set if <code>integration.type</code> is <strong>not</strong> set to <code>MOCK</code>.
+                                    </p>
+                                    <table class="table">
+                                        <tr><th>Type</th><td>String</td></tr>
+                                        <tr><th>Update</th><td>No interruption</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        responses
+                                        <span class="label label-info pull-right">Optional</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>
+                                        Configurations for both the IntegrationResponses and the MethodResponses.<br/>
+                                        The key is the selection pattern used to map the response to a status code.<br/>
+                                        There should be one selection pattern with the value "default" which acts as the default response.
+                                        The value is a response configuration object.
+                                    </p>
+                                    <p>
+                                        <a href="http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#putIntegrationResponse-property">http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#putIntegrationResponse-property</a>
+                                        <a href="http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#putMethodResponse-property">http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#putMethodResponse-property</a>
+                                    </p>
+                                    <table class="table">
+                                        <tr><th>Type</th><td>Map{String,Object}</td></tr>
+                                        <tr><th>Update</th><td>Not available</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        response.statusCode
+                                        <span class="label label-danger pull-right">Required</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>
+                                        The HTTP Status Code that this response configuration maps to.<br/>
+                                        Must be unique within the scope of each API Method definition.
+                                    </p>
+                                    <table class="table">
+                                        <tr><th>Type</th><td>Integer</td></tr>
+                                        <tr><th>Update</th><td>No interruption</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        response.headers
+                                        <span class="label label-info pull-right">Optional</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>
+                                        Map of headers where the key is the header name and value is the source, or static value of the
+                                        header.<br/>
+                                        Static values are specified using enclosing single quotes, and backend response headers can be read
+                                        using the pattern <code>integration.response.header.{name}</code>.<br/>
+                                        CORS headers should not be specified as they are added automatically if CORS is enabled on the API Resource.
+                                    </p>
+
+                                    <div class="callout callout-warning">
+                                        The key should only be the name of the header that will be exposed to the client.
+                                    </div>
+                                    <table class="table">
+                                        <tr><th>Type</th><td>Map{String,String}</td></tr>
+                                        <tr><th>Update</th><td>No interruption</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        response.responseTemplates
+                                        <span class="label label-info pull-right">Optional</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>
+                                        Specifies the templates used to transform the integration response body.<br/>
+                                        Response templates are represented as a key/value map, with a content-type as the key and a template as
+                                        the value.<br/>
+                                        The template can be represented as a JSON string or a JSON object.<br/>
+                                        A template represented by an empty string is the equivalent of output pass-through.
+                                    </p>
+                                    <div class="callout callout-info">
+                                        If no responseTemplates are provided a default pass-through template is created for application/json.
+                                    </div>
+                                    <table class="table">
+                                        <tr><th>Type</th><td>Map{String,String} or Map{String,Object}</td></tr>
+                                        <tr><th>Update</th><td>No interruption</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        response.responseModels
+                                        <span class="label label-info pull-right">Optional</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>
+                                        Specifies the Model resources used for the response's content type.<br/>
+                                        Response models are represented as a key/value map, with a content type as the key and a Model name as
+                                        the value.
+                                    </p>
+                                    <table class="table">
+                                        <tr><th>Type</th><td> Map{String(content-type)},{String(model-name)}</td></tr>
+                                        <tr><th>Update</th><td>No interruption</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-footer">
+                            <h3>Outputs</h3>
+                            <p>
+                                <a href="http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#putMethod-property">http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#putMethod-property</a>
+                            </p>
+
+                            <h3>CloudFormation Template Example</h3>
+                            <pre>
+                                "TestApiMethod" : {
+                                    "Type" : "Custom::ApiMethod",
+                                    "Properties" : {
+                                        "ServiceToken": "{Lambda_Function_ARN}",
+                                        "restApiId": "q1w2e3r4t5y6",
+                                        "resourceId": "Resource Id",
+                                        "method": {
+                                            "authorizationType": "NONE",
+                                            "httpMethod": "GET",
+                                            "apiKeyRequired": "true",
+                                            "requestModels": {
+                                                "application/json": { "Fn::GetAtt": ["TestModel", "name"] }
+                                            },
+                                            "parameters": [
+                                                "querystring.sortBy",
+                                                "header.x-test-header",
+                                                "path.entityType"
+                                            ]
+                                        },
+                                        "integration": {
+                                            "type": "MOCK",
+                                            "requestTemplates": {
+                                                "application/json": "{\"statusCode\": 200}"
+                                            },
+                                            "requestParameters": {
+                                                "integration.request.querystring.sortBy": "'hardcodedValue'"
+                                            }
+                                        },
+                                        "responses": {
+                                            "default": {
+                                                "statusCode": "200",
+                                                "headers": {
+                                                    "X-Custom-Header": "'hardcodedValue'"
+                                                }
+                                            },
+                                            ".*NotFound.*": {
+                                                "statusCode": "404"
+                                            }
+                                        }
+                                    }
+                                }
+                            </pre>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="custom-ApiModel">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                <span class="glyphicon glyphicon-chevron-down" data-collapse title="click to collapse/expand"></span>
+                                Custom::ApiModel
+                            </h3>
+                        </div>
+                        <div class="panel-body">
+                            <p>
+                                Creates a new Api Gateway Model.
+                                <a href="http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createModel-property">http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createModel-property</a>
+                            </p>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        restApiId
+                                        <span class="label label-danger pull-right">Required</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>Reference id to the Rest API.</p>
+                                    <table class="table">
+                                        <tr><th>Type</th><td>String</td></tr>
+                                        <tr><th>Update</th><td>No interruption</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        name
+                                        <span class="label label-danger pull-right">Required</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>Name of the model</p>
+                                    <table class="table">
+                                        <tr><th>Type</th><td>String</td></tr>
+                                        <tr><th>Update</th><td>Not supported</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        contentType
+                                        <span class="label label-info pull-right">Optional</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>The content-type for the model.</p>
+                                    <table class="table">
+                                        <tr><th>Type</th><td>String</td></tr>
+                                        <tr><th>Default</th><td><code>application/json</code></td></tr>
+                                        <tr><th>Update</th><td>Not supported</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        description
+                                        <span class="label label-info pull-right">Optional</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>Description of the model.</p>
+                                    <table class="table">
+                                        <tr><th>Type</th><td>String</td></tr>
+                                        <tr><th>Update</th><td>No interruption</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        schema
+                                        <span class="label label-info pull-right">Optional</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>The model schema. This can be represented by either a JSON object or a valid JSON string.</p>
+                                    <table class="table">
+                                        <tr><th>Type</th><td>String</td></tr>
+                                        <tr><th>Default</th><td>Empty object</td></tr>
+                                        <tr><th>Update</th><td>No interruption</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-footer">
+
+                            <h3>Outputs</h3>
+
+                            <p>
+                                <a href="http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createModel-property">http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createModel-property</a>
+                            </p>
+
+                            <h3>CloudFormation Template Example</h3>
+                            <pre>
+                                "TestApiModel" : {
+                                    "Type" : "Custom::ApiModel",
+                                    "Properties" : {
+                                        "ServiceToken": "{Lambda_Function_ARN}",
+                                        "restApiId": "xyz123",
+                                        "name": "TestModelName",
+                                        "contentType": "application/json",
+                                        "description": "This is my model",
+                                        "schema": "..."
+                                    }
+                                }
+                            </pre>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="custom-ApiDomainName">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                <span class="glyphicon glyphicon-chevron-down" data-collapse title="click to collapse/expand"></span>
+                                Custom::ApiDomainName
+                            </h3>
+                        </div>
+                        <div class="panel-body">
+                            <p>
+                                Creates a new Api Gateway Domain Name.<br/>
+                                <a href="http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createDomainName-property">http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createDomainName-property</a>
+                            </p>
+
+                            <div class="callout callout-info">
+                                Once the domain name has been created you have to create a Route53 alias record that points to<br/>
+                                <code>{ "Fn::GetAtt": ["TestApiDomainName", "distributionDomainName"] }</code>
+                            </div>
+
+                            <h3>Parameters</h3>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        domainName
+                                        <span class="label label-danger pull-right">Required</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>The name of the DomainName resource.</p>
+                                    <table class="table">
+                                        <tr><th>Type</th><td>String</td></tr>
+                                        <tr><th>Update</th><td>Not supported</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        certificateName
+                                        <span class="label label-danger pull-right">Required</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>The name of the certificate.</p>
+                                    <table class="table">
+                                        <tr><th>Type</th><td>String</td></tr>
+                                        <tr><th>Update</th><td>Not supported</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        iamServerCertificateName
+                                        <span class="label label-warning pull-right">Conditional</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>
+                                        A name reference to an existing certificate that ahs already been uploaded to IAM.<br/>
+                                        <strong>Note:</strong> The IAM certificate must have a valid chain.
+                                    </p>
+                                    <p>
+                                        You have to specify the iamServerCertificateName or the certificateBody and certificateChain
+                                    </p>
+                                    <table class="table">
+                                        <tr><th>Type</th><td>String</td></tr>
+                                        <tr><th>Update</th><td>No interruption</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        certificateBody
+                                        <span class="label label-warning pull-right">Conditional</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>The body of the server certificate provided by your certificate authority.</p>
+                                    <p>
+                                        You have to specify the the certificateBody and certificateChain or
+                                        an iamServerCertificateName
+                                    </p>
+                                    <table class="table">
+                                        <tr>
+                                            <th>Type</th>
+                                            <td>
+                                                <ul>
+                                                    <li>A single line where " " (space) denotes a new line (header/footer are excepted):<br/><code>-----BEGIN CERT-----line1 line2 ... -----END CERT-----</code></li>
+                                                    <li>A single line where "\n" denotes a new line: <br/><code>-----BEGIN CERT-----line1\nline2\n...\n-----END CERT-----</code></li>
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                        <tr><th>Update</th><td>No interruption</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        certificateChain
+                                        <span class="label label-warning pull-right">Conditional</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>The certificate chain provided by your certificate authority.</p>
+                                    <p>
+                                        You have to specify the the certificateBody and certificateChain or
+                                        an iamServerCertificateName
+                                    </p>
+                                    <table class="table">
+                                        <tr>
+                                            <th>Type</th>
+                                            <td>
+                                                <ul>
+                                                    <li>A single line where " " (space) denotes a new line (header/footer are excepted):<br/><code>-----BEGIN CERT-----line1 line2 ... -----END CERT-----</code></li>
+                                                    <li>A single line where "\n" denotes a new line: <br/><code>-----BEGINCERT-----line1\nline2\n...\n-----END CERT-----</code></li>
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                        <tr><th>Update</th><td>Not supported</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        certificatePrivateKey
+                                        <span class="label label-danger pull-right">Required</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>Your certificate's private key.</p>
+                                    <table class="table">
+                                        <tr>
+                                            <th>Type</th>
+                                            <td>
+                                                <ul>
+                                                    <li>A single line where " " (space) denotes a new line (header/footer are excepted):<br/><code>-----BEGIN RSA PRIVATE KEY-----line1 line2 ... -----END RSA PRIVATE KEY-----</code></li>
+                                                    <li>A single line where "\n" denotes a new line: <br/><code>-----BEGIN RSA PRIVATE KEY-----line1\nline2\n...\n-----END RSA PRIVATE KEY-----</code></li>
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                        <tr><th>Update</th><td>Not supported</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="panel-footer">
+                            <h3>Outputs</h3>
+                            <p>
+                                <a href="http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createDomainName-property">http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createDomainName-property</a>
+                            </p>
+
+                            <h3>CloudFormation Template Example</h3>
+                            <pre>
+                                "TestApiDomainName" : {
+                                    "Type" : "Custom::ApiDomainName",
+                                    "Properties" : {
+                                        "ServiceToken": "{Lambda_Function_ARN}",
+                                        "domainName": "example.com",
+                                        "certificateName": "testCertificate",
+                                        "certificateBody": "-----BEGIN CERTIFICATE-----line1 line2 ... -----END CERTIFICATE-----",
+                                        "certificateChain": "-----BEGIN CERTIFICATE-----line1 line2 ... -----END CERTIFICATE-----",
+                                        "certificatePrivateKey": "-----BEGIN RSA PRIVATE KEY-----line1 line2 ... -----END RSA PRIVATE KEY-----"
+                                    }
+                                }
+                            </pre>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="custom-ApiBasePathMapping">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                <span class="glyphicon glyphicon-chevron-down" data-collapse title="click to collapse/expand"></span>
+                                Custom::ApiBasePathMapping
+                            </h3>
+                        </div>
+                        <div class="panel-body">
+
+                            <p>
+                                Creates a new Api Gateway Base Path Mapping<br/>
+                                <a href="http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createBasePathMapping-property">http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createBasePathMapping-property</a>
+                            </p>
+
+                            <div class="callout callout-warning">
+                                When you create an ApiBasePathMapping your API will be automatically deployed to the stage you've
+                                provided.<br/>
+                                If the stage does not exist it will be created for you. However, if you delete the ApiBasePathMapping
+                                the stage will
+                                not be deleted and your API will remain deployed at the given stage.
+                            </div>
+
+                            <div class="callout callout-warning">
+                                Because creating a BasePathMapping will automatically deploy your API you have to ensure that it
+                                DependsOn all methods created in the API.
+                            </div>
+
+                            <h3>Parameters</h3>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        domainName
+                                        <span class="label label-danger pull-right">Required</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>The domain name of the BasePathMapping resource to create.</p>
+                                    <table class="table">
+                                        <tr><th>Type</th><td>String</td></tr>
+                                        <tr><th>Update</th><td>Not supported</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        restApiId
+                                        <span class="label label-danger pull-right">Required</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>Reference to the REST API in which you want to create this API Base Path Mapping.</p>
+                                    <table class="table">
+                                        <tr><th>Type</th><td>String</td></tr>
+                                        <tr><th>Update</th><td>No interruption</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        basePath
+                                        <span class="label label-info pull-right">Optional</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>
+                                        The base path name that callers of the API must provide as part of the URL after the domain name.<br/>
+                                        This value must be unique for all of the mappings across a single API.<br/>
+                                        Exclude this if you do not want callers to specify a base path name after the domain name.
+                                    </p>
+
+                                    <div class="callout callout-info">
+                                        <p>The basePath replaces the stage name the ApiBasePathMapping is connected to in the url, even if you leave it empty.</p>
+                                        <p>If you exclude this parameter, or leave it empty, you can only create one base
+                                        path mapping for the given Rest API.</p>
+                                    </div>
+                                    <table class="table">
+                                        <tr><th>Type</th><td>String</td></tr>
+                                        <tr><th>Default</th><td>Empty string</td></tr>
+                                        <tr><th>Update</th><td>No interruption</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        stage
+                                        <span class="label label-danger pull-right">Required</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>The name of the API stage that you want to use for this mapping.</p>
+                                    <table class="table">
+                                        <tr><th>Type</th><td>String</td></tr>
+                                        <tr><th>Update</th><td>No interruption</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-footer">
+                            <h3>Outputs</h3>
+
+                            <p>
+                                <a href="http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createBasePathMapping-property">http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createBasePathMapping-property</a>
+                            </p>
+
+                            <h3>CloudFormation Template Example</h3>
+                            <pre>
+                                "TestApiBasePathMapping" : {
+                                    "Type" : "Custom::ApiBasePathMapping",
+                                    "Properties" : {
+                                        "ServiceToken": "{Lambda_Function_ARN}",
+                                        "restApiId": "xyz123",
+                                        "domainName": "example.com",
+                                        "basePath": "test",
+                                        "stage": "beta"
+                                    }
+                                }
+                            </pre>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="custom-ApiAuthorizer">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                <span class="glyphicon glyphicon-chevron-down" data-collapse title="click to collapse/expand"></span>
+                                Custom::ApiAuthorizer
+                            </h3>
+                        </div>
+                        <div class="panel-body">
+
+                            <div class="callout callout-warning">
+                                <span class="glyphicon glyphicon-warning-sign"></span> This resource is experimental and may change!
+                            </div>
+
+                            <p>
+                                Creates a new Api Gateway Authorizer<br/>
+                                <a href="http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createAuthorizer-property">http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createAuthorizer-property</a>
+                            </p>
+
+                            <h3>Parameters</h3>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        authorizerUri
+                                        <span class="label label-danger pull-right">Required</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>
+                                        Authorizer Api Gateway Lambda function invocation ARN.<br/>
+                                        <code>arn:aws:apigateway:eu-west-1:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-1:1234:function:LambdaName/invocations</code>
+                                    </p>
+                                    <table class="table">
+                                        <tr><th>Type</th><td>String</td></tr>
+                                        <tr><th>Update</th><td>No interruption</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        identitySource
+                                        <span class="label label-danger pull-right">Required</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>
+                                        Source header from where the token can be read.<br/>
+                                        Must match the regexp <code>method.request.header.[a-zA-Z0-9._-]+</code>
+                                    </p>
+                                    <table class="table">
+                                        <tr><th>Type</th><td>String</td></tr>
+                                        <tr><th>Update</th><td>No interruption</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        name
+                                        <span class="label label-info pull-right">Optional</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>
+                                        The base path name that callers of the API must provide as part of the URL after the domain name.<br/>
+                                        This value must be unique for all of the mappings across a single API.<br/>
+                                        Exclude this if you do not want callers to specify a base path name after the domain name.
+                                    </p>
+                                    <table class="table">
+                                        <tr><th>Type</th><td>String</td></tr>
+                                        <tr><th>Update</th><td>No interruption</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        restApiId
+                                        <span class="label label-danger pull-right">Required</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>The Rest API this authorizer will be linked to.</p>
+                                    <table class="table">
+                                        <tr><th>Type</th><td>String</td></tr>
+                                        <tr><th>Update</th><td>Not supported</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        authorizerCredentials
+                                        <span class="label label-danger pull-right">Required</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>IAM role that API Gateway will use to invoke the Lambda function.</p>
+                                    <table class="table">
+                                        <tr><th>Type</th><td>String</td></tr>
+                                        <tr><th>Update</th><td>No interruption</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        authorizerResultTtlInSeconds
+                                        <span class="label label-info pull-right">Optional</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>The TTL of cached authorizer results.</p>
+                                    <table class="table">
+                                        <tr><th>Type</th><td>Integer</td></tr>
+                                        <tr><th>Default</th><td>300</td></tr>
+                                        <tr><th>Update</th><td>No interruption</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        identityValidationExpression
+                                        <span class="label label-info pull-right">Optional</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>
+                                        Optional RegEx statement for API Gateway to validate the input token before calling the custom
+                                        authorizer Lambda function.<br/>
+                                        This helps you avoid or reduce the chances of being charged for processing invalid tokens.
+                                    </p>
+                                    <table class="table">
+                                        <tr><th>Type</th><td>String</td></tr>
+                                        <tr><th>Update</th><td>No interruption</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-footer">
+                            <h3>Outputs</h3>
+                            <p>
+                                <a href="http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createAuthorizer-property">http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createAuthorizer-property</a>
+                            </p>
+
+                            <h3>CloudFormation Template Example</h3>
+                            <pre>
+                                "TestAuthorizer" : {
+                                    "Type" : "Custom::ApiAuthorizer",
+                                    "Properties" : {
+                                        "ServiceToken": "{Lambda_Function_ARN}",
+                                        "restApiId": "xyz123",
+                                        "authorizerUri": "{Authorizer_Lambda_ARN}",
+                                        "identitySource": "x-auth-header",
+                                        "name": "TestAuthorizer",
+                                        "authorizerCredentials": "beta",
+                                        "authorizerResultTtlInSeconds": 3600,
+                                        "identityValidationExpression": "$[a-z]*"
+                                    }
+                                }
+                            </pre>
+                        </div>
+                    </div>
+                </section>
+
+                <!--<section id="custom-DeployApi">-->
+                    <!--<div class="panel panel-default">-->
+                        <!--<div class="panel-heading">-->
+                            <!--<h3 class="panel-title">-->
+                                <!--<span class="glyphicon glyphicon-chevron-down" data-collapse title="click to collapse/expand"></span>-->
+                                <!--Custom::DeployApi-->
+                            <!--</h3>-->
+                        <!--</div>-->
+                        <!--<div class="panel-body">-->
+
+                            <!--<div class="callout callout-warning">-->
+                                <!--<span class="glyphicon glyphicon-warning-sign"></span> This resource is experimental and may change!-->
+                            <!--</div>-->
+
+                            <!--<p>-->
+                                <!--API Deployments can be managed via the AWS Console, the AWS CLI or any AWS SDK.<br/>-->
+                                <!--However, this resource is provided as an alternative if you want to manage deployment via CloudFormation.-->
+                                <!--It resource will create a new deployment and set the desired stage configuration.-->
+                            <!--</p>-->
+
+                            <!--<div class="callout callout-info">-->
+                                <!--As previously mentioned, your API is deployed when you create a <a href="#custom-ApiBasePathMapping">Base-->
+                                <!--Path Mapping</a>.-->
+                                <!--If you provide the same stage name to this resource your API will be deployed to the same stage but with-->
+                                <!--additional configuration options.<br/>-->
+                                <!--From this perspective you can look at this resource as a way to configure your stage instead of a way to-->
+                                <!--manage your deployments.<br/>-->
+                                <!--It comes down to taste.-->
+                            <!--</div>-->
+
+                            <!--<div class="callout callout-info">-->
+                                <!--Only resources that are created are made available when you deploy your API. This means that this resources-->
+                                <!--has to depend-->
+                                <!--on every API Method you want to be included in the deploy. This can be tricky as this list can be long but-->
+                                <!--one strategy-->
+                                <!--to resolve this is to put your resource and method definitions in a sub-stack and let this resource depend-->
+                                <!--on that sub-stack only.-->
+                            <!--</div>-->
+
+                            <!--<p>-->
+                                <!--For further details, please refer to these documents:-->
+                                <!--<a href="http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createDeployment-property">http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createDeployment-property</a>-->
+                                <!--<a href="http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#updateStage-property">http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#updateStage-property</a>-->
+                            <!--</p>-->
+
+                            <!--<h3>Parameters</h3>-->
+
+                            <!--<div class="panel panel-default">-->
+                                <!--<div class="panel-heading">-->
+                                    <!--<h3 class="panel-title">-->
+                                        <!--restApiId-->
+                                        <!--<span class="label label-danger pull-right">Required</span>-->
+                                    <!--</h3>-->
+                                <!--</div>-->
+                                <!--<div class="panel-body">-->
+                                    <!--<p>The Rest API you want to deploy.</p>-->
+                                    <!--<table class="table">-->
+                                        <!--<tr><th>Type</th><td>String</td></tr>-->
+                                        <!--<tr><th>Update</th><td>Not supported</td></tr>-->
+                                    <!--</table>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                            <!--<div class="panel panel-default">-->
+                                <!--<div class="panel-heading">-->
+                                    <!--<h3 class="panel-title">-->
+                                        <!--stageName-->
+                                        <!--<span class="label label-danger pull-right">Required</span>-->
+                                    <!--</h3>-->
+                                <!--</div>-->
+                                <!--<div class="panel-body">-->
+                                    <!--<p>-->
+                                        <!--The name of the stage you want to deploy to. If the stage does not exist it will be created.-->
+                                    <!--</p>-->
+                                    <!--<div class="callout callout-info">-->
+                                        <!--You may change the name of the stage but that will have no impact on the existing-->
+                                        <!--stage, thus the existing stage will-->
+                                        <!--remain deployed.-->
+                                    <!--</div>-->
+                                    <!--<table class="table">-->
+                                        <!--<tr><th>Type</th><td>String</td></tr>-->
+                                        <!--<tr><th>Update</th><td>No interruption</td></tr>-->
+                                    <!--</table>-->
+                                <!--</div>-->
+                            <!--</div>-->
+
+                            <!--<div class="panel panel-default">-->
+                                <!--<div class="panel-heading">-->
+                                    <!--<h3 class="panel-title">-->
+                                        <!--stageConfig-->
+                                        <!--<span class="label label-info pull-right">Optional</span>-->
+                                    <!--</h3>-->
+                                <!--</div>-->
+                                <!--<div class="panel-body">-->
+                                    <!--<p>Key/value map of default stage configuration.</p>-->
+                                    <!--<table class="table">-->
+                                        <!--<tr><th>Type</th><td>Map{String, String}</td></tr>-->
+                                        <!--<tr><th>Update</th><td>No interruption</td></tr>-->
+                                    <!--</table>-->
+                                <!--</div>-->
+                            <!--</div>-->
+
+                            <!--<div class="panel panel-default">-->
+                                <!--<div class="panel-heading">-->
+                                    <!--<h3 class="panel-title">-->
+                                        <!--stageConfig.description-->
+                                        <!--<span class="label label-info pull-right">Optional</span>-->
+                                    <!--</h3>-->
+                                <!--</div>-->
+                                <!--<div class="panel-body">-->
+                                    <!--<p>Stage description</p>-->
+                                    <!--<table class="table">-->
+                                        <!--<tr><th>Type</th><td>String</td></tr>-->
+                                        <!--<tr><th>Update</th><td>No interruption</td></tr>-->
+                                    <!--</table>-->
+                                <!--</div>-->
+                            <!--</div>-->
+
+                            <!--<div class="panel panel-default">-->
+                                <!--<div class="panel-heading">-->
+                                    <!--<h3 class="panel-title">-->
+                                        <!--stageConfig.cacheClusterEnabled-->
+                                        <!--<span class="label label-info pull-right">Optional</span>-->
+                                    <!--</h3>-->
+                                <!--</div>-->
+                                <!--<div class="panel-body">-->
+                                    <!--<p>Set to true to enable API caching</p>-->
+                                    <!--<table class="table">-->
+                                        <!--<tr><th>Type</th><td>Boolean</td></tr>-->
+                                        <!--<tr><th>Default</th><td><code>false</code></td></tr>-->
+                                        <!--<tr><th>Update</th><td>No interruption</td></tr>-->
+                                    <!--</table>-->
+                                <!--</div>-->
+                            <!--</div>-->
+
+                            <!--<div class="panel panel-default">-->
+                                <!--<div class="panel-heading">-->
+                                    <!--<h3 class="panel-title">-->
+                                        <!--stageConfig.cacheClusterSize-->
+                                        <!--<span class="label label-info pull-right">Optional</span>-->
+                                    <!--</h3>-->
+                                <!--</div>-->
+                                <!--<div class="panel-body">-->
+                                    <!--<p>Cache cluster size</p>-->
+                                    <!--<table class="table">-->
+                                        <!--<tr><th>Type</th><td>Double, one of 0.5 | 1.6 | 6.1 | 13.5 | 28.4 | 58.2 | 118 | 237</td></tr>-->
+                                        <!--<tr><th>Update</th><td>No interruption</td></tr>-->
+                                    <!--</table>-->
+                                <!--</div>-->
+                            <!--</div>-->
+
+                            <!--<div class="panel panel-default">-->
+                                <!--<div class="panel-heading">-->
+                                    <!--<h3 class="panel-title">-->
+                                        <!--stageVariables-->
+                                        <!--<span class="label label-info pull-right">Optional</span>-->
+                                    <!--</h3>-->
+                                <!--</div>-->
+                                <!--<div class="panel-body">-->
+                                    <!--<p>-->
+                                        <!--Key/value map of stage variables where the key is the name of the variable and the value is the value of-->
+                                        <!--that variable.-->
+                                    <!--</p>-->
+                                    <!--<table class="table">-->
+                                        <!--<tr><th>Type</th><td>Map{String, String}</td></tr>-->
+                                        <!--<tr><th>Update</th><td>No interruption</td></tr>-->
+                                    <!--</table>-->
+                                <!--</div>-->
+                            <!--</div>-->
+
+                            <!--<div class="panel panel-default">-->
+                                <!--<div class="panel-heading">-->
+                                    <!--<h3 class="panel-title">-->
+                                        <!--methodSettings-->
+                                        <!--<span class="label label-danger pull-right">Required</span>-->
+                                    <!--</h3>-->
+                                <!--</div>-->
+                                <!--<div class="panel-body">-->
+                                    <!--<p>Method settings, global for the stage or specific for a method.</p>-->
+                                    <!--<div class="callout callout-info">-->
+                                        <!--See <a href="http://docs.aws.amazon.com/cli/latest/reference/apigateway/update-stage.html">http://docs.aws.amazon.com/cli/latest/reference/apigateway/update-stage.html</a>-->
+                                        <!--&gt; <em>methodSettings</em> for further details.-->
+                                    <!--</div>-->
+                                    <!--<table class="table">-->
+                                        <!--<tr><th>Type</th><td>Map{String, Mixed}</td></tr>-->
+                                        <!--<tr><th>Update</th><td>No interruption</td></tr>-->
+                                    <!--</table>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="panel-footer">-->
+                            <!--<h3>Outputs</h3>-->
+                            <!--TODO-->
+
+                            <!--<h3>CloudFormation Template Example</h3>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</section>-->
+            </section>
+
+            <section id="change-log">
+                <h2>Change Log</h2>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">1.4.2 (2016-03-31)</h3>
+                    </div>
+                    <div class="panel-body">
+                        <ul>
+                            <li><span class="label label-danger">Fix</span> Ensure that the server certificate body &amp; chain are set when getting certificate from IAM. Issue #35.</li>
+                        </ul>
+                    </div>
+                    <div class="panel-footer">
+                        <h4>Templates</h4>
+                        <ul>
+                            <li><a href="http://apigatewaycloudformation.eu-central-1.s3.amazonaws.com/1.4.2/ApiGatewayCloudFormation.template">eu-central-1</a></li>
+                            <li><a href="http://apigatewaycloudformation.eu-west-1.s3.amazonaws.com/1.4.2/ApiGatewayCloudFormation.template">eu-west-1</a></li>
+                            <li><a href="http://apigatewaycloudformation.us-east-1.s3.amazonaws.com/1.4.2/ApiGatewayCloudFormation.template">us-east-1</a></li>
+                            <li><a href="http://apigatewaycloudformation.us-west-2.s3.amazonaws.com/1.4.2/ApiGatewayCloudFormation.template">us-west-2</a></li>
+                            <li><a href="http://apigatewaycloudformation.ap-northeast-1.s3.amazonaws.com/1.4.2/ApiGatewayCloudFormation.template">ap-northeast-1</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h3 class="panel-title">1.4.1 (2016-03-29)</h3></div>
+                    <div class="panel-body">
+                        <ul>
+                            <li><span class="label label-info">New</span> Added custom configuration object to be passed along with input-pass-through request templates.</li>
+                            <li><span class="label label-danger">Fix</span> Changed default Lambda timeout to 30 seconds from previous 10.</li>
+                            <li><span class="label label-default">Clean up</span> Parameter validation throws errors rather than returning them.</li>
+                        </ul>
+                    </div>
+                    <div class="panel-footer"><h4>Templates</h4>
+                        <ul>
+                            <li><a href="http://apigatewaycloudformation.eu-central-1.s3.amazonaws.com/1.4.1/ApiGatewayCloudFormation.template">eu-central-1</a></li>
+                            <li><a href="http://apigatewaycloudformation.eu-west-1.s3.amazonaws.com/1.4.1/ApiGatewayCloudFormation.template">eu-west-1</a></li>
+                            <li><a href="http://apigatewaycloudformation.us-east-1.s3.amazonaws.com/1.4.1/ApiGatewayCloudFormation.template">us-east-1</a></li>
+                            <li><a href="http://apigatewaycloudformation.us-west-2.s3.amazonaws.com/1.4.1/ApiGatewayCloudFormation.template">us-west-2</a></li>
+                            <li><a href="http://apigatewaycloudformation.ap-northeast-1.s3.amazonaws.com/1.4.1/ApiGatewayCloudFormation.template">ap-northeast-1</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h3 class="panel-title">1.4.0 (2016-03-24)</h3></div>
+                    <div class="panel-body">
+                        <ul>
+                            <li><span class="label label-info">New</span> Introducing ready-made pass-through templates for method integration request templates. @See <a href="#custom-ApiMethod">Create an API Method</a>.</li>
+                            <li><span class="label label-danger">Fix</span> Improved CloudFormation error messages to give a direct indication to what went wrong in the AWS Console.</li>
+                        </ul>
+                    </div>
+                    <div class="panel-footer"><h4>Templates</h4>
+                        <ul>
+                            <li><a href="http://apigatewaycloudformation.eu-central-1.s3.amazonaws.com/1.4.0/ApiGatewayCloudFormation.template">eu-central-1</a></li>
+                            <li><a href="http://apigatewaycloudformation.eu-west-1.s3.amazonaws.com/1.4.0/ApiGatewayCloudFormation.template">eu-west-1</a></li>
+                            <li><a href="http://apigatewaycloudformation.us-east-1.s3.amazonaws.com/1.4.0/ApiGatewayCloudFormation.template">us-east-1</a></li>
+                            <li><a href="http://apigatewaycloudformation.us-west-2.s3.amazonaws.com/1.4.0/ApiGatewayCloudFormation.template">us-west-2</a></li>
+                            <li><a href="http://apigatewaycloudformation.ap-northeast-1.s3.amazonaws.com/1.4.0/ApiGatewayCloudFormation.template">ap-northeast-1</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h3 class="panel-title">1.3.4 (2016-03-22)</h3></div>
+                    <div class="panel-body">
+                        <ul>
+                            <li><span class="label label-info">New</span> Allow CORS wildcard methods</li>
+                        </ul>
+                    </div>
+                    <div class="panel-footer"><h4>Templates</h4>
+                        <ul>
+                            <li><a href="http://apigatewaycloudformation.eu-central-1.s3.amazonaws.com/1.3.4/ApiGatewayCloudFormation.template">eu-central-1</a></li>
+                            <li><a href="http://apigatewaycloudformation.eu-west-1.s3.amazonaws.com/1.3.4/ApiGatewayCloudFormation.template">eu-west-1</a></li>
+                            <li><a href="http://apigatewaycloudformation.us-east-1.s3.amazonaws.com/1.3.4/ApiGatewayCloudFormation.template">us-east-1</a></li>
+                            <li><a href="http://apigatewaycloudformation.us-west-2.s3.amazonaws.com/1.3.4/ApiGatewayCloudFormation.template">us-west-2</a></li>
+                            <li><a href="http://apigatewaycloudformation.ap-northeast-1.s3.amazonaws.com/1.3.4/ApiGatewayCloudFormation.template">ap-northeast-1</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h3 class="panel-title">1.3.3 (2016-03-18)</h3></div>
+                    <div class="panel-body">
+                        <ul>
+                            <li><span class="label label-info">New</span> Added support for eu-central-1</li>
+                        </ul>
+                    </div>
+                    <div class="panel-footer"><h4>Templates</h4>
+                        <ul>
+                            <li><a href="http://apigatewaycloudformation.eu-central-1.s3.amazonaws.com/1.3.3/ApiGatewayCloudFormation.template">eu-central-1</a></li>
+                            <li><a href="http://apigatewaycloudformation.eu-west-1.s3.amazonaws.com/1.3.3/ApiGatewayCloudFormation.template">eu-west-1</a></li>
+                            <li><a href="http://apigatewaycloudformation.us-east-1.s3.amazonaws.com/1.3.3/ApiGatewayCloudFormation.template">us-east-1</a></li>
+                            <li><a href="http://apigatewaycloudformation.us-west-2.s3.amazonaws.com/1.3.3/ApiGatewayCloudFormation.template">us-west-2</a></li>
+                            <li><a href="http://apigatewaycloudformation.ap-northeast-1.s3.amazonaws.com/1.3.3/ApiGatewayCloudFormation.template">ap-northeast-1</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h3 class="panel-title">1.3.2 (2016-03-18)</h3></div>
+                    <div class="panel-body">
+                        <ul>
+                            <li><span class="label label-danger">Fix</span> Moved support from us-west-1 to us-west-2</li>
+                        </ul>
+                    </div>
+                    <div class="panel-footer"><h4>Templates</h4>
+                        <ul>
+                            <li><a href="http://apigatewaycloudformation.eu-west-1.s3.amazonaws.com/1.3.2/ApiGatewayCloudFormation.template">eu-west-1</a></li>
+                            <li><a href="http://apigatewaycloudformation.us-east-1.s3.amazonaws.com/1.3.2/ApiGatewayCloudFormation.template">us-east-1</a></li>
+                            <li><a href="http://apigatewaycloudformation.us-west-2.s3.amazonaws.com/1.3.2/ApiGatewayCloudFormation.template">us-west-2</a></li>
+                            <li><a href="http://apigatewaycloudformation.ap-northeast-1.s3.amazonaws.com/1.3.2/ApiGatewayCloudFormation.template">ap-northeast-1</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h3 class="panel-title">1.3.1 (2016-03-17)</h3></div>
+                    <div class="panel-body">
+                        <ul>
+                            <li><span class="label label-danger">Fix</span> TooManyRequestsException not caught properly</li>
+                        </ul>
+                    </div>
+                    <div class="panel-footer"><h4>Templates</h4>
+                        <ul>
+                            <li><a href="http://apigatewaycloudformation.eu-west-1.s3.amazonaws.com/1.3.1/ApiGatewayCloudFormation.template">eu-west-1</a></li>
+                            <li><a href="http://apigatewaycloudformation.us-east-1.s3.amazonaws.com/1.3.1/ApiGatewayCloudFormation.template">us-east-1</a></li>
+                            <li><a href="http://apigatewaycloudformation.ap-northeast-1.s3.amazonaws.com/1.3.1/ApiGatewayCloudFormation.template">ap-northeast-1</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h3 class="panel-title">1.3.0 (2016-03-17)</h3></div>
+                    <div class="panel-body">
+                        <ul>
+                            <li><span class="label label-info">New</span> Allow Api Domain name creation by specifying an IAM
+                                Server Certificate Name instead of the certificateBody &amp; certificateChain.
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="panel-footer"><h4>Templates</h4>
+                        <ul>
+                            <li><a href="http://apigatewaycloudformation.eu-west-1.s3.amazonaws.com/1.3.0/ApiGatewayCloudFormation.template">eu-west-1</a>
+                            <li><a href="http://apigatewaycloudformation.us-east-1.s3.amazonaws.com/1.3.0/ApiGatewayCloudFormation.template">us-east-1</a>
+                            <li><a href="http://apigatewaycloudformation.ap-northeast-1.s3.amazonaws.com/1.3.0/ApiGatewayCloudFormation.template">ap-northeast-1</a>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h3 class="panel-title">1.2.1 (2016-03-14)</h3></div>
+                    <div class="panel-body">
+                        <ul>
+                            <li><span class="label label-danger">Fix</span> Allow deletion of Api Resources that failed to create.</li>
+                        </ul>
+                    </div>
+                    <div class="panel-footer"><h4>Templates</h4>
+                        <ul>
+                            <li><a href="http://apigatewaycloudformation.eu-west-1.s3.amazonaws.com/1.2.1/ApiGatewayCloudFormation.template">eu-west-1</a>
+                            <li><a href="http://apigatewaycloudformation.us-east-1.s3.amazonaws.com/1.2.1/ApiGatewayCloudFormation.template">us-east-1</a>
+                            <li><a href="http://apigatewaycloudformation.ap-northeast-1.s3.amazonaws.com/1.2.1/ApiGatewayCloudFormation.template">ap-northeast-1</a>
+                        </ul>
+
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h3 class="panel-title">1.2.0 (2016-03-13)</h3></div>
+                    <div class="panel-body">
+                        <ul>
+                            <li><span class="label label-info">New</span> Deploy procedure via CFN instead of bash/powershell</li>
+                            <li><span class="label label-info">New</span> API BasePathMappings and Custom Domain Names</li>
+                            <li><span class="label label-danger">Fix</span> Improved error logging when AWS calls fails</li>
+                        </ul>
+                    </div>
+                    <div class="panel-footer"><h4>Templates</h4>
+                        <ul>
+                            <li><a href="http://apigatewaycloudformation.eu-west-1.s3.amazonaws.com/1.2.0/ApiGatewayCloudFormation.template">eu-west-1</a></li>
+                            <li><a href="http://apigatewaycloudformation.us-east-1.s3.amazonaws.com/1.2.0/ApiGatewayCloudFormation.template">us-east-1</a></li>
+                            <li><a href="http://apigatewaycloudformation.ap-northeast-1.s3.amazonaws.com/1.2.0/ApiGatewayCloudFormation.template">ap-northeast-1</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h3 class="panel-title">1.1.6 (2016-02-26)</h3></div>
+                    <div class="panel-body">
+                        <div class="callout callout-danger">This version is no longer supported.</div>
+                        <ul>
+                            <li><span class="label label-default">Clean up</span> Added error logging to deploy script.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h3 class="panel-title">1.1.4 (2016-02-21)</h3></div>
+                    <div class="panel-body">
+                        <div class="callout callout-danger">This version is no longer supported.</div>
+                        <ul>
+                            <li><span class="label label-info">New</span> Added installation scripts for windows (powershell).</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h3 class="panel-title">1.1.3 (2016-02-21)</h3></div>
+                    <div class="panel-body">
+                        <div class="callout callout-danger">This version is no longer supported.</div>
+                        <ul>
+                            <li><span class="label label-info">New</span> Added installation scripts for unix that do not require npm or node to be installed.
+                            </li>
+                        </ul>
+
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h3 class="panel-title">1.1.0 (2016-02-19)</h3></div>
+                    <div class="panel-body">
+                        <div class="callout callout-danger">This version is no longer supported.</div>
+                        <ul>
+                            <li><span class="label label-info">New</span> Introduced installation package so that you no longer have to clone the repo to install and deploy.</li>
+                        </ul>
+
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h3 class="panel-title">1.0.4 (2016-02-18)</h3></div>
+                    <div class="panel-body">
+                        <div class="callout callout-danger">This version is no longer supported.</div>
+                        <ul>
+                            <li><span class="label label-info">New</span> Introducing API Authorizers (<a href="http://docs.aws.amazon.com/apigateway/latest/developerguide/use-custom-authorizer.html">http://docs.aws.amazon.com/apigateway/latest/developerguide/use-custom-authorizer.html</a>)</li>
+                        </ul>
+
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h3 class="panel-title">1.0.2 (2016-02-18)</h3></div>
+                    <div class="panel-body">
+                        <div class="callout callout-danger">This version is no longer supported.</div>
+                        <ul>
+                            <li><span class="label label-danger">Fix</span> Ensure that moving an API Method to another resource
+                                cleans up the old method.
+                            </li>
+                        </ul>
+
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h3 class="panel-title">1.0.1 (2016-02-17)</h3></div>
+                    <div class="panel-body">
+                        <div class="callout callout-danger">This version is no longer supported.</div>
+                        <ul>
+                            <li><span class="label label-info">New</span> Removed Dynamo table for tracking resources, now tracked via the PhysicalResourceId. <a href="https://github.com/carlnordenfelt/aws-api-gateway-for-cloudformation/pull/4">PR #4</a></li>
+                            <li><span class="label label-info">New</span> Added sample template for testing</li>
+                            <li><span class="label label-info">New</span> Installation packages and installation template is hosted on S3.</li>
+                            <li><span class="label label-danger">Fix</span> Added backoff and retries if failure due to concurrent modifications. <a href="https://github.com/carlnordenfelt/aws-api-gateway-for-cloudformation/pull/5">PR #5</a></li>
+                            <li><span class="label label-danger">Fix</span> No longer validating parameters on delete. <a href="https://github.com/carlnordenfelt/aws-api-gateway-for-cloudformation/pull/3">PR #3</a></li>
+                            <li><span class="label label-default">Clean up</span> Rewrote installation and deploy scripts in nodejs and npm.</li>
+                            <li><span class="label label-default">Clean up</span>Improved the README</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h3 class="panel-title">0.0.1 (2016-01-04)</h3></div>
+                    <div class="panel-body">
+                        <div class="callout callout-danger">This version is no longer supported.</div>
+                        <ul>
+                            <li><span class="label label-info">New</span> Initial release</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section id="contribute">
+                <h2>Contribute</h2>
+
+                <p>
+                    I gladly accept PRs, issues and comments. Anything that will help improve stability, reduce complexity or
+                    add more functionality is appreciated. Please make sure that npm test does not fail before you push your PR.
+                    There are strict requirements on <strong>eslint and 100% unit test coverage</strong> for builds to succeed
+                    before they can be published.
+                </p>
+
+                <h3>Testing</h3>
+
+                <p>
+                    I highly recommend that you deploy your changes and test them in a real environment before submitting the
+                    PR.<br/>
+                    To package and deploy your changes manually, follow these steps:
+                </p>
+                <ol>
+                    <li><code>npm install --production</code></li>
+                    <li><code>zip -r source.zip lib/* lib/*/** node_modules/*/**</code></li>
+                    <li>Go to the AWS Console -&gt; Lambda -&gt; {Your API Gateway function} -&gt; Code -&gt; Upload a .ZIP file (select source.zip)</li>
+                </ol>
+            </section>
+
+            <section id="issues">
+                <h2>Issues</h2>
+
+                <p>
+                    Open issues can be found at the
+                    <a href="https://github.com/carlnordenfelt/aws-api-gateway-for-cloudformation/issues">Github page</a>.
+                </p>
+            </section>
+
+            <section id="license">
+                <h2>License</h2>
+
+                <p>The MIT License (MIT)</p>
+
+                <p>Copyright (c) 2016 By Nordenfelt</p>
+
+                <p>Permission is hereby granted, free of charge, to any person obtaining a copy
+                of this software and associated documentation files (the "Software"), to deal
+                in the Software without restriction, including without limitation the rights
+                to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+                copies of the Software, and to permit persons to whom the Software is
+                furnished to do so, subject to the following conditions:</p>
+
+                <p>The above copyright notice and this permission notice shall be included in all
+                copies or substantial portions of the Software.</p>
+
+                <p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+                IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+                FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+                AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+                LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+                OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+                SOFTWARE.</p>
+            </section>
+        </div>
+        <script src="assets/vendor/jquery.min.js"></script>
+        <script src="assets/vendor/js/bootstrap.min.js"></script>
+        <script src="assets/javascript.js"></script>
+        <script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+        <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+            ga('create', 'UA-76111534-1', 'auto');
+            ga('send', 'pageview');
+        </script>
+    </body>
+</html>
