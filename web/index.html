@@ -1897,11 +1897,9 @@
 
                             <div class="callout callout-info">
                                 Only resources that are created are made available when you deploy your API. This means that this resources
-                                has to depend
-                                on every API Method you want to be included in the deploy. This can be tricky as this list can be long but
-                                one strategy
-                                to resolve this is to put your resource and method definitions in a sub-stack and let this resource depend
-                                on that sub-stack only.
+                                has to depend on every API Method you want to be included in the deploy.<br/>
+                                This can be tricky as this list can be long but one strategy to resolve this is to put your resource and method
+                                definitions in a sub-stack and let this resource depend on that sub-stack only.
                             </div>
 
                             <div class="callout callout-warning">
@@ -2051,8 +2049,8 @@
                                     <div class="callout callout-danger">
                                         <h4>Known Issue</h4>
                                         Due to a defect in API Gateway you cannot remove a method setting.<br/>
-                                        Once it is set you have to keep the setting with the exact path.<br/>
-                                        If you accidentally remove a setting or a path is changed the old setting will not be removed by the Custom Resource.
+                                        Once it is set you have to keep the setting with the exact path which in effect mean that to disable a setting you have to change the value, not remove it.<br/>
+                                        If you accidentally remove a setting or a path is changed the existing setting will not be removed by the Custom Resource.
                                     </div>
 
                                     <div class="callout callout-danger">
