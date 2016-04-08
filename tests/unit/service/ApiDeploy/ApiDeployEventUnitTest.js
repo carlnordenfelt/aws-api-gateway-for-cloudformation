@@ -20,7 +20,8 @@ describe('ApiDeployEvent', function () {
                 methodSettings: {
                     '*/*/metrics/enabled': true,
                     '*/*/logging/loglevel': 'ERROR',
-                    'no-params/GET/logging/loglevel': 'INFO'
+                    'no-params/GET/logging/loglevel': 'INFO',
+                    'no-params/GET/logging/dataTrace': true
                 },
                 stageVariables: {
                     testVar1: 'TestValue1',
@@ -38,7 +39,8 @@ describe('ApiDeployEvent', function () {
                 methodSettings: {
                     '*/*/metrics/enabled': false,
                     '*/*/logging/loglevel': 'ERROR2',
-                    'no-params/GET/logging/loglevel': 'INFO2'
+                    'no-params/GET/logging/loglevel': 'INFO2',
+                    'no-params/GET/logging/dataTrace': true
                 },
                 stageVariables: {
                     testVar1: 'TestValue1-2',
@@ -60,6 +62,7 @@ describe('ApiDeployEvent', function () {
             expect(parameters.params.methodSettings['*/*/metrics/enabled']).to.equal(true);
             expect(parameters.params.methodSettings['*/*/logging/loglevel']).to.equal('ERROR');
             expect(parameters.params.methodSettings['no-params/GET/logging/loglevel']).to.equal('INFO');
+            expect(parameters.params.methodSettings['no-params/GET/logging/dataTrace']).to.equal(true);
             expect(parameters.params.stageVariables.testVar1).to.equal('TestValue1');
             expect(parameters.params.stageVariables.testVar2).to.equal('TestValue2');
 
@@ -71,8 +74,18 @@ describe('ApiDeployEvent', function () {
             expect(parameters.old.methodSettings['*/*/metrics/enabled']).to.equal(false);
             expect(parameters.old.methodSettings['*/*/logging/loglevel']).to.equal('ERROR2');
             expect(parameters.old.methodSettings['no-params/GET/logging/loglevel']).to.equal('INFO2');
+            expect(parameters.old.methodSettings['no-params/GET/logging/dataTrace']).to.equal(true);
             expect(parameters.old.stageVariables.testVar1).to.equal('TestValue1-2');
             expect(parameters.old.stageVariables.testVar2).to.equal('TestValue2-2');
+            done();
+        });
+        it('should get params with defaults', function (done) {
+            delete event.ResourceProperties.stageConfig;
+            var parameters = testSubject.getParameters(event);
+            expect(parameters.params.stageConfig).to.be.an('object');
+            expect(parameters.params.stageConfig.cacheClusterEnabled).to.equal(false);
+            expect(parameters.params.stageConfig.cacheClusterSize).to.equal(0.5);
+            expect(parameters.params.stageConfig.description).to.equal('');
             done();
         });
         it('should get new params only if old params are not set', function (done) {
@@ -107,29 +120,41 @@ describe('ApiDeployEvent', function () {
 
     describe('getPatchOperations', function () {
         it('should give only valid patch operations', function (done) {
+            delete event.OldResourceProperties.stageConfig.description;
+            delete event.ResourceProperties.stageVariables.testVar2;
+            delete event.ResourceProperties.methodSettings['no-params/GET/logging/dataTrace'];
+            event.OldResourceProperties.stageConfig.cacheClusterEnabled = true;
+            event.ResourceProperties.stageVariables.testVar3 = 'TestVar3';
+            event.ResourceProperties.methodSettings['no-params/GET/metrics/enabled'] = true;
+            event.ResourceProperties.methodSettings['no-params/GET/metrics/enabled'] = true;
             var parameters = testSubject.getParameters(event);
             var patchOperations = testSubject.getPatchOperations(parameters);
+
             expect(patchOperations).to.be.an.Array;
-            expect(patchOperations.length).to.equal(8);
-            console.log(patchOperations)
-            expect(_.find(patchOperations, { path: '/cacheClusterEnabled' }).value).to.equal(true);
+            expect(patchOperations.length).to.equal(9);
+            expect(_.find(patchOperations, { path: '/cacheClusterSize' }).op).to.equal('replace');
             expect(_.find(patchOperations, { path: '/cacheClusterSize' }).value).to.equal(0.5);
             expect(_.find(patchOperations, { path: '/description' }).value).to.equal('TestStage');
+            expect(_.find(patchOperations, { path: '/description' }).op).to.equal('replace');
             expect(_.find(patchOperations, { path: '/variables/testVar1' }).value).to.equal('TestValue1');
-            expect(_.find(patchOperations, { path: '/variables/testVar2' }).value).to.equal('TestValue2');
+            expect(_.find(patchOperations, { path: '/variables/testVar2' }).op).to.equal('remove');
+            expect(_.find(patchOperations, { path: '/variables/testVar3' }).op).to.equal('replace');
             expect(_.find(patchOperations, { path: '/*/*/metrics/enabled' }).value).to.equal(true);
             expect(_.find(patchOperations, { path: '/*/*/logging/loglevel' }).value).to.equal('ERROR');
             expect(_.find(patchOperations, { path: '/~1no-params/GET/logging/loglevel' }).value).to.equal('INFO');
+            expect(_.find(patchOperations, { path: '/~1no-params/GET/metrics/enabled' }).value).to.equal(true);
+            expect(_.find(patchOperations, { path: '/~1no-params/GET/metrics/enabled' }).op).to.equal('replace');
+            expect(_.find(patchOperations, { path: '/~1no-params/GET/logging/dataTrace' })).to.be.undefined;
             done();
         });
-        it('should give no patch operations for subset of config', function (done) {
+        it('should give patch operations for defaults only', function (done) {
             delete event.ResourceProperties.stageConfig;
             delete event.ResourceProperties.stageVariables;
             delete event.ResourceProperties.methodSettings;
             var parameters = testSubject.getParameters(event);
             var patchOperations = testSubject.getPatchOperations(parameters);
             expect(patchOperations).to.be.an.Array;
-            expect(patchOperations.length).to.equal(0);
+            expect(patchOperations.length).to.equal(2);
             done();
         });
     });
