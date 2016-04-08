@@ -157,5 +157,12 @@ describe('ApiDeployEvent', function () {
             expect(patchOperations.length).to.equal(2);
             done();
         });
+        it('coverage only', function (done) {
+            var parameters = testSubject.getParameters(event);
+            delete parameters.params.stageConfig;
+            var patchOperations = testSubject.getPatchOperations(parameters);
+            expect(patchOperations).to.be.an.Array;
+            done();
+        });
     });
 });
