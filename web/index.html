@@ -77,6 +77,7 @@
                 <li class="dropdown">
                     <a href="#resources">Resources</a>
                     <ul class="nav">
+                        <li><a href="#custom-ApiImport"><span class="glyphicon glyphicon-chevron-right"></span>Import API</a></li>
                         <li><a href="#custom-RestApi"><span class="glyphicon glyphicon-chevron-right"></span>Rest API</a></li>
                         <li><a href="#custom-ApiResource"><span class="glyphicon glyphicon-chevron-right"></span>API Resource</a></li>
                         <li><a href="#custom-ApiMethod"><span class="glyphicon glyphicon-chevron-right"></span>API Method</a></li>
@@ -245,6 +246,150 @@
 
             <section id="resources">
                 <h2>Resources</h2>
+
+                <section id="custom-ApiImport">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                <span class="glyphicon glyphicon-chevron-down" data-collapse
+                                      title="click to collapse/expand"></span>
+                                Custom::ApiImport
+                                <span class="label label-info pull-right">Since v1.5.0</span>
+                            </h3>
+                        </div>
+                        <div class="panel-body">
+                            <p>
+                                By using the Import API resource you define our entire API in swagger and import it in one go.<br/>
+                                You can also utilize the import to make partial updates to an API by supplying a REST API Id in the request.<br/>
+
+                                <a href="http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createRestApi-property">http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createRestApi-property</a><br/>
+                                <a href="http://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-import-api.html">http://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-import-api.html</a>
+                            </p>
+
+                            <div class="callout callout-warning">
+                                If you use this resource to make partial updates of an API you will not be able to delete the
+                                resources or methods you define in the partial update.<br/>
+                                Deleting a partial resource has no effect on the actual API.
+                            </div>
+
+                            <div class="callout callout-warning">
+                                Update operations executed on non-partial APIs will overwrite the entire API, including resources added by partial updates.
+                            </div>
+
+                            <h3>Parameters</h3>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        apiDefinition
+                                        <span class="label label-danger pull-right">Required</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>Swagger definition of the REST API. Either the complete API or a partial API if you provide the restApiId parameter.</p>
+                                    <table class="table">
+                                        <tr>
+                                            <th>Type:</th>
+                                            <td>Object</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Update:</th>
+                                            <td>No interruption</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        parameters
+                                        <span class="label label-info pull-right">Optional</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>Custom header parameters as part of the request.</p>
+                                    <table class="table">
+                                        <tr>
+                                            <th>Type:</th>
+                                            <td>Object</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Update:</th>
+                                            <td>No interruption, partial support. You may add/change this property but not
+                                                remove it.
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        failOnWarnings
+                                        <span class="label label-info pull-right">Optional</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>If set to true, the operation will fail on minor issues.</p>
+                                    <table class="table">
+                                        <tr><th>Type:</th><td>String</td></tr>
+                                        <tr><th>Default:</th><td><code>false</code></td></tr>
+                                        <tr><th>Update:</th><td>No interruption.</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        restApiId
+                                        <span class="label label-info pull-right">Optional</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>If you provide a restApiId the resource will make a partial update to the REST API.</p>
+                                    <table class="table">
+                                        <tr>
+                                            <th>Type:</th>
+                                            <td>String</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Update:</th>
+                                            <td>No interruption.
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-footer">
+                            <h3>Outputs</h3>
+
+                            <p>
+                                <a href="http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createRestApi-property">http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createRestApi-property</a><br/>
+                                In addition, the parent resource id is also returned in the response:<br/>
+                                <code>Fn::GetAtt: ["TestRestApi", "parentResourceId"]</code>
+                            </p>
+
+                            <h3>CloudFormation Template Example</h3>
+                            <pre>
+                                "TestRestApi" : {
+                                    "Type" : "Custom::ApiImport",
+                                    "Properties" : {
+                                        "ServiceToken": "{Lambda_Function_ARN}",
+                                        "apiDefinition": { ... },
+                                        "parameters": {
+                                            someKey: 'STRING_VALUE'
+                                        },
+                                        "failOnWarnings": true
+                                    }
+                                }
+                            </pre>
+                        </div>
+                    </div>
+                </section>
 
                 <section id="custom-RestApi">
                     <div class="panel panel-default">
