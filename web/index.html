@@ -85,7 +85,7 @@
                         <li><a href="#custom-ApiDomainName"><span class="glyphicon glyphicon-chevron-right"></span>API Domain Name</a></li>
                         <li><a href="#custom-ApiBasePathMapping"><span class="glyphicon glyphicon-chevron-right"></span>API Base Path Mapping</a></li>
                         <li><a href="#custom-ApiAuthorizer"><span class="glyphicon glyphicon-chevron-right"></span>API Authorizer</a></li>
-                        <!--<li><a href="#custom-DeployApi"><span class="glyphicon glyphicon-chevron-right"></span>Deploy API</a></li>-->
+                        <li><a href="#custom-DeployApi"><span class="glyphicon glyphicon-chevron-right"></span>Deploy API</a></li>
                     </ul>
                 </li>
                 <li><a href="#change-log">Change log</a></li>
@@ -1847,7 +1847,7 @@
                         <div class="panel-body">
 
                             <div class="callout callout-warning">
-                                <span class="glyphicon glyphicon-warning-sign"></span> This resource is experimental and may change!
+                                This resource is experimental and may change!
                             </div>
 
                             <p>
@@ -2010,203 +2010,243 @@
                     </div>
                 </section>
 
-                <!--<section id="custom-DeployApi">-->
-                    <!--<div class="panel panel-default">-->
-                        <!--<div class="panel-heading">-->
-                            <!--<h3 class="panel-title">-->
-                                <!--<span class="glyphicon glyphicon-chevron-down" data-collapse title="click to collapse/expand"></span>-->
-                                <!--Custom::DeployApi-->
-                            <!--</h3>-->
-                        <!--</div>-->
-                        <!--<div class="panel-body">-->
+                <section id="custom-DeployApi">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                <span class="glyphicon glyphicon-chevron-down" data-collapse title="click to collapse/expand"></span>
+                                Custom::DeployApi
+                            </h3>
+                        </div>
+                        <div class="panel-body">
 
-                            <!--<div class="callout callout-warning">-->
-                                <!--<span class="glyphicon glyphicon-warning-sign"></span> This resource is experimental and may change!-->
-                            <!--</div>-->
+                            <div class="callout callout-warning">
+                                This resource is experimental and may change!
+                            </div>
 
-                            <!--<p>-->
-                                <!--API Deployments can be managed via the AWS Console, the AWS CLI or any AWS SDK.<br/>-->
-                                <!--However, this resource is provided as an alternative if you want to manage deployment via CloudFormation.-->
-                                <!--It resource will create a new deployment and set the desired stage configuration.-->
-                            <!--</p>-->
+                            <p>
+                                API Deployments can be managed via the AWS Console, the AWS CLI or any AWS SDK.<br/>
+                                However, this resource is provided as an alternative if you want to manage deployment via CloudFormation.
+                                This resource will create a new deployment and set the desired stage configuration.
+                            </p>
 
-                            <!--<div class="callout callout-info">-->
-                                <!--As previously mentioned, your API is deployed when you create a <a href="#custom-ApiBasePathMapping">Base-->
-                                <!--Path Mapping</a>.-->
-                                <!--If you provide the same stage name to this resource your API will be deployed to the same stage but with-->
-                                <!--additional configuration options.<br/>-->
-                                <!--From this perspective you can look at this resource as a way to configure your stage instead of a way to-->
-                                <!--manage your deployments.<br/>-->
-                                <!--It comes down to taste.-->
-                            <!--</div>-->
+                            <div class="callout callout-info">
+                                As previously mentioned, your API is deployed when you create a <a href="#custom-ApiBasePathMapping">Base
+                                Path Mapping</a>.
+                                If you provide the same stage name to this resource your API will be deployed to the same stage but with
+                                additional configuration options.<br/>
+                                From this perspective you can look at this resource as a way to configure your stage instead of a way to
+                                manage your deployments.<br/>
+                                It comes down to taste.
+                            </div>
 
-                            <!--<div class="callout callout-info">-->
-                                <!--Only resources that are created are made available when you deploy your API. This means that this resources-->
-                                <!--has to depend-->
-                                <!--on every API Method you want to be included in the deploy. This can be tricky as this list can be long but-->
-                                <!--one strategy-->
-                                <!--to resolve this is to put your resource and method definitions in a sub-stack and let this resource depend-->
-                                <!--on that sub-stack only.-->
-                            <!--</div>-->
+                            <div class="callout callout-info">
+                                Only resources that are created are made available when you deploy your API. This means that this resources
+                                has to depend on every API Method you want to be included in the deploy.<br/>
+                                This can be tricky as this list can be long but one strategy to resolve this is to put your resource and method
+                                definitions in a sub-stack and let this resource depend on that sub-stack only.
+                            </div>
 
-                            <!--<p>-->
-                                <!--For further details, please refer to these documents:-->
-                                <!--<a href="http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createDeployment-property">http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createDeployment-property</a>-->
-                                <!--<a href="http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#updateStage-property">http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#updateStage-property</a>-->
-                            <!--</p>-->
+                            <div class="callout callout-warning">
+                                Deleting this resource has no practical effect. The API Stage will remain and the API will still be deployed.
+                            </div>
 
-                            <!--<h3>Parameters</h3>-->
+                            <p>
+                                For further details, please refer to these documents:
+                                <a href="http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createDeployment-property">http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createDeployment-property</a>
+                                <a href="http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#updateStage-property">http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#updateStage-property</a>
+                            </p>
 
-                            <!--<div class="panel panel-default">-->
-                                <!--<div class="panel-heading">-->
-                                    <!--<h3 class="panel-title">-->
-                                        <!--restApiId-->
-                                        <!--<span class="label label-danger pull-right">Required</span>-->
-                                    <!--</h3>-->
-                                <!--</div>-->
-                                <!--<div class="panel-body">-->
-                                    <!--<p>The Rest API you want to deploy.</p>-->
-                                    <!--<table class="table">-->
-                                        <!--<tr><th>Type</th><td>String</td></tr>-->
-                                        <!--<tr><th>Update</th><td>Not supported</td></tr>-->
-                                    <!--</table>-->
-                                <!--</div>-->
-                            <!--</div>-->
-                            <!--<div class="panel panel-default">-->
-                                <!--<div class="panel-heading">-->
-                                    <!--<h3 class="panel-title">-->
-                                        <!--stageName-->
-                                        <!--<span class="label label-danger pull-right">Required</span>-->
-                                    <!--</h3>-->
-                                <!--</div>-->
-                                <!--<div class="panel-body">-->
-                                    <!--<p>-->
-                                        <!--The name of the stage you want to deploy to. If the stage does not exist it will be created.-->
-                                    <!--</p>-->
-                                    <!--<div class="callout callout-info">-->
-                                        <!--You may change the name of the stage but that will have no impact on the existing-->
-                                        <!--stage, thus the existing stage will-->
-                                        <!--remain deployed.-->
-                                    <!--</div>-->
-                                    <!--<table class="table">-->
-                                        <!--<tr><th>Type</th><td>String</td></tr>-->
-                                        <!--<tr><th>Update</th><td>No interruption</td></tr>-->
-                                    <!--</table>-->
-                                <!--</div>-->
-                            <!--</div>-->
+                            <h3>Parameters</h3>
 
-                            <!--<div class="panel panel-default">-->
-                                <!--<div class="panel-heading">-->
-                                    <!--<h3 class="panel-title">-->
-                                        <!--stageConfig-->
-                                        <!--<span class="label label-info pull-right">Optional</span>-->
-                                    <!--</h3>-->
-                                <!--</div>-->
-                                <!--<div class="panel-body">-->
-                                    <!--<p>Key/value map of default stage configuration.</p>-->
-                                    <!--<table class="table">-->
-                                        <!--<tr><th>Type</th><td>Map{String, String}</td></tr>-->
-                                        <!--<tr><th>Update</th><td>No interruption</td></tr>-->
-                                    <!--</table>-->
-                                <!--</div>-->
-                            <!--</div>-->
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        restApiId
+                                        <span class="label label-danger pull-right">Required</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>The Rest API you want to deploy.</p>
+                                    <table class="table">
+                                        <tr><th>Type</th><td>String</td></tr>
+                                        <tr><th>Update</th><td>Not supported</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        stageName
+                                        <span class="label label-danger pull-right">Required</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>
+                                        The name of the stage you want to deploy to. If the stage does not exist it will be created.
+                                    </p>
+                                    <div class="callout callout-info">
+                                        You may change the name of the stage but that will have no impact on the existing
+                                        stage, thus the existing stage will remain deployed.
+                                    </div>
+                                    <table class="table">
+                                        <tr><th>Type</th><td>String</td></tr>
+                                        <tr><th>Update</th><td>No interruption</td></tr>
+                                    </table>
+                                </div>
+                            </div>
 
-                            <!--<div class="panel panel-default">-->
-                                <!--<div class="panel-heading">-->
-                                    <!--<h3 class="panel-title">-->
-                                        <!--stageConfig.description-->
-                                        <!--<span class="label label-info pull-right">Optional</span>-->
-                                    <!--</h3>-->
-                                <!--</div>-->
-                                <!--<div class="panel-body">-->
-                                    <!--<p>Stage description</p>-->
-                                    <!--<table class="table">-->
-                                        <!--<tr><th>Type</th><td>String</td></tr>-->
-                                        <!--<tr><th>Update</th><td>No interruption</td></tr>-->
-                                    <!--</table>-->
-                                <!--</div>-->
-                            <!--</div>-->
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        stageConfig
+                                        <span class="label label-info pull-right">Optional</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>Key/value map of default stage configuration.</p>
+                                    <table class="table">
+                                        <tr><th>Type</th><td>Map{String, String}</td></tr>
+                                        <tr><th>Update</th><td>No interruption</td></tr>
+                                    </table>
+                                </div>
+                            </div>
 
-                            <!--<div class="panel panel-default">-->
-                                <!--<div class="panel-heading">-->
-                                    <!--<h3 class="panel-title">-->
-                                        <!--stageConfig.cacheClusterEnabled-->
-                                        <!--<span class="label label-info pull-right">Optional</span>-->
-                                    <!--</h3>-->
-                                <!--</div>-->
-                                <!--<div class="panel-body">-->
-                                    <!--<p>Set to true to enable API caching</p>-->
-                                    <!--<table class="table">-->
-                                        <!--<tr><th>Type</th><td>Boolean</td></tr>-->
-                                        <!--<tr><th>Default</th><td><code>false</code></td></tr>-->
-                                        <!--<tr><th>Update</th><td>No interruption</td></tr>-->
-                                    <!--</table>-->
-                                <!--</div>-->
-                            <!--</div>-->
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        stageConfig.description
+                                        <span class="label label-info pull-right">Optional</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>Stage description</p>
+                                    <table class="table">
+                                        <tr><th>Type</th><td>String</td></tr>
+                                        <tr><th>Update</th><td>No interruption but you can't remove it once set.</td></tr>
+                                    </table>
+                                </div>
+                            </div>
 
-                            <!--<div class="panel panel-default">-->
-                                <!--<div class="panel-heading">-->
-                                    <!--<h3 class="panel-title">-->
-                                        <!--stageConfig.cacheClusterSize-->
-                                        <!--<span class="label label-info pull-right">Optional</span>-->
-                                    <!--</h3>-->
-                                <!--</div>-->
-                                <!--<div class="panel-body">-->
-                                    <!--<p>Cache cluster size</p>-->
-                                    <!--<table class="table">-->
-                                        <!--<tr><th>Type</th><td>Double, one of 0.5 | 1.6 | 6.1 | 13.5 | 28.4 | 58.2 | 118 | 237</td></tr>-->
-                                        <!--<tr><th>Update</th><td>No interruption</td></tr>-->
-                                    <!--</table>-->
-                                <!--</div>-->
-                            <!--</div>-->
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        stageConfig.cacheClusterEnabled
+                                        <span class="label label-info pull-right">Optional</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>Set to true to enable API caching</p>
+                                    <table class="table">
+                                        <tr><th>Type</th><td>Boolean</td></tr>
+                                        <tr><th>Default</th><td><code>false</code></td></tr>
+                                        <tr><th>Update</th><td>No interruption but you can't remove it once set.</td></tr>
+                                    </table>
+                                </div>
+                            </div>
 
-                            <!--<div class="panel panel-default">-->
-                                <!--<div class="panel-heading">-->
-                                    <!--<h3 class="panel-title">-->
-                                        <!--stageVariables-->
-                                        <!--<span class="label label-info pull-right">Optional</span>-->
-                                    <!--</h3>-->
-                                <!--</div>-->
-                                <!--<div class="panel-body">-->
-                                    <!--<p>-->
-                                        <!--Key/value map of stage variables where the key is the name of the variable and the value is the value of-->
-                                        <!--that variable.-->
-                                    <!--</p>-->
-                                    <!--<table class="table">-->
-                                        <!--<tr><th>Type</th><td>Map{String, String}</td></tr>-->
-                                        <!--<tr><th>Update</th><td>No interruption</td></tr>-->
-                                    <!--</table>-->
-                                <!--</div>-->
-                            <!--</div>-->
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        stageConfig.cacheClusterSize
+                                        <span class="label label-info pull-right">Optional</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>Cache cluster size</p>
+                                    <table class="table">
+                                        <tr><th>Type</th><td>Double, one of <code>0.5 | 1.6 | 6.1 | 13.5 | 28.4 | 58.2 | 118 | 237</code></td></tr>
+                                        <tr><th>Update</th><td>No interruption but you cannot remove it once set.</td></tr>
+                                    </table>
+                                </div>
+                            </div>
 
-                            <!--<div class="panel panel-default">-->
-                                <!--<div class="panel-heading">-->
-                                    <!--<h3 class="panel-title">-->
-                                        <!--methodSettings-->
-                                        <!--<span class="label label-danger pull-right">Required</span>-->
-                                    <!--</h3>-->
-                                <!--</div>-->
-                                <!--<div class="panel-body">-->
-                                    <!--<p>Method settings, global for the stage or specific for a method.</p>-->
-                                    <!--<div class="callout callout-info">-->
-                                        <!--See <a href="http://docs.aws.amazon.com/cli/latest/reference/apigateway/update-stage.html">http://docs.aws.amazon.com/cli/latest/reference/apigateway/update-stage.html</a>-->
-                                        <!--&gt; <em>methodSettings</em> for further details.-->
-                                    <!--</div>-->
-                                    <!--<table class="table">-->
-                                        <!--<tr><th>Type</th><td>Map{String, Mixed}</td></tr>-->
-                                        <!--<tr><th>Update</th><td>No interruption</td></tr>-->
-                                    <!--</table>-->
-                                <!--</div>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                        <!--<div class="panel-footer">-->
-                            <!--<h3>Outputs</h3>-->
-                            <!--TODO-->
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        stageVariables
+                                        <span class="label label-info pull-right">Optional</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>
+                                        Key/value map of stage variables where the key is the name of the variable and the value is the value of
+                                        that variable.
+                                    </p>
+                                    <table class="table">
+                                        <tr><th>Type</th><td>Map{String, String}</td></tr>
+                                        <tr><th>Update</th><td>No interruption</td></tr>
+                                    </table>
+                                </div>
+                            </div>
 
-                            <!--<h3>CloudFormation Template Example</h3>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</section>-->
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        methodSettings
+                                        <span class="label label-danger pull-right">Required</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>
+                                        Method settings, global for the stage or specific for a method.
+                                    </p>
+                                    <div class="callout callout-danger">
+                                        <h4>Known Issue</h4>
+                                        Due to a defect in API Gateway you cannot remove a method setting.<br/>
+                                        Once it is set you have to keep the setting with the exact path which in effect mean that to disable a setting you have to change the value, not remove it.<br/>
+                                        If you accidentally remove a setting or a path is changed the existing setting will not be removed by the Custom Resource.
+                                    </div>
+
+                                    <div class="callout callout-danger">
+                                        <h4>Known Issue</h4>
+                                        A secondary issue in API Gateway is that any method specific setting (ie path = {resourcePath}/{httpVerb}/...)
+                                        are prefixed with ~1. This will hopefully be fixed in the future which means that the actual paths will be changed in the future.
+                                        The impact of this cannot be predicted at this time so you use this resource at your own risk for the time being.
+                                    </div>
+                                    <div class="callout callout-info">
+                                        See <a href="http://docs.aws.amazon.com/cli/latest/reference/apigateway/update-stage.html">http://docs.aws.amazon.com/cli/latest/reference/apigateway/update-stage.html</a>
+                                        &gt; <em>methodSettings</em> for further details.
+                                    </div>
+                                    <table class="table">
+                                        <tr><th>Type</th><td>Map{String, Mixed}</td></tr>
+                                        <tr><th>Update</th><td>No interruption</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-footer">
+                            <h3>Outputs</h3>
+                            TODO
+
+                            <h3>CloudFormation Template Example</h3>
+                            <pre>
+                                "DeployApi": {
+                                    "Type": "Custom::DeployApi",
+                                    "Properties": {
+                                        "ServiceToken": {Lambda_Function_ARN},
+                                        "restApiId": "xyz123",
+                                        "stageName": "TestStage",
+                                        "stageConfig": {
+                                            "cacheClusterEnabled": true,
+                                            "cacheClusterSize": 0.5,
+                                            "description": "My TestStage"
+                                        },
+                                        "methodSettings": {
+                                            "*/*/metrics/enabled": true,
+                                            "*/*/logging/loglevel": "ERROR",
+                                            "resourcePath/GET/logging/loglevel": "INFO"
+                                        },
+                                        "stageVariables": {
+                                            "testVar1": "testValue1",
+                                            "testVar2": "testValue2"
+                                        }
+                                    }
+                                }
+                            </pre>
+                        </div>
+                    </div>
+                </section>
             </section>
 
             <section id="change-log">

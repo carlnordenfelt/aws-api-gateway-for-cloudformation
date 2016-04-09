@@ -111,14 +111,19 @@ describe('patchOperationsHelper', function () {
             expect(modifications.replace.length).to.equal(0);
             done();
         });
-        it('should run without values', function (done) {
+        it('should allow anything if allowed is not provided', function (done) {
             var newConfig = {
-                'existing': 'test1'
+                existing: 'test1',
+                new: 'new1'
             };
-            var modifications = testSubject.getAllowedModifications(newConfig);
-            expect(modifications.add.length).to.equal(0);
-            expect(modifications.remove.length).to.equal(0);
-            expect(modifications.replace.length).to.equal(0);
+            var oldConfig = {
+                existing: 'test2',
+                old: 'old'
+            };
+            var modifications = testSubject.getAllowedModifications(newConfig, oldConfig);
+            expect(modifications.add.length).to.equal(1);
+            expect(modifications.remove.length).to.equal(1);
+            expect(modifications.replace.length).to.equal(1);
             done();
         });
     });
