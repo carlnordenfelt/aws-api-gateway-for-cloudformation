@@ -127,6 +127,13 @@ describe('ApiImport Command', function () {
                 done();
             });
         });
+        it('should do nothing if restApiId is invalid', function (done) {
+            testSubject.deleteResource({}, {}, { params: { restApiId: '123/4432' } }, function (error) {
+                expect(error).to.be.undefined;
+                expect(deleteRestApiStub.called).to.be.false;
+                done();
+            });
+        });
         it('should fail delete rest api', function (done) {
             deleteRestApiStub.yields('deleteError');
             testSubject.deleteResource({}, {}, { params: {} }, function (error) {

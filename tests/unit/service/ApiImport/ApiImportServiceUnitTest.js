@@ -59,6 +59,7 @@ describe('ApiModelService', function () {
         });
         it('should return an error when importing API', function (done) {
             importRestApiStub.yields({});
+            params.failOnWarnings = false; // coverage
             testSubject.importApi(params, function (error, restApi) {
                 expect(error).to.be.an.Error;
                 expect(restApi).to.be.undefined;
@@ -86,6 +87,7 @@ describe('ApiModelService', function () {
         });
         it('should return an error when updating API', function (done) {
             putRestApiStub.yields({});
+            params.failOnWarnings = false; // coverage
             testSubject.updateApi('RestApiId', params, function (error, restApi) {
                 expect(error).to.be.an.Error;
                 expect(restApi).to.be.undefined;
