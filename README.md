@@ -9,6 +9,8 @@ already create using CloudFormation with your APIs!
 
 It's deployed via the CloudFormation Console and runs on AWS Lambda.
 
+It supports API Definitions in Swagger as well as individual Cloud Formation resources depending on which flavour you prefer.
+
 **Complete documentation is available at [the project website](https://apigatewaycloudformation.bynordenfelt.com/)**
 
 ##Overview

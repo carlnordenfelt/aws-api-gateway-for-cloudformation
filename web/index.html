@@ -121,6 +121,13 @@
                     resources described in this document.
                 </p>
 
+                <div class="callout callout-info">
+                    <h4>Swagger support</h4>
+                    <p>
+                        As of version 1.5.0 you can also define your APIs in Swagger using the <code>Custom::ApiImport</code> resource.
+                    </p>
+                </div>
+
                 <p>
                     If you want to learn more about CloudFormation, Custom Resources or API Gateway I suggest the following
                     links:
@@ -267,13 +274,20 @@
                             </p>
 
                             <div class="callout callout-warning">
-                                If you use this resource to make partial updates of an API you will not be able to delete the
-                                resources or methods you define in the partial update.<br/>
-                                Deleting a partial resource has no effect on the actual API.
+                                Update operations executed on non-partial APIs will overwrite the entire API, including resources added by partial updates.
                             </div>
 
                             <div class="callout callout-warning">
-                                Update operations executed on non-partial APIs will overwrite the entire API, including resources added by partial updates.
+                                <p>
+                                    If you use this resource to make partial updates of an API you will not be able to delete the
+                                    resources or methods you define in the partial update.<br/>
+                                    Deleting a partial resource has no effect on the actual API.
+                                </p>
+
+                                <p>
+                                    However, since an update of the non-partial resource overwrites the entire API and the partial updates are applied afterwards,
+                                    in effect, forcing an update of all API resources, partial and non-partial, will also delete any resources removed from partial APIs.
+                                </p>
                             </div>
 
                             <h3>Parameters</h3>
