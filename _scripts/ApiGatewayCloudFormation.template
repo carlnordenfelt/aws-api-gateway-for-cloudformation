@@ -11,6 +11,12 @@
             "Type": "Number",
             "Default": 30,
             "Description": "Lambda execution timeout"
+        },
+        "NodejsRunTime": {
+            "Type": "String",
+            "Default": "nodejs",
+            "AllowedValues": ["nodejs", "nodejs4.3"],
+            "Description": "nodejs run time version. Note: If you already have an installation it runs on nodejs. If you change it to nodejs4.3 your ServiceToken will change and this will break any existing resources in other templates. It is therefore recommended not to change this for existing installations. New installations however, should use nodejs4.3."
         }
     },
     "Resources": {
@@ -79,7 +85,7 @@
                 "Handler": "lib/index.handler",
                 "MemorySize": { "Ref": "MemoryAllocation" },
                 "Role": { "Fn::GetAtt": ["LambdaFunctionRole", "Arn"] },
-                "Runtime": "nodejs",
+                "Runtime": { "Ref": "NodejsRunTime" },
                 "Timeout": { "Ref": "ExecutionTimeout" }
             }
         }
