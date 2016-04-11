@@ -225,12 +225,6 @@
                 <section id="install">
                     <h3>Install</h3>
 
-                    <div class="callout callout-danger">
-                        As of version 1.5.1, the template gives you the option select which nodejs runtime to use.<br/>
-                        The default setting in the template is "nodejs" which is equivalent to nodejs 0.10.36.
-                        If you are creating a new installation I recommend that you select <strong><em>nodejs4.3</em></strong> instead.
-                    </div>
-
                     <ol>
                         <li>Pick the version you want from the <a href="#change-log">Change log</a>. The latest is usually the
                             one you want.
@@ -245,33 +239,10 @@
 
                 <section id="update">
                     <h3>Update</h3>
-
                     <p>
                         Follow the steps above but instead of creating a new stack you update your existing stack. Note that you
                         need to change the template URL when updating.
                     </p>
-
-                    <div class="callout callout-danger">
-                        <p>
-                            As of version 1.5.1, the template gives you the option to set the nodejs runtime.
-                        </p>
-                        <div class="alert alert-danger"><strong><em>Do not change this setting if you are updating your setup.</em></strong></div>
-
-                        <p>
-                            The reason why a simple upgrade is not possible is because this will replace the Lambda function
-                            which generates a new Lambda ARN. This ARN is the ServiceToken you provide when creating resources using this project
-                            and CloudFormation does not allow you to change the ServiceToken of an existing CustomResource.
-                        </p>
-                        <p>
-                            If you are OK with deleting all resources you have already created and recreate them from scratch you are ok to upgrade the nodejs runtime.
-                            Note however that you have to delete the existing resources before you upgrade as deletion will fail otherwise.
-                        </p>
-                        <p>
-                            I have opened a thread concerning this in the AWS forum:
-                            <a href="https://forums.aws.amazon.com/thread.jspa?threadID=229175&tstart=0">https://forums.aws.amazon.com/thread.jspa?threadID=229175&tstart=0</a>.
-                            We'll see if any action is taken from Amazon.
-                        </p>
-                    </div>
                 </section>
 
                 <section id="uninstall">
@@ -2302,30 +2273,6 @@
 
             <section id="change-log">
                 <h2>Change Log</h2>
-
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">1.5.1 (2016-04-11)</h3>
-                    </div>
-                    <div class="panel-body">
-                        <ul>
-                            <li>
-                                <span class="label label-info">New</span> Added option to use nodejs runtime version 4.3.
-                                See <a href="#update">Update</a> notes for further details.
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="panel-footer">
-                        <h4>Templates</h4>
-                        <ul>
-                            <li><a href="http://apigatewaycloudformation.eu-central-1.s3.amazonaws.com/1.5.1/ApiGatewayCloudFormation.template">eu-central-1</a></li>
-                            <li><a href="http://apigatewaycloudformation.eu-west-1.s3.amazonaws.com/1.5.1/ApiGatewayCloudFormation.template">eu-west-1</a></li>
-                            <li><a href="http://apigatewaycloudformation.us-east-1.s3.amazonaws.com/1.5.1/ApiGatewayCloudFormation.template">us-east-1</a></li>
-                            <li><a href="http://apigatewaycloudformation.us-west-2.s3.amazonaws.com/1.5.1/ApiGatewayCloudFormation.template">us-west-2</a></li>
-                            <li><a href="http://apigatewaycloudformation.ap-northeast-1.s3.amazonaws.com/1.5.1/ApiGatewayCloudFormation.template">ap-northeast-1</a></li>
-                        </ul>
-                    </div>
-                </div>
 
                 <div class="panel panel-default">
                     <div class="panel-heading">
