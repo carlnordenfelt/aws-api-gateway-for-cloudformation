@@ -2,6 +2,7 @@ $(document).ready(function() {
     $('body').on('click', '.scrollspy a', function (e) {
         e.preventDefault();
         var target = $(this).attr('href');
+        window.location = $(this).attr('href');
         $(window).scrollTop($(target).offset().top - 60);
     });
     $('#nav').affix({

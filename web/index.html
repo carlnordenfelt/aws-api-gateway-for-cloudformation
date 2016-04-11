@@ -85,7 +85,7 @@
                         <li><a href="#custom-ApiDomainName"><span class="glyphicon glyphicon-chevron-right"></span>API Domain Name</a></li>
                         <li><a href="#custom-ApiBasePathMapping"><span class="glyphicon glyphicon-chevron-right"></span>API Base Path Mapping</a></li>
                         <li><a href="#custom-ApiAuthorizer"><span class="glyphicon glyphicon-chevron-right"></span>API Authorizer</a></li>
-                        <li><a href="#custom-DeployApi"><span class="glyphicon glyphicon-chevron-right"></span>Deploy API</a></li>
+                        <li><a href="#custom-ApiDeploy"><span class="glyphicon glyphicon-chevron-right"></span>API Deploy</a></li>
                     </ul>
                 </li>
                 <li><a href="#change-log">Change log</a></li>
@@ -2027,7 +2027,7 @@
                     </div>
                 </section>
 
-                <section id="custom-DeployApi">
+                <section id="custom-ApiDeploy">
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h3 class="panel-title">
@@ -2239,7 +2239,7 @@
 
                             <h3>CloudFormation Template Example</h3>
                             <pre>
-                                "DeployApi": {
+                                "ApiDeploy": {
                                     "Type": "Custom::ApiDeploy",
                                     "Properties": {
                                         "ServiceToken": {Lambda_Function_ARN},
