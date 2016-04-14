@@ -5,6 +5,27 @@
         <title>AWS API Gateway - CloudFormation</title>
         <link rel="stylesheet" href="assets/vendor/bootstrap-3.3.6/css/bootstrap.min.css">
         <link rel="stylesheet" href="assets/apigatewaycloudformation.css">
+        <!-- Favicon -->
+        <link rel="apple-touch-icon" sizes="57x57" href="/favicons/apple-touch-icon-57x57.png?v=zXXK0xmMpL">
+        <link rel="apple-touch-icon" sizes="60x60" href="/favicons/apple-touch-icon-60x60.png?v=zXXK0xmMpL">
+        <link rel="apple-touch-icon" sizes="72x72" href="/favicons/apple-touch-icon-72x72.png?v=zXXK0xmMpL">
+        <link rel="apple-touch-icon" sizes="76x76" href="/favicons/apple-touch-icon-76x76.png?v=zXXK0xmMpL">
+        <link rel="apple-touch-icon" sizes="114x114" href="/favicons/apple-touch-icon-114x114.png?v=zXXK0xmMpL">
+        <link rel="apple-touch-icon" sizes="120x120" href="/favicons/apple-touch-icon-120x120.png?v=zXXK0xmMpL">
+        <link rel="apple-touch-icon" sizes="144x144" href="/favicons/apple-touch-icon-144x144.png?v=zXXK0xmMpL">
+        <link rel="apple-touch-icon" sizes="152x152" href="/favicons/apple-touch-icon-152x152.png?v=zXXK0xmMpL">
+        <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon-180x180.png?v=zXXK0xmMpL">
+        <link rel="icon" type="image/png" href="/favicons/favicon-32x32.png?v=zXXK0xmMpL" sizes="32x32">
+        <link rel="icon" type="image/png" href="/favicons/android-chrome-192x192.png?v=zXXK0xmMpL" sizes="192x192">
+        <link rel="icon" type="image/png" href="/favicons/favicon-96x96.png?v=zXXK0xmMpL" sizes="96x96">
+        <link rel="icon" type="image/png" href="/favicons/favicon-16x16.png?v=zXXK0xmMpL" sizes="16x16">
+        <link rel="manifest" href="/favicons/manifest.json?v=zXXK0xmMpL">
+        <link rel="mask-icon" href="/favicons/safari-pinned-tab.svg?v=zXXK0xmMpL" color="#5bbad5">
+        <link rel="shortcut icon" href="/favicons/favicon.ico?v=zXXK0xmMpL">
+        <meta name="msapplication-TileColor" content="#da532c">
+        <meta name="msapplication-TileImage" content="/favicons/mstile-144x144.png?v=zXXK0xmMpL">
+        <meta name="theme-color" content="#ffffff">
+        <!-- / Favicon -->
     </head>
     <body data-spy="scroll" data-target=".scrollspy" data-offset="120">
         <a href="https://github.com/you" class="hidden-xs"><img
@@ -1092,7 +1113,7 @@
                                 <div class="panel-body">
                                     <p>
                                         HTTP method of the backend integration request.<br/>
-                                        Must be set if the <code>integration.type</code> is set to <code>MOCK</code>.
+                                        Must be set if the <code>integration.type</code> is not set to <code>MOCK</code>.
                                     </p>
                                     <table class="table">
                                         <tr><th>Type</th><td>String</td></tr>
@@ -1888,7 +1909,7 @@
                                 <div class="panel-body">
                                     <p>
                                         Authorizer Api Gateway Lambda function invocation ARN.<br/>
-                                        <code>arn:aws:apigateway:eu-west-1:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-1:1234:function:LambdaName/invocations</code>
+                                        E.g: <code>arn:aws:apigateway:eu-west-1:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-1:1234:function:LambdaName/invocations</code>
                                     </p>
                                     <table class="table">
                                         <tr><th>Type</th><td>String</td></tr>
@@ -2018,10 +2039,10 @@
                                     "Properties" : {
                                         "ServiceToken": "{Lambda_Function_ARN}",
                                         "restApiId": "xyz123",
-                                        "authorizerUri": "{Authorizer_Lambda_ARN}",
+                                        "authorizerUri": "{ApiGatewayInvocationPrefix}{Authorizer_Lambda_ARN}/incovations",
                                         "identitySource": "x-auth-header",
                                         "name": "TestAuthorizer",
-                                        "authorizerCredentials": "beta",
+                                        "authorizerCredentials": "{ApiGatewayExecutionIAMRole}",
                                         "authorizerResultTtlInSeconds": 3600,
                                         "identityValidationExpression": "$[a-z]*"
                                     }
