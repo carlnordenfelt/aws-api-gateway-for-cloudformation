@@ -37,7 +37,10 @@
         <div class="navbar navbar-fixed-top">
             <div class="navbar-inner">
                 <div class="container-fluid">
-                    <div id="headline" class="brand">AWS API Gateway - CloudFormation</div>
+                    <div id="headline" class="brand">
+                        <img src="favicons/favicon-32x32.png">
+                        AWS API Gateway - CloudFormation
+                    </div>
                     <ul class="nav navbar-nav navbar-right hidden-xs hidden-sm hidden-md" style="margin-right: 150px">
                         <li class="github"><a class="github-button"
                                               href="https://github.com/carlnordenfelt/aws-api-gateway-for-cloudformation"
@@ -117,7 +120,10 @@
         </div>
         <div class="col-md-10">
             <section id="introduction">
-                <h1>API Gateway for CloudFormation</h1>
+                <h1>
+                    <img src="favicons/favicon-32x32.png" align="top">
+                    API Gateway for CloudFormation
+                </h1>
 
                 <p>
                     API Gateway for CloudFormation is a set of Custom Resources that allows you to manage your API Gateway setup
@@ -1395,6 +1401,12 @@
                             <p>
                                 <a href="http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#putMethod-property">http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#putMethod-property</a>
                             </p>
+                            <div class="callout callout-info">
+                                <p>
+                                    methodResponses, methodIntegration.integrationResponses, methodIntegration.requestTemplates and
+                                    requestModels are stripped from the response since version 1.5.1.
+                                </p>
+                            </div>
 
                             <h3>CloudFormation Template Example</h3>
                             <pre>
@@ -1888,10 +1900,6 @@
                         </div>
                         <div class="panel-body">
 
-                            <div class="callout callout-warning">
-                                This resource is experimental and may change!
-                            </div>
-
                             <p>
                                 Creates a new Api Gateway Authorizer<br/>
                                 <a href="http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createAuthorizer-property">http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createAuthorizer-property</a>
@@ -2294,6 +2302,27 @@
 
             <section id="change-log">
                 <h2>Change Log</h2>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">1.5.1 (2016-04-20)</h3>
+                    </div>
+                    <div class="panel-body">
+                        <ul>
+                            <li><span class="label label-info">Fix</span> Stripped methodResponses, methodIntegration.integrationResponses, methodIntegration.requestTemplates and requestModels from the ApiMethod response.</li>
+                        </ul>
+                    </div>
+                    <div class="panel-footer">
+                        <h4>Templates</h4>
+                        <ul>
+                            <li><a href="http://apigatewaycloudformation.eu-central-1.s3.amazonaws.com/1.5.1/ApiGatewayCloudFormation.template">eu-central-1</a></li>
+                            <li><a href="http://apigatewaycloudformation.eu-west-1.s3.amazonaws.com/1.5.1/ApiGatewayCloudFormation.template">eu-west-1</a></li>
+                            <li><a href="http://apigatewaycloudformation.us-east-1.s3.amazonaws.com/1.5.1/ApiGatewayCloudFormation.template">us-east-1</a></li>
+                            <li><a href="http://apigatewaycloudformation.us-west-2.s3.amazonaws.com/1.5.1/ApiGatewayCloudFormation.template">us-west-2</a></li>
+                            <li><a href="http://apigatewaycloudformation.ap-northeast-1.s3.amazonaws.com/1.5.1/ApiGatewayCloudFormation.template">ap-northeast-1</a></li>
+                        </ul>
+                    </div>
+                </div>
 
                 <div class="panel panel-default">
                     <div class="panel-heading">

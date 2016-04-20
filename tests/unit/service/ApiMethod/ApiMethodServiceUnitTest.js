@@ -49,16 +49,29 @@ describe('ApiMethodService', function () {
     beforeEach(function () {
         getMethodStub.reset().resetBehavior();
         getMethodStub.yields(undefined, {
+            methodResponses: {
+                '200': {
+                    statusCode: "200"
+                }
+            },
+            requestModels: {
+                model: {
+                }
+            },
             methodIntegration: {
                 integrationResponses: {
                     '200': {
                         responseParameters: {
                             'method.response.header.Access-Control-Allow-Methods': 'GET',
                             'method.response.header.Access-Control-Allow-Origin': '*'
-                    }
+                        }
+                    },
+                },
+                requestTemplates: {
+                    'application/json': {}
                 }
             }
-        }});
+        });
         deleteMethodStub.reset().resetBehavior();
         deleteMethodStub.yields();
         putMethodStub.reset().resetBehavior();
@@ -76,6 +89,10 @@ describe('ApiMethodService', function () {
             testSubject.getForResponse('RestApiId', 'ResourceId', 'HttpMethod', function (error, apiMethod) {
                 expect(error).to.be.undefined;
                 expect(apiMethod).to.be.an('object');
+                expect(apiMethod.methodResponses).to.be.undefined;
+                expect(apiMethod.requestModels).to.be.undefined;
+                expect(apiMethod.methodIntegration.integrationResponses).to.be.undefined;
+                expect(apiMethod.methodIntegration.requestTemplates).to.be.undefined;
                 done();
             });
         });
