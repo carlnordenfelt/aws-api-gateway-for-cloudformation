@@ -3,22 +3,32 @@
 var chai = require('chai');
 var expect = chai.expect;
 
+var Constants = require('../../../../lib/service/Constants');
 var testSubject = require('../../../../lib/service/RestApi/RestApiEvent');
 
 describe('RestAPiEvent', function () {
-
     describe('getParameters', function () {
-        it('should give both old and new parameters', function (done) {
-            var event = {
+        var event;
+
+        beforeEach(function () {
+            event = {
                 ResourceProperties: {
                     name: "ApiName",
-                    description: "ApiDesc"
+                    description: "ApiDesc",
+                    corsConfiguration: {
+                        allowMethods: []
+                    }
                 },
                 OldResourceProperties: {
                     name: "ApiName2",
-                    description: "ApiDesc2"
+                    description: "ApiDesc2",
+                    corsConfiguration: {
+                        allowMethods: []
+                    }
                 }
             };
+        });
+        it('should give both old and new parameters', function (done) {
             var parameters = testSubject.getParameters(event);
             expect(parameters.params.name).to.equal('ApiName');
             expect(parameters.params.description).to.equal('ApiDesc');
@@ -27,25 +37,31 @@ describe('RestAPiEvent', function () {
             done();
         });
         it('should yield an error', function (done) {
-            var event = {
-                ResourceProperties: {
-                    description: "ApiDesc"
-                }
-            };
+            delete event.ResourceProperties.name;
             var fn = function () { testSubject.getParameters(event); };
             expect(fn).to.throw(Error);
             expect(fn).to.throw(/name/);
             done();
         });
         it('should not validate parameters if RequestType is Delete', function (done) {
-            var event = {
-                RequestType: 'Delete',
-                ResourceProperties: {
-                    description: "ApiDesc"
-                }
-            };
+            event.RequestType = 'Delete';
+            delete event.ResourceProperties.name;
             var parameters = testSubject.getParameters(event);
             expect(parameters.params.description).to.equal('ApiDesc');
+            done();
+        });
+        it('should give all CORS methods with wildcard', function (done) {
+            event.ResourceProperties.corsConfiguration.allowMethods = '*';
+            var parameters = testSubject.getParameters(event);
+            expect(parameters.params.corsConfig.allowMethods).be.an.Array;
+            expect(parameters.params.corsConfig.allowMethods.length).to.equals(Constants.CORS_ALL_METHODS.length);
+            done();
+        });
+        it('should give parameters without cors', function (done) {
+            delete event.ResourceProperties.corsConfiguration;
+            delete event.OldResourceProperties; // Coverage
+            var parameters = testSubject.getParameters(event);
+            expect(parameters.params.corsConfig).to.be.undefined;
             done();
         });
     });

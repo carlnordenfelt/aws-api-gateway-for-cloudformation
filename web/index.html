@@ -497,6 +497,31 @@
                                     </table>
                                 </div>
                             </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">corsConfiguration
+                                        <span class="label label-info pull-right" style="margin-left: 10px;">Since v1.6.0</span>
+                                        <span class="label label-info pull-right">Optional</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>
+                                        If you supply cors configuration the parent resource in the API will enable CORS requests.<br/>
+                                        See <a href="#custom-ApiResource-corsConfiguration">API Resource corsConfiguration</a> for detailed configuration options.
+                                    </p>
+                                    <table class="table">
+                                        <tr>
+                                            <th>Type:</th>
+                                            <td>Object</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Update:</th>
+                                            <td>No interruption</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                         <div class="panel-footer">
                             <h3>Outputs</h3>
@@ -610,7 +635,7 @@
                                 </div>
                             </div>
 
-                            <div class="panel panel-default">
+                            <div class="panel panel-default" id="custom-ApiResource-corsConfiguration">
                                 <div class="panel-heading">
                                     <h3 class="panel-title">corsConfiguration
                                         <span class="label label-info pull-right">Optional</span>
@@ -2302,6 +2327,27 @@
 
             <section id="change-log">
                 <h2>Change Log</h2>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">1.6.0 (2016-04-20)</h3>
+                    </div>
+                    <div class="panel-body">
+                        <ul>
+                            <li><span class="label label-info">New</span> Enable CORS on the parent API Resource by specifiying CORS settings on Custom::RestApi.</li>
+                        </ul>
+                    </div>
+                    <div class="panel-footer">
+                        <h4>Templates</h4>
+                        <ul>
+                            <li><a href="http://apigatewaycloudformation.eu-central-1.s3.amazonaws.com/1.6.0/ApiGatewayCloudFormation.template">eu-central-1</a></li>
+                            <li><a href="http://apigatewaycloudformation.eu-west-1.s3.amazonaws.com/1.6.0/ApiGatewayCloudFormation.template">eu-west-1</a></li>
+                            <li><a href="http://apigatewaycloudformation.us-east-1.s3.amazonaws.com/1.6.0/ApiGatewayCloudFormation.template">us-east-1</a></li>
+                            <li><a href="http://apigatewaycloudformation.us-west-2.s3.amazonaws.com/1.6,0/ApiGatewayCloudFormation.template">us-west-2</a></li>
+                            <li><a href="http://apigatewaycloudformation.ap-northeast-1.s3.amazonaws.com/1.6.0/ApiGatewayCloudFormation.template">ap-northeast-1</a></li>
+                        </ul>
+                    </div>
+                </div>
 
                 <div class="panel panel-default">
                     <div class="panel-heading">

@@ -14,6 +14,7 @@ describe('RestApiService', function () {
     var updateRestApiStub;
     var getApiParentResourceStub;
     var getRestApisStub;
+    var putOptionsMethodStub;
 
     after(function () {
         mockery.deregisterAll();
@@ -31,6 +32,7 @@ describe('RestApiService', function () {
         updateRestApiStub = sinon.stub();
         getRestApisStub = sinon.stub();
         getApiParentResourceStub = sinon.stub();
+        putOptionsMethodStub = sinon.stub();
 
         var awsSdkStub = {
             APIGateway: function () {
@@ -44,8 +46,12 @@ describe('RestApiService', function () {
         var apiResourceServiceStub = {
             getApiParentResource: getApiParentResourceStub
         };
+        var corsServiceStub = {
+            putOptionsMethod: putOptionsMethodStub
+        };
 
         mockery.registerMock('aws-sdk', awsSdkStub);
+        mockery.registerMock('../Cors/CorsService', corsServiceStub);
         mockery.registerMock('../ApiResource/ApiResourceService', apiResourceServiceStub);
         testSubject = require('../../../../lib/service/RestApi/RestApiService');
     });
@@ -62,6 +68,8 @@ describe('RestApiService', function () {
         getRestApisStub.yields(undefined, {});
         getApiParentResourceStub.reset().resetBehavior();
         getApiParentResourceStub.yields(undefined, { id: 1234 });
+        putOptionsMethodStub.reset().resetBehavior();
+        putOptionsMethodStub.yields(undefined, {});
     });
 
     describe('getForResponse', function () {
@@ -144,40 +152,54 @@ describe('RestApiService', function () {
     });
 
     describe('createApi', function () {
-        it('should create a rest api without description', function (done) {
-            testSubject.createApi('ApiName', undefined, function (error, restApi) {
+        var event;
+        beforeEach(function () {
+             event = { 
+                 name: 'ApiName',
+                 description: 'ApiDesc',
+                 corsConfig: {}
+             };
+        });
+        it('should create a rest api without description and cors', function (done) {
+            delete event.description;
+            delete event.corsConfig;
+            testSubject.createApi(event, function (error, restApi) {
                 expect(error).to.be.undefined;
                 expect(restApi.parentResourceId).to.equal(1234);
                 expect(getApiParentResourceStub.called).to.be.true;
+                expect(putOptionsMethodStub.called).to.be.false;
                 expect(deleteRestApiStub.called).to.be.false;
                 done();
             });
         });
-        it('should create a rest api with description', function (done) {
-            testSubject.createApi('ApiName', 'ApiDesc', function (error, restApi) {
+        it('should create a rest api with description and cors', function (done) {
+            testSubject.createApi(event, function (error, restApi) {
                 expect(error).to.be.undefined;
                 expect(restApi.parentResourceId).to.equal(1234);
                 expect(getApiParentResourceStub.called).to.be.true;
+                expect(putOptionsMethodStub.called).to.be.true;
                 expect(deleteRestApiStub.called).to.be.false;
                 done();
             });
         });
-        it('should return an error when getting rest api', function (done) {
+        it('should return an error when creating rest api', function (done) {
             createRestApiStub.yields({});
-            testSubject.createApi('ApiName', 'ApiDesc', function (error, restApi) {
+            testSubject.createApi(event, function (error, restApi) {
                 expect(error).to.be.an.Error;
                 expect(restApi).to.be.undefined;
                 expect(getApiParentResourceStub.called).to.be.false;
+                expect(putOptionsMethodStub.called).to.be.false;
                 expect(deleteRestApiStub.called).to.be.false;
                 done();
             });
         });
         it('should return an error when getting parent resource', function (done) {
             getApiParentResourceStub.yields('resourceError');
-            testSubject.createApi('ApiName', 'ApiDesc', function (error, restApi) {
+            testSubject.createApi(event, function (error, restApi) {
                 expect(error).to.equal('resourceError');
                 expect(restApi).to.be.undefined;
                 expect(getApiParentResourceStub.called).to.be.true;
+                expect(putOptionsMethodStub.called).to.be.false;
                 expect(deleteRestApiStub.called).to.be.true;
                 done();
             });
@@ -185,10 +207,34 @@ describe('RestApiService', function () {
         it('should return an error when getting parent resource and delete fails', function (done) {
             getApiParentResourceStub.yields({});
             deleteRestApiStub.yields('deleteError');
-            testSubject.createApi('ApiName', 'ApiDesc', function (error, restApi) {
+            testSubject.createApi(event, function (error, restApi) {
                 expect(error).to.equal('deleteError');
                 expect(restApi).to.be.undefined;
                 expect(getApiParentResourceStub.called).to.be.true;
+                expect(putOptionsMethodStub.called).to.be.false;
+                expect(deleteRestApiStub.called).to.be.true;
+                done();
+            });
+        });
+        it('should return an error when cors fails', function (done) {
+            putOptionsMethodStub.yields('corsError');
+            testSubject.createApi(event, function (error, restApi) {
+                expect(error).to.equal('corsError');
+                expect(restApi).to.be.undefined;
+                expect(getApiParentResourceStub.called).to.be.true;
+                expect(putOptionsMethodStub.called).to.be.true;
+                expect(deleteRestApiStub.called).to.be.true;
+                done();
+            });
+        });
+        it('should return an error when cors fails and subsequent delete fails', function (done) {
+            putOptionsMethodStub.yields('corsError');
+            deleteRestApiStub.yields('deleteError');
+            testSubject.createApi(event, function (error, restApi) {
+                expect(error).to.equal('deleteError');
+                expect(restApi).to.be.undefined;
+                expect(getApiParentResourceStub.called).to.be.true;
+                expect(putOptionsMethodStub.called).to.be.true;
                 expect(deleteRestApiStub.called).to.be.true;
                 done();
             });

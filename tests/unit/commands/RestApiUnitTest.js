@@ -13,6 +13,7 @@ describe('RestApiCommand', function () {
     var patchRestApiStub;
     var getForResponseStub;
     var getParametersStub;
+    var updateCorsConfigurationStub;
 
     after(function () {
         mockery.deregisterAll();
@@ -29,6 +30,7 @@ describe('RestApiCommand', function () {
         patchRestApiStub = sinon.stub();
         getForResponseStub = sinon.stub();
         getParametersStub = sinon.stub();
+        updateCorsConfigurationStub = sinon.stub();
 
         var apiRestApiServiceStub = {
             createApi: createRestApiStub,
@@ -39,8 +41,13 @@ describe('RestApiCommand', function () {
         var apiRestApiEventStub = {
             getParameters: getParametersStub
         };
+        var corsServiceStub = {
+            updateCorsConfiguration: updateCorsConfigurationStub
+        };
+
         mockery.registerMock('../service/RestApi/RestApiService', apiRestApiServiceStub);
         mockery.registerMock('../service/RestApi/RestApiEvent', apiRestApiEventStub);
+        mockery.registerMock('../service/Cors/CorsService', corsServiceStub);
 
         testSubject = require('../../../lib/commands/RestApi');
     });
@@ -55,6 +62,8 @@ describe('RestApiCommand', function () {
         getForResponseStub.yields(undefined, {});
         getParametersStub.reset().resetBehavior();
         getParametersStub.returns({ params: {} });
+        updateCorsConfigurationStub.reset().resetBehavior();
+        updateCorsConfigurationStub.yields(undefined, {});
     });
 
     describe('getParameters', function () {
@@ -124,6 +133,7 @@ describe('RestApiCommand', function () {
                 expect(error).to.be.undefined;
                 expect(resource).to.be.an('object');
                 expect(patchRestApiStub.called).to.be.true;
+                expect(updateCorsConfigurationStub.called).to.be.true;
                 expect(getForResponseStub.called).to.be.true;
                 done();
             });
@@ -134,6 +144,7 @@ describe('RestApiCommand', function () {
                 expect(error).to.equal('updateError');
                 expect(resource).to.be.undefined;
                 expect(patchRestApiStub.called).to.be.true;
+                expect(updateCorsConfigurationStub.called).to.be.false;
                 expect(getForResponseStub.called).to.be.false;
                 done();
             });
@@ -145,16 +156,28 @@ describe('RestApiCommand', function () {
                 expect(resource).to.be.undefined;
                 expect(patchRestApiStub.called).to.be.true;
                 expect(getForResponseStub.called).to.be.true;
+                expect(updateCorsConfigurationStub.called).to.be.false;
                 done();
             });
         });
         it('should fail if get for response doesnt find the rest api', function (done) {
-            patchRestApiStub.yields('Rest API not found');
+            getForResponseStub.yields('Rest API not found');
             testSubject.updateResource({}, {}, { params: {} }, function (error, resource) {
                 expect(error).to.equal('Rest API not found');
                 expect(resource).to.be.undefined;
                 expect(patchRestApiStub.called).to.be.true;
-                expect(getForResponseStub.called).to.be.false;
+                expect(getForResponseStub.called).to.be.true;
+                expect(updateCorsConfigurationStub.called).to.be.false;
+                done();
+            });
+        });
+        it('should fail if cors service fails', function (done) {
+            updateCorsConfigurationStub.yields('corsError');
+            testSubject.updateResource({}, {}, { params: {} }, function (error) {
+                expect(error).to.equal('corsError');
+                expect(patchRestApiStub.called).to.be.true;
+                expect(getForResponseStub.called).to.be.true;
+                expect(updateCorsConfigurationStub.called).to.be.true;
                 done();
             });
         });
