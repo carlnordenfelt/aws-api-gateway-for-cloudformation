@@ -4,7 +4,5 @@
 .idea/**/*
 coverage/**/*
 node_modules/**/*
-customResources.zip
 tmp/**/*
-lambda-arn
-Test2.template
+service-token.txt
