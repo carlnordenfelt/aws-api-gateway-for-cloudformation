@@ -1,4 +1,4 @@
-#!/bin/sh -x
+#!/bin/sh
 
 bucketPath='s3://apigatewaycloudformation.bynordenfelt.com';
 cd web
@@ -30,4 +30,4 @@ rm index.html
 rm index.html.orig2
 mv index.html.orig1 index.html
 
-echo "Client updated. Public URL: http://${bucketPath}"
+echo "Client updated. Public URL: ${bucketPath}"
