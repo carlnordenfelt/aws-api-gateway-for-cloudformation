@@ -2330,6 +2330,35 @@
 
                 <div class="panel panel-default">
                     <div class="panel-heading">
+                        <h3 class="panel-title">1.7.0 (2016-04-22)</h3>
+                    </div>
+                    <div class="panel-body">
+                        <ul>
+                            <li><span class="label label-info">New</span> Increased AWS SDK retries to 32 and max interval to 5000ms to accomodate complex API deploys.</li>
+                        </ul>
+                    </div>
+
+                    <div class="callout callout-danger">
+                        If you are upgrading from a previous version, ensure that you increase the ExecutionTimeout parameter
+                        in CloudFormation to 180 to ensure taht the Lambda doesn't timeout prematurely.
+                        This change will not have any noticable impact on exisiting deploys but if your deploy is very complex
+                        the extra time may be needed to ensure that all resources are created.
+                    </div>
+
+                    <div class="panel-footer">
+                        <h4>Templates</h4>
+                        <ul>
+                            <li><a href="http://apigatewaycloudformation.eu-central-1.s3.amazonaws.com/1.7.0/ApiGatewayCloudFormation.template">eu-central-1</a></li>
+                            <li><a href="http://apigatewaycloudformation.eu-west-1.s3.amazonaws.com/1.7.0/ApiGatewayCloudFormation.template">eu-west-1</a></li>
+                            <li><a href="http://apigatewaycloudformation.us-east-1.s3.amazonaws.com/1.7.0/ApiGatewayCloudFormation.template">us-east-1</a></li>
+                            <li><a href="http://apigatewaycloudformation.us-west-2.s3.amazonaws.com/1.7,0/ApiGatewayCloudFormation.template">us-west-2</a></li>
+                            <li><a href="http://apigatewaycloudformation.ap-northeast-1.s3.amazonaws.com/1.7.0/ApiGatewayCloudFormation.template">ap-northeast-1</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
                         <h3 class="panel-title">1.6.0 (2016-04-20)</h3>
                     </div>
                     <div class="panel-body">
