@@ -9,7 +9,7 @@
         },
         "ExecutionTimeout": {
             "Type": "Number",
-            "Default": 30,
+            "Default": 180,
             "Description": "Lambda execution timeout"
         }
     },
