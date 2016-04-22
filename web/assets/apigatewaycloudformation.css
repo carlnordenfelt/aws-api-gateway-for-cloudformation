@@ -71,6 +71,8 @@ body {
 .callout-danger { border-left-color: #ce4844; }
 .callout-danger h4 { color: #ce4844; }
 
+.panel .callout { margin: 20px 10px; }
+
 span[data-collapse] { cursor: pointer; }
 
 table th { width: 150px; }
