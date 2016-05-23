@@ -28,7 +28,7 @@
         <!-- / Favicon -->
     </head>
     <body data-spy="scroll" data-target=".scrollspy" data-offset="120">
-        <a href="https://github.com/you" class="hidden-xs"><img
+        <a href="https://github.com/carlnordenfelt/aws-api-gateway-for-cloudformation" class="hidden-xs"><img
                 style="position: fixed; top: -10px; right: 0; border: 0; z-index: 10000 !important"
                 src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67"
                 alt="Fork me on GitHub"
@@ -124,6 +124,22 @@
                     <img src="favicons/favicon-32x32.png" align="top">
                     API Gateway for CloudFormation
                 </h1>
+
+                <div class="callout callout-info">
+                    <h4>Exiting maintenance mode as of May 23rd</h4>
+                    <p>
+                        This project was put into maintenance mode on April 22nd in response to the release of native
+                        CloudFormation support for API Gateway which was released on April 18th<br/>
+                        Although the native support is good, it is still lacking some features which is way I will
+                        be slightly more active on this project from now on. That said, there hasn't popped up a lot of
+                        feature requests or issue reports so it doesnt' mean that a lot will change :)
+                    </p>
+                    <p>
+                        I still recommend new users to take a look at the
+                        <a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-template-resource-type-ref.html">native support</a>
+                        and evaluate your use cases. Going with the native support will be better in most cases..
+                    </p>
+                </div>
 
                 <p>
                     API Gateway for CloudFormation is a set of Custom Resources that allows you to manage your API Gateway setup
@@ -2330,6 +2346,26 @@
 
                 <div class="panel panel-default">
                     <div class="panel-heading">
+                        <h3 class="panel-title">1.7.1 (2016-05-23)</h3>
+                    </div>
+                    <div class="panel-body">
+                        <ul>
+                            <li><span class="label label-info">Fix</span> If an API Method failed to create due to a Conflict Exception the existing API Method was subsequently deleted by a too eager resource identification algorithm.</li>
+                        </ul>
+                    </div>
+
+                    <div class="panel-footer">
+                        <h4>Templates</h4>
+                        <ul>
+                            <li><a href="http://apigatewaycloudformation.eu-central-1.s3.amazonaws.com/1.7.1/ApiGatewayCloudFormation.template">eu-central-1</a></li>
+                            <li><a href="http://apigatewaycloudformation.eu-west-1.s3.amazonaws.com/1.7.1/ApiGatewayCloudFormation.template">eu-west-1</a></li>
+                            <li><a href="http://apigatewaycloudformation.us-east-1.s3.amazonaws.com/1.7.1/ApiGatewayCloudFormation.template">us-east-1</a></li>
+                            <li><a href="http://apigatewaycloudformation.us-west-2.s3.amazonaws.com/1.7.1/ApiGatewayCloudFormation.template">us-west-2</a></li>
+                            <li><a href="http://apigatewaycloudformation.ap-northeast-1.s3.amazonaws.com/1.7.1/ApiGatewayCloudFormation.template">ap-northeast-1</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="panel-heading">
                         <h3 class="panel-title">1.7.0 (2016-04-22)</h3>
                     </div>
                     <div class="panel-body">
@@ -2342,7 +2378,7 @@
                         <h4>Upgrade Notes</h4>
                         If you are upgrading from a previous version, ensure that you increase the ExecutionTimeout parameter
                         in CloudFormation to 180 to ensure that the Lambda doesn't timeout prematurely.
-                        This change will not have any noticable impact on exisiting deploys but if your deploy is very complex
+                        This change will not have any notable impact on existing deploys but if your deploy is very complex
                         the extra time may be needed to ensure that all resources are created.
                     </div>
 
@@ -2352,7 +2388,7 @@
                             <li><a href="http://apigatewaycloudformation.eu-central-1.s3.amazonaws.com/1.7.0/ApiGatewayCloudFormation.template">eu-central-1</a></li>
                             <li><a href="http://apigatewaycloudformation.eu-west-1.s3.amazonaws.com/1.7.0/ApiGatewayCloudFormation.template">eu-west-1</a></li>
                             <li><a href="http://apigatewaycloudformation.us-east-1.s3.amazonaws.com/1.7.0/ApiGatewayCloudFormation.template">us-east-1</a></li>
-                            <li><a href="http://apigatewaycloudformation.us-west-2.s3.amazonaws.com/1.7,0/ApiGatewayCloudFormation.template">us-west-2</a></li>
+                            <li><a href="http://apigatewaycloudformation.us-west-2.s3.amazonaws.com/1.7.0/ApiGatewayCloudFormation.template">us-west-2</a></li>
                             <li><a href="http://apigatewaycloudformation.ap-northeast-1.s3.amazonaws.com/1.7.0/ApiGatewayCloudFormation.template">ap-northeast-1</a></li>
                         </ul>
                     </div>
@@ -2373,7 +2409,7 @@
                             <li><a href="http://apigatewaycloudformation.eu-central-1.s3.amazonaws.com/1.6.0/ApiGatewayCloudFormation.template">eu-central-1</a></li>
                             <li><a href="http://apigatewaycloudformation.eu-west-1.s3.amazonaws.com/1.6.0/ApiGatewayCloudFormation.template">eu-west-1</a></li>
                             <li><a href="http://apigatewaycloudformation.us-east-1.s3.amazonaws.com/1.6.0/ApiGatewayCloudFormation.template">us-east-1</a></li>
-                            <li><a href="http://apigatewaycloudformation.us-west-2.s3.amazonaws.com/1.6,0/ApiGatewayCloudFormation.template">us-west-2</a></li>
+                            <li><a href="http://apigatewaycloudformation.us-west-2.s3.amazonaws.com/1.6.0/ApiGatewayCloudFormation.template">us-west-2</a></li>
                             <li><a href="http://apigatewaycloudformation.ap-northeast-1.s3.amazonaws.com/1.6.0/ApiGatewayCloudFormation.template">ap-northeast-1</a></li>
                         </ul>
                     </div>

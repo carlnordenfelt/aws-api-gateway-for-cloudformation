@@ -97,6 +97,8 @@ function publish() {
         sed -i '.original' "s:{VERSION}:${version}:g" ${templatePath}/${templateName}
         aws s3 cp ${sourceFileName} s3://${s3BucketName}.eu-west-1/${version}/${sourceFileName} --region eu-west-1
         aws s3 cp ${templatePath}/${templateName} s3://${s3BucketName}.eu-west-1/${version}/${templateName} --region eu-west-1
+        aws s3 cp ${sourceFileName} s3://${s3BucketName}.us-east-1/${version}/${sourceFileName} --region us-east-1
+        aws s3 cp ${templatePath}/${templateName} s3://${s3BucketName}.us-east-1/${version}/${templateName} --region us-east-1
         echo "https://s3.amazonaws.com/${s3BucketName}.eu-west-1/${version}/${templateName}"
     fi
 

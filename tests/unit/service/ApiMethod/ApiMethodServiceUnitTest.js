@@ -65,7 +65,7 @@ describe('ApiMethodService', function () {
                             'method.response.header.Access-Control-Allow-Methods': 'GET',
                             'method.response.header.Access-Control-Allow-Origin': '*'
                         }
-                    },
+                    }
                 },
                 requestTemplates: {
                     'application/json': {}
@@ -131,15 +131,18 @@ describe('ApiMethodService', function () {
                         cacheNamespace: ''
                     },
                     responses: {
-                        default: {
-                            statusCode: "Response.StatusCode",
+                        'default': {
+                            statusCode: '200',
                             responseTemplates: {
                                 ResponseTemplateObject: {},
                                 ResponseTemplateString: ''
                             }
                         },
-                        ResponseKey: {
-                            statusCode: "Response.StatusCode"
+                        '.*BadResponse1.*': {
+                            statusCode: '500'
+                        },
+                        '.*BadResponse2.*': {
+                            statusCode: '500'
                         }
                     }
                 }
@@ -148,6 +151,8 @@ describe('ApiMethodService', function () {
         it('should create an api method', function (done) {
             testSubject.createMethod(params, function (error, apiMethod) {
                 expect(error).to.be.undefined;
+                expect(putMethodResponseStub.calledTwice).to.be.true;
+                expect(putIntegrationResponseStub.calledThrice).to.be.true;
                 expect(apiMethod).to.be.an('object');
                 done();
             });
@@ -235,7 +240,7 @@ describe('ApiMethodService', function () {
             testSubject.createMethod(params, function (error, apiMethod) {
                 expect(error).to.be.an.Error;
                 expect(error).to.equal('putIntegrationError');
-                expect(apiMethod).to.be.undefined;
+                expect(apiMethod).to.an('object');
                 done();
             });
         });
@@ -244,7 +249,7 @@ describe('ApiMethodService', function () {
             testSubject.createMethod(params, function (error, apiMethod) {
                 expect(error).to.be.an.Error;
                 expect(error).to.equal('putMethodResponseError');
-                expect(apiMethod).to.be.undefined;
+                expect(apiMethod).to.an('object');
                 done();
             });
         });
@@ -253,7 +258,7 @@ describe('ApiMethodService', function () {
             testSubject.createMethod(params, function (error, apiMethod) {
                 expect(error).to.be.an.Error;
                 expect(error).to.equal('putIntegrationResponseError');
-                expect(apiMethod).to.be.undefined;
+                expect(apiMethod).to.an('object');
                 done();
             });
         });

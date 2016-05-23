@@ -69,15 +69,35 @@ describe('ApiMethodCommand', function () {
 
     describe('createMethod', function () {
         it('should create resource', function (done) {
-            testSubject.createResource({}, {}, { params: {method: {}} }, function (error) {
+            testSubject.createResource({}, {}, { params: { method: {}} }, function (error) {
                 expect(error).to.be.undefined;
                 done();
             });
         });
         it('should fail create resource', function (done) {
             createMethodStub.yields('createError');
-            testSubject.createResource({}, {}, { params: {method: {}} }, function (error) {
+            testSubject.createResource({}, {}, { params: { method: {}} }, function (error) {
                 expect(error).to.equal('createError');
+                expect(createMethodStub.called).to.be.true;
+                expect(getForResponseStub.called).to.be.false;
+                done();
+            });
+        });
+        it('should fail create resource but with a proper physical resource id', function (done) {
+            createMethodStub.yields('createError', {});
+            testSubject.createResource({}, {}, { params: { resourceId: 'test', method: { httpMethod: 'GET' }} }, function (error) {
+                expect(error.message).to.equal('createError');
+                expect(error.physicalResourceId).to.equal('test/GET');
+                expect(createMethodStub.called).to.be.true;
+                expect(getForResponseStub.called).to.be.false;
+                done();
+            });
+        });
+        it('should fail create resource but with a proper physical resource id', function (done) {
+            createMethodStub.yields({ code: 'createError' }, {});
+            testSubject.createResource({}, {}, { params: { resourceId: 'test', method: { httpMethod: 'GET' }} }, function (error) {
+                expect(error.code).to.equal('createError');
+                expect(error.physicalResourceId).to.equal('test/GET');
                 expect(createMethodStub.called).to.be.true;
                 expect(getForResponseStub.called).to.be.false;
                 done();
@@ -85,7 +105,7 @@ describe('ApiMethodCommand', function () {
         });
         it('should fail if get for response fails', function (done) {
             getForResponseStub.yields('getForResponseError');
-            testSubject.createResource({}, {}, { params: {method: {}} }, function (error) {
+            testSubject.createResource({}, {}, { params: { method: {}} }, function (error) {
                 expect(error).to.equal('getForResponseError');
                 expect(createMethodStub.called).to.be.true;
                 expect(getForResponseStub.called).to.be.true;
@@ -99,6 +119,13 @@ describe('ApiMethodCommand', function () {
             testSubject.deleteResource({ PhysicalResourceId: 'test/GET' }, {}, { params: {method: {}} }, function (error) {
                 expect(error).to.be.undefined;
                 expect(deleteMethodStub.called).to.be.true;
+                done();
+            });
+        });
+        it('should do nothingif physical resource id is not set properly', function (done) {
+            testSubject.deleteResource({ PhysicalResourceId: 'dummy' }, {}, { params: {method: {}} }, function (error) {
+                expect(error).to.be.undefined;
+                expect(deleteMethodStub.called).to.be.false;
                 done();
             });
         });
@@ -123,13 +150,13 @@ describe('ApiMethodCommand', function () {
                 done();
             });
         });
-        it('should fallback to method from parameters if PhysicalResourceId is not properly set', function (done) {
+        it('should do nothing if PhysicalResourceId is not properly set', function (done) {
             testSubject.updateResource({ PhysicalResourceId: 'dummy' }, {}, { params: {method: {}} }, function (error, resource) {
-                expect(error).to.be.undefined;
-                expect(resource).to.be.an('object');
-                expect(deleteMethodStub.called).to.be.true;
-                expect(createMethodStub.called).to.be.true;
-                expect(getForResponseStub.called).to.be.true;
+                expect(error).to.equal('Resource not found');
+                expect(resource).to.be.undefined;
+                expect(deleteMethodStub.called).to.be.false;
+                expect(createMethodStub.called).to.be.false;
+                expect(getForResponseStub.called).to.be.false;
                 done();
             });
         });
