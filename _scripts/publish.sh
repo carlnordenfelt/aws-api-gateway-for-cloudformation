@@ -135,4 +135,8 @@ package || exit 1;
 if [ "${action}" == "publish" ]; then
     version=$(parseVersion ${version}) || exit 1;
     publish ${version}
+
+    if [[ " ${version} " != *"test/"* ]]; then
+        git push --tags
+    fi
 fi
