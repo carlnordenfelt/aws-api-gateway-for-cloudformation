@@ -121,7 +121,7 @@
                 }
             }
         },
-        "TestApiMethod" : {
+        "TestApiMethod1" : {
             "Type" : "Custom::ApiMethod",
             "Properties" : {
                 "ServiceToken": { "Ref": "ServiceToken" },
@@ -141,12 +141,83 @@
                 },
                 "integration": {
                     "type": "MOCK",
+                    "passthroughBehavior": "NEVER",
+                    "requestTemplates": {
+                        "application/json": { "statusCode": 200 }
+                    }
+                },
+                "responses": {
+                    "default": {
+                        "statusCode": "200",
+                        "headers": {
+                            "X-Custom-Header": "'hardcodedValue'"
+                        }
+                    },
+                    ".*NotFound.*": {
+                        "statusCode": "404"
+                    }
+                }
+            }
+        },
+        "TestApiMethod2" : {
+            "Type" : "Custom::ApiMethod",
+            "Properties" : {
+                "ServiceToken": { "Ref": "ServiceToken" },
+                "restApiId": { "Fn::GetAtt": ["TestRestApi", "id"] },
+                "resourceId": { "Fn::GetAtt": ["TestApiResource", "id"] },
+                "method": {
+                    "httpMethod": "POST",
+                    "apiKeyRequired": "true",
+                    "requestModels": {
+                        "application/json": { "Fn::GetAtt": ["TestModel", "name"] }
+                    },
+                    "parameters": [
+                        "querystring.sortBy",
+                        "header.x-test-header",
+                        "path.entityType"
+                    ]
+                },
+                "integration": {
+                    "type": "MOCK",
+                    "passthroughBehavior": "WHEN_NO_MATCH",
                     "requestTemplates": {
                         "application/json": "{\"statusCode\": 200}"
-                    },
-                    "requestParameters": {
-                        "integration.request.querystring.sortBy": "'hardcodedValue'"
                     }
+                },
+                "responses": {
+                    "default": {
+                        "statusCode": "200",
+                        "headers": {
+                            "X-Custom-Header": "'hardcodedValue'"
+                        }
+                    },
+                    ".*NotFound.*": {
+                        "statusCode": "404"
+                    }
+                }
+            }
+        },
+        "TestApiMethod3" : {
+            "Type" : "Custom::ApiMethod",
+            "Properties" : {
+                "ServiceToken": { "Ref": "ServiceToken" },
+                "restApiId": { "Fn::GetAtt": ["TestRestApi", "id"] },
+                "resourceId": { "Fn::GetAtt": ["TestApiResource", "id"] },
+                "method": {
+                    "httpMethod": "PUT",
+                    "apiKeyRequired": "true",
+                    "requestModels": {
+                        "application/json": { "Fn::GetAtt": ["TestModel", "name"] }
+                    },
+                    "parameters": [
+                        "querystring.sortBy",
+                        "header.x-test-header",
+                        "path.entityType"
+                    ]
+                },
+                "integration": {
+                    "type": "MOCK",
+                    "passthroughBehavior": "WHEN_NO_TEMPLATES"
                 },
                 "responses": {
                     "default": {
@@ -183,7 +254,7 @@
                 "basePath": { "Ref": "BasePath"},
                 "stage": { "Ref": "StageName" }
             },
-            "DependsOn": ["TestApiMethod"]
+            "DependsOn": ["TestApiMethod1", "TestApiMethod2", "TestApiMethod3"]
         },
         "TestDnsRecord": {
             "Type": "AWS::Route53::RecordSet",

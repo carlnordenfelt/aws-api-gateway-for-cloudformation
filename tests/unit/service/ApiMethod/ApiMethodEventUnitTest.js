@@ -1,12 +1,9 @@
 'use strict';
 
-var chai = require('chai');
-var expect = chai.expect;
-
+var expect = require('chai').expect;
 var testSubject = require('../../../../lib/service/ApiMethod/ApiMethodEvent');
 
 describe('ApiMethodEvent', function () {
-
     describe('getParameters', function () {
         var event;
         beforeEach(function () {
@@ -112,13 +109,14 @@ describe('ApiMethodEvent', function () {
                      type: 'integration.type',
                      httpMethod: 'integration.httpMethod',
                      uri: 'integration.uri',
+                     passthroughBehavior: 'integration.passthroughBehavior',
                      requestTemplates: {
                          IntegrationRequestTemplateObject: {},
                          IntegrationRequestTemplateString: ''
                      }
                  },
                  responses: {
-                     default: {
+                     'default': {
                          statusCode: "Response.StatusCode",
                          responseTemplates: {
                              ResponseTemplateObject: {},
@@ -138,6 +136,7 @@ describe('ApiMethodEvent', function () {
             expect(parameters.method.authorizationType).to.equal('IAM');
             expect(parameters.method.apiKeyRequired).to.be.true;
             expect(parameters.integration.httpMethod).to.equal('INTEGRATION.HTTPMETHOD');
+            expect(parameters.integration.passthroughBehavior).to.equal('integration.passthroughBehavior');
             expect(parameters.responses[0].selectionPattern).to.be.undefined;
             expect(parameters.responses[1].selectionPattern).to.equal('ResponseKey');
             done();
@@ -181,6 +180,12 @@ describe('ApiMethodEvent', function () {
             delete params.responses;
             var parameters = testSubject.validateParameters(params);
             expect(parameters).not.to.be.an.Error;
+            done();
+        });
+        it('should give default integration.passthroughBehaviour', function (done) {
+            delete params.integration.passthroughBehavior;
+            var parameters = testSubject.validateParameters(params);
+            expect(parameters.integration.passthroughBehavior).to.equal('WHEN_NO_MATCH');
             done();
         });
 
