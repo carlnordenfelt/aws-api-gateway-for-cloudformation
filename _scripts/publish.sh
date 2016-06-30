@@ -76,6 +76,7 @@ function publish() {
     if [[ " ${version} " != *"test/"* ]]; then
         sed -i '.original' "s/{VERSION}/${version}/g" ${templatePath}/${templateName}
         for region in "${regions[@]}"; do
+            sed -i '.version' "s/{REGION}/${region}/g" ${templatePath}/${templateName}
             bucketName="${s3BucketName}.${region}"
             aws s3api head-bucket --bucket ${bucketName} --region ${region}
 
@@ -92,20 +93,24 @@ function publish() {
             aws s3 cp ${sourceFileName} s3://${bucketName}/${version}/${sourceFileName} --region ${region}
             aws s3 cp ${templatePath}/${templateName} s3://${bucketName}/${version}/${templateName} --region ${region}
             echo "* <a href=\"https://s3.amazonaws.com/${bucketName}/${version}/${templateName}\">${region} template</a>"
+
+            rm -f ${templatePath}/${templateName}
+            mv ${templatePath}/${templateName}.version ${templatePath}/${templateName}
         done
     else
         sed -i '.original' "s:{VERSION}:${version}:g" ${templatePath}/${templateName}
+        sed -i '.version' "s/{REGION}/eu-west-1/g" ${templatePath}/${templateName}
         aws s3 cp ${sourceFileName} s3://${s3BucketName}.eu-west-1/${version}/${sourceFileName} --region eu-west-1
         aws s3 cp ${templatePath}/${templateName} s3://${s3BucketName}.eu-west-1/${version}/${templateName} --region eu-west-1
         aws s3 cp ${sourceFileName} s3://${s3BucketName}.us-east-1/${version}/${sourceFileName} --region us-east-1
         aws s3 cp ${templatePath}/${templateName} s3://${s3BucketName}.us-east-1/${version}/${templateName} --region us-east-1
         echo "https://s3.amazonaws.com/${s3BucketName}.eu-west-1/${version}/${templateName}"
+        rm -f ${templatePath}/${templateName}.version
     fi
 
     rm -f ${sourceFileName}
     rm -f ${templatePath}/${templateName}
     mv ${templatePath}/${templateName}.original ${templatePath}/${templateName}
-
     echo "Version ${version} published to AWS"
 }
 

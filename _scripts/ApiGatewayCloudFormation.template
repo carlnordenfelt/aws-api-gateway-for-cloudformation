@@ -2,6 +2,16 @@
     "AWSTemplateFormatVersion": "2010-09-09",
     "Description": "Creates Lambda function API Gateway CustomResource CloudFormation handler. Version {VERSION}",
     "Parameters": {
+        "CodeBucket": {
+            "Type": "String",
+            "Default": "UseDefault",
+            "Description": "Optionally override the default S3 bucket for the source code. Make sure the bucket is in the same region as your Lambda."
+        },
+        "CodeKey": {
+            "Type": "String",
+            "Default": "UseDefault",
+            "Description": "Optionally override the default S3 key for the source code package."
+        },
         "MemoryAllocation": {
             "Type": "Number",
             "Default": 256,
@@ -11,7 +21,18 @@
             "Type": "Number",
             "Default": 180,
             "Description": "Lambda execution timeout"
+        },
+        "NodeRuntime": {
+            "Type": "String",
+            "AllowedValues": ["nodejs", "nodejs4.3"],
+            "Default": "nodejs",
+            "Description": "New installations should use the nodejs4.3 runtime. If you are updating a setup that is already running on nodejs, do NOT upgrade to nodejs4.3."
         }
+    },
+    "Conditions": {
+        "UseLegacyNodeRuntime": { "Fn::Equals": [{ "Ref" : "NodeRuntime" }, "nodejs"] },
+        "UseCustomCodeBucket": { "Fn::Not": [{ "Fn::Equals": [{ "Ref" : "CodeBucket" }, "UseDefault"] }] },
+        "UseCustomCodeKey": { "Fn::Not": [{ "Fn::Equals": [{ "Ref" : "CodeKey" }, "UseDefault"] }] }
     },
     "Resources": {
         "LambdaBasePolicy": {
@@ -72,14 +93,23 @@
             "Type": "AWS::Lambda::Function",
             "Properties": {
                 "Code": {
-                    "S3Bucket": { "Fn::Join": [".", ["apigatewaycloudformation", { "Ref": "AWS::Region" }]] },
-                    "S3Key": "{VERSION}/source.zip"
+                    "S3Bucket": { "Fn::If": ["UseCustomCodeBucket",
+                        { "Ref": "CodeBucket" },
+                        "apigatewaycloudformation.{REGION}"
+                    ]},
+                    "S3Key": { "Fn::If": ["UseCustomCodeKey",
+                        { "Ref": "CodeKey" },
+                        "{VERSION}/source.zip"
+                    ]}
                 },
                 "Description": "API Gateway CloudFormation.",
                 "Handler": "lib/index.handler",
                 "MemorySize": { "Ref": "MemoryAllocation" },
                 "Role": { "Fn::GetAtt": ["LambdaFunctionRole", "Arn"] },
-                "Runtime": "nodejs",
+                "Runtime": { "Fn::If": ["UseLegacyNodeRuntime",
+                    "nodejs",
+                    { "Ref": "NodeRuntime" }
+                ]},
                 "Timeout": { "Ref": "ExecutionTimeout" }
             }
         }
