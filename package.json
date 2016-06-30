@@ -19,20 +19,20 @@
   },
   "dependencies": {
     "async": "1.5.0",
-    "aws-sdk": "2.3.2",
+    "aws-sdk": "2.4.3",
     "deep-equal": "1.0.1",
     "lodash": "3.10.1"
   },
   "devDependencies": {
     "chai": "3.5.0",
-    "coveralls": "^2.11.9",
+    "coveralls": "2.11.9",
     "eslint": "1.10.1",
     "eslint-config-defaults": "7.1.1",
     "eslint-plugin-filenames": "0.2.0",
-    "istanbul": "0.3.19",
-    "mocha": "2.3.1",
-    "mockery": "1.4.0",
-    "should": "7.1.0",
-    "sinon": "1.16.1"
+    "istanbul": "0.4.4",
+    "mocha": "2.5.3",
+    "mockery": "1.7.0",
+    "should": "9.0.2",
+    "sinon": "1.17.4"
   }
 }
