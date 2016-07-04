@@ -126,18 +126,9 @@
                 </h1>
 
                 <div class="callout callout-info">
-                    <h4>Exiting maintenance mode as of May 23rd</h4>
                     <p>
-                        This project was put into maintenance mode on April 22nd in response to the release of native
-                        CloudFormation support for API Gateway which was released on April 18th<br/>
-                        Although the native support is good, it is still lacking some features which is way I will
-                        be slightly more active on this project from now on. That said, there hasn't popped up a lot of
-                        feature requests or issue reports so it doesnt' mean that a lot will change :)
-                    </p>
-                    <p>
-                        I still recommend new users to take a look at the
-                        <a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-template-resource-type-ref.html">native support</a>
-                        and evaluate your use cases. Going with the native support will be better in most cases..
+                        CloudFormation offers <a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-template-resource-type-ref.html">native support</a> for API Gateway.
+                        This project is kept alive and offered as an alternative becuase I feel that the native resources aren't sufficient.
                     </p>
                 </div>
 
@@ -300,6 +291,13 @@
 
             <section id="resources">
                 <h2>Resources</h2>
+
+                <p>
+                    All resources accept a common parameter: <code>lastModified</code>.
+                    This parameter is optional but can be passed to a resource to force an update even if there are no
+                    changes to be made. This will force an update which can be useful for certain reousrces such as ApiDeploy.
+                    Paramters that are not specified in the <a href="https://github.com/carlnordenfelt/aws-api-gateway-for-cloudformation/tree/master/lib/services/json-schemas">schemas</a> will fail validation.
+                </p>
 
                 <section id="custom-ApiImport">
                     <div class="panel panel-default">
@@ -517,8 +515,8 @@
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <h3 class="panel-title">corsConfiguration
-                                        <span class="label label-info pull-right" style="margin-left: 10px;">Since v1.6.0</span>
-                                        <span class="label label-info pull-right">Optional</span>
+                                        <span class="label label-info pull-right" style="margin-left: 10px;">Optional</span>
+                                        <span class="label label-info pull-right">Since v1.6.0</span>
                                     </h3>
                                 </div>
                                 <div class="panel-body">
@@ -682,23 +680,32 @@
                                 <div class="panel-heading">
                                     <h3 class="panel-title">
                                         corsConfiguration.allowMethods
-                                        <span class="label label-warning pull-right">Conditional</span>
+                                        <span class="label label-info pull-right">Optional</span>
                                     </h3>
                                 </div>
                                 <div class="panel-body">
                                     <p>
-                                        A list of HTTP methods that allow CORS requests under this API Resource or a wildcard
-                                        string "*" which will allow all methods.<br/>
-                                        This parameter is required if you supply CORS configuration.
+                                        A list of HTTP methods that allow CORS requests under this API Resource.
                                     </p>
+                                    <div class="callout callout-danger">
+                                        <h4>Breaking change in v2.0.0</h4>
+                                        <p>
+                                            You can no longer specify <code>allowMethods: "*"</code>.<br>
+                                            Instead, omit the property and it will default to all methods.
+                                        </p>
+                                    </div>
                                     <table class="table">
                                         <tr>
                                             <th>Type:</th>
-                                            <td>String array or String "*"</td>
+                                            <td>String array</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Default:</th>
+                                            <td>All methods</td>
                                         </tr>
                                         <tr>
                                             <th>Update:</th>
-                                            <td> No interruption</td>
+                                            <td>No interruption</td>
                                         </tr>
                                     </table>
                                 </div>
@@ -1172,6 +1179,24 @@
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <h3 class="panel-title">
+                                        integration.passthroughBehaviour
+                                        <span class="label label-info pull-right" style="margin-left: 10px;">Optional</span>
+                                        <span class="label label-info pull-right">Since v2.0.0</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>Request pass-through behaviour</p>
+                                    <table class="table">
+                                        <tr><th>Type</th><td>String</td></tr>
+                                        <tr><th>Default</th><td>WHEN_NO_MATCH</td></tr>
+                                        <tr><th>Update</th><td>No interruption</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
                                         integration.requestTemplates
                                         <span class="label label-info pull-right">Optional</span>
                                     </h3>
@@ -1179,8 +1204,7 @@
                                 <div class="panel-body">
                                     <p>
                                         Specifies the templates used to transform the method request body.<br/>
-                                        Request templates are represented as a key/value map, with a content-type as the key and a template as
-                                        the value.
+                                        Request templates are represented as a key/value map, where the key is the content-type and the value is a template.
                                     </p>
 
                                     <p>
@@ -1188,73 +1212,10 @@
                                         More complex templates can be expressed as a string.
                                     </p>
 
-                                    <div class="callout callout-info">
-                                        <h4>Introduced in version 1.4.0</h4>
-                                        From version 1.4.0 you can specify the literal string <code>input-pass-through</code> or <code>input-pass-through-full</code>
-                                        as the value
-                                        for your request templates. <code>input-pass-through</code> will give you the request body (if present) and path,
-                                        query and header parameters.
-                                        <code>input-pass-through-full</code> will give you all of the above but also includes all stageVariables and
-                                        everything available in $context.<br/>
-                                        See <a
-                                            href="http://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-mapping-template-reference.html">http://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-mapping-template-reference.html</a>
-                                        for more information.
-
-                                        <h4>Addendum in version 1.4.1</h4>
-                                        From version 1.4.1 you may specify input-pass-through as an array where the first position is the
-                                        literal string <code>input-pass-through</code> or <code>input-pass-through-full</code>
-                                        and the second position is a custom JSON object or valid JSON string that you want to append to the
-                                        backend request.
-                                        A common use case is when you want to inject configuration from your CFN template in your backend
-                                        requests.
-                                        This JSON object is appended to the pass through request as the value of the key <code>custom</code>.
-
-
-                                        <h4>An example of a full pass through request as it is sent to the backend:</h4>
-                                        <pre>
-                                            {
-                                                "body-json": {
-                                                    "bodyParam": "...
-                                                },
-                                                "params": {
-                                                    "path": {
-                                                        "myPathParam": "..."
-                                                    },
-                                                    "querystring": {
-                                                        "myQueryParam": "..."
-                                                    },
-                                                    "header": {
-                                                        "myHeaderParam": "..."
-                                                    }
-                                                },
-                                                "custom": {
-                                                    "myCustom": "configVariable"
-                                                },
-                                                "stage-variables": {
-                                                    "myStageVar": "...",
-                                                },
-                                                "context": {
-                                                    "account-id": "$context.identity.accountId",
-                                                    "api-id": "$context.apiId",
-                                                    "api-key": "$context.identity.apiKey",
-                                                    "authorizer-principal-id": "$context.authorizer.princialId",
-                                                    "caller": "$context.identity.caller",
-                                                    "cognito-authentication-provider": "$context.identity.cognitoAuthenticationProvider",
-                                                    "cognito-authentication-type": "$context.identity.cognitoAuthenticationType",
-                                                    "cognito-identity-id": "$context.identity.cognitoIdentityId",
-                                                    "cognito-identity-pool-id": "$context.identity.cognitoIdentityPoolId",
-                                                    "http-method": "$context.httpMethod",
-                                                    "stage": "$context.stage",
-                                                    "source-ip": "$context.identity.sourceIp",
-                                                    "user": "$context.identity.user",
-                                                    "user-agent": "$context.identity.userAgent",
-                                                    "user-arn": "$context.identity.userArn",
-                                                    "request-id": "$context.requestId",
-                                                    "resource-id": "$context.resourceId",
-                                                    "resource-path": "$context.resourcePath
-                                                }
-                                            }
-                                        </pre>
+                                    <div class="callout callout-danger">
+                                        <h4>Breaking change in v2.0.0</h4>
+                                        As of version 2.0.0 you can no longer specify <code>input-pass-through</code> or <code>input-pass-through-full</code>.
+                                        Use the <code>passthroughBehaviour</code> property instead.
                                     </div>
 
                                     <table class="table">
@@ -1378,7 +1339,7 @@
                                         Map of headers where the key is the header name and value is the source, or static value of the
                                         header.<br/>
                                         Static values are specified using enclosing single quotes, and backend response headers can be read
-                                        using the pattern <code>integration.response.header.{name}</code>.<br/>
+                                        using the pattern <code>integration.response.header|body.{name}</code>.<br/>
                                         CORS headers should not be specified as they are added automatically if CORS is enabled on the API Resource.
                                     </p>
 
@@ -1386,7 +1347,7 @@
                                         The key should only be the name of the header that will be exposed to the client.
                                     </div>
                                     <table class="table">
-                                        <tr><th>Type</th><td>Map{String,String}</td></tr>
+                                        <tr><th>Type</th><td>Map{String(header name),String}</td></tr>
                                         <tr><th>Update</th><td>No interruption</td></tr>
                                     </table>
                                 </div>
@@ -1407,9 +1368,6 @@
                                         The template can be represented as a JSON string or a JSON object.<br/>
                                         A template represented by an empty string is the equivalent of output pass-through.
                                     </p>
-                                    <div class="callout callout-info">
-                                        If no responseTemplates are provided a default pass-through template is created for application/json.
-                                    </div>
                                     <table class="table">
                                         <tr><th>Type</th><td>Map{String,String} or Map{String,Object}</td></tr>
                                         <tr><th>Update</th><td>No interruption</td></tr>
@@ -1990,14 +1948,12 @@
                                 <div class="panel-heading">
                                     <h3 class="panel-title">
                                         name
-                                        <span class="label label-info pull-right">Optional</span>
+                                        <span class="label label-info pull-right">Required</span>
                                     </h3>
                                 </div>
                                 <div class="panel-body">
                                     <p>
-                                        The base path name that callers of the API must provide as part of the URL after the domain name.<br/>
-                                        This value must be unique for all of the mappings across a single API.<br/>
-                                        Exclude this if you do not want callers to specify a base path name after the domain name.
+                                        Name of the Authorizer.
                                     </p>
                                     <table class="table">
                                         <tr><th>Type</th><td>String</td></tr>
@@ -2026,11 +1982,11 @@
                                 <div class="panel-heading">
                                     <h3 class="panel-title">
                                         authorizerCredentials
-                                        <span class="label label-danger pull-right">Required</span>
+                                        <span class="label label-danger pull-right">Optional</span>
                                     </h3>
                                 </div>
                                 <div class="panel-body">
-                                    <p>IAM role that API Gateway will use to invoke the Lambda function.</p>
+                                    <p>Authorizer credentials, if any.</p>
                                     <table class="table">
                                         <tr><th>Type</th><td>String</td></tr>
                                         <tr><th>Update</th><td>No interruption</td></tr>
@@ -2064,9 +2020,8 @@
                                 </div>
                                 <div class="panel-body">
                                     <p>
-                                        Optional RegEx statement for API Gateway to validate the input token before calling the custom
-                                        authorizer Lambda function.<br/>
-                                        This helps you avoid or reduce the chances of being charged for processing invalid tokens.
+                                        Optional RegEx statement for API Gateway to validate the input token before calling the authorizer.<br/>
+                                        This helps you avoid, or reduce the risk of, processing invalid tokens.
                                     </p>
                                     <table class="table">
                                         <tr><th>Type</th><td>String</td></tr>
@@ -2112,10 +2067,6 @@
                         </div>
                         <div class="panel-body">
 
-                            <div class="callout callout-warning">
-                                This resource is experimental and may change!
-                            </div>
-
                             <p>
                                 API Deployments can be managed via the AWS Console, the AWS CLI or any AWS SDK.<br/>
                                 However, this resource is provided as an alternative if you want to manage deployment via CloudFormation.
@@ -2133,7 +2084,7 @@
                             </div>
 
                             <div class="callout callout-info">
-                                Only resources that are created are made available when you deploy your API. This means that this resources
+                                Only resources that have been created are made available when you deploy your API. This means that this resources
                                 has to depend on every API Method you want to be included in the deploy.<br/>
                                 This can be tricky as this list can be long but one strategy to resolve this is to put your resource and method
                                 definitions in a sub-stack and let this resource depend on that sub-stack only.
@@ -2141,6 +2092,13 @@
 
                             <div class="callout callout-warning">
                                 Deleting this resource has no practical effect. The API Stage will remain and the API will still be deployed.
+                            </div>
+
+                            <div class="callout callout-danger">
+                                <h4>Breaking change in v2.0.0</h4>
+                                <p>
+                                    The stageConfig property has been flattened, see below.
+                                </p>
                             </div>
 
                             <p>
@@ -2191,23 +2149,7 @@
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <h3 class="panel-title">
-                                        stageConfig
-                                        <span class="label label-info pull-right">Optional</span>
-                                    </h3>
-                                </div>
-                                <div class="panel-body">
-                                    <p>Key/value map of default stage configuration.</p>
-                                    <table class="table">
-                                        <tr><th>Type</th><td>Map{String, String}</td></tr>
-                                        <tr><th>Update</th><td>No interruption</td></tr>
-                                    </table>
-                                </div>
-                            </div>
-
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h3 class="panel-title">
-                                        stageConfig.description
+                                        stageDescription
                                         <span class="label label-info pull-right">Optional</span>
                                     </h3>
                                 </div>
@@ -2223,7 +2165,7 @@
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <h3 class="panel-title">
-                                        stageConfig.cacheClusterEnabled
+                                        cacheClusterEnabled
                                         <span class="label label-info pull-right">Optional</span>
                                     </h3>
                                 </div>
@@ -2240,7 +2182,7 @@
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <h3 class="panel-title">
-                                        stageConfig.cacheClusterSize
+                                        cacheClusterSize
                                         <span class="label label-info pull-right">Optional</span>
                                     </h3>
                                 </div>
@@ -2319,11 +2261,9 @@
                                         "ServiceToken": {Lambda_Function_ARN},
                                         "restApiId": "xyz123",
                                         "stageName": "TestStage",
-                                        "stageConfig": {
-                                            "cacheClusterEnabled": true,
-                                            "cacheClusterSize": 0.5,
-                                            "description": "My TestStage"
-                                        },
+                                        "stageDescription": "My TestStage",
+                                        "cacheClusterEnabled": true,
+                                        "cacheClusterSize": 0.5,
                                         "methodSettings": {
                                             "*/*/metrics/enabled": true,
                                             "*/*/logging/loglevel": "ERROR",
@@ -2343,6 +2283,44 @@
 
             <section id="change-log">
                 <h2>Change Log</h2>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">2.0.0 (2016-07-XX)</h3>
+                    </div>
+                    <div class="panel-body">
+                        <ul>
+                            <li><span class="label label-danger">Breaking change</span> Moved request validation to JSON Schema and with this, some validation is stricter than before. This should not affect correctly configured APIs unless specifically mentioned below.</li>
+                            <li><span class="label label-danger">Breaking change</span> Removed support for shorthand pass-through templates. Use ApiMethod::.integration.passthroughBehaviour instead.</li>
+                            <li><span class="label label-danger">Breaking change</span> ApiDeploy interface has changed slightly. The wrapper object stageConfig has been flattened.</li>
+                            <li><span class="label label-danger">Breaking change</span> corsConfiguration.allowMethods no longer allows the value "*". Instead, you can omit the property and it will default to all methods.</li>
+                            <li><span class="label label-info">New</span> Added region: ap-northeast-2 (Sydney)</li>
+                            <li><span class="label label-info">New</span> Support for ApiMethod::.integration.passthroughBehaviour</li>
+                            <li><span class="label label-info">New</span> Parametrized NodejsRuntime, CodeBucket & CodeKey.</li>
+                            <li><span class="label label-default">Clean up</span> Updated several npm dependencies including the aws-sdk</li>
+                        </ul>
+
+                        <div class="callout callout-danger">
+                            <h4>Upgrade Notes</h4>
+                            <ul>
+                                <li>Do not update the NodejsRuntime to nodejs4.3 on existing installations as this will break your APIs. Only use nodejs4.3 for <b>new</b> installations.</li>
+                                <li>The new parameters, CodeBucket & CodeKey, should only be used if you want to build your own packages from source and not use the provided ones.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="panel-footer">
+                        <h4>Templates</h4>
+                        <ul>
+                            <li><a href="http://apigatewaycloudformation.ap-northeast-1.s3.amazonaws.com/2.0.0/ApiGatewayCloudFormation.template">ap-northeast-1 (Singapore)</a></li>
+                            <li><a href="http://apigatewaycloudformation.ap-northeast-2.s3.amazonaws.com/2.0.0/ApiGatewayCloudFormation.template">ap-northeast-2 (Sydney)</a></li>
+                            <li><a href="http://apigatewaycloudformation.eu-central-1.s3.amazonaws.com/2.0.0/ApiGatewayCloudFormation.template">eu-central-1 (Frankfurt)</a></li>
+                            <li><a href="http://apigatewaycloudformation.eu-west-1.s3.amazonaws.com/2.0.0/ApiGatewayCloudFormation.template">eu-west-1 (Ireland)</a></li>
+                            <li><a href="http://apigatewaycloudformation.us-east-1.s3.amazonaws.com/2.0.0/ApiGatewayCloudFormation.template">us-east-1 (North Virginia)</a></li>
+                            <li><a href="http://apigatewaycloudformation.us-west-2.s3.amazonaws.com/2.0.0/ApiGatewayCloudFormation.template">us-west-2 (Oregon)</a></li>
+                        </ul>
+                    </div>
+                </div>
 
                 <div class="panel panel-default">
                     <div class="panel-heading">

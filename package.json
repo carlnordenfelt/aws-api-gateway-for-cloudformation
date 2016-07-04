@@ -8,19 +8,11 @@
     "url": "https://github.com/carlnordenfelt/aws-api-gateway-for-cloudformation"
   },
   "license": "MIT",
-  "scripts": {
-    "clean": "rm -rf node_modules *.zip coverage && npm install",
-    "test": "npm install && npm run eslint && npm run unittest && npm run checkcoverage",
-    "unittest": "NODE_ENV=TEST istanbul cover --include-all-sources true -x \"_scripts/**/*\" -x \"web/**/*\" ./node_modules/mocha/bin/_mocha ./tests/unit -- --recursive && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
-    "checkcoverage": "istanbul check-coverage --statement 100 --branches 100 --functions 100 --lines 100",
-    "eslint": "eslint --max-warnings 0 lib",
-    "testWindows": "npm install && npm run eslint && npm run unittestWindows && npm run checkcoverage",
-    "unittestWindows": "SET NODE_ENV=TEST&&istanbul cover --include-all-sources true -x \"_scripts/**/*\"  -x \"web/**/*\" ./node_modules/mocha/bin/_mocha ./tests/unit -- --recursive"
-  },
   "dependencies": {
     "async": "1.5.0",
     "aws-sdk": "2.4.3",
     "deep-equal": "1.0.1",
+    "jsonschema": "^1.1.0",
     "lodash": "3.10.1"
   },
   "devDependencies": {
@@ -34,5 +26,8 @@
     "mockery": "1.7.0",
     "should": "9.0.2",
     "sinon": "1.17.4"
-  }
+  },
+  "contributors": [
+    "carl@bynordenfelt.se"
+  ]
 }

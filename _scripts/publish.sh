@@ -1,7 +1,7 @@
 #!/bin/sh
-
+set -e
 # Regions where AWS Lambda + API Gateway are available
-regions=( eu-central-1 eu-west-1 us-west-2 us-east-1 ap-northeast-1 )
+regions=( eu-central-1 eu-west-1 us-west-2 us-east-1 ap-northeast-1 ap-southeast-2 )
 # Valid npm version arguments
 npmActions=( patch minor major )
 # Local path to the CFN template file
@@ -53,18 +53,9 @@ function parseVersion() {
 
 # Packages the source code to a zip file (${sourceFileName})
 function package() {
-    npm run clean
-    npm run test
-    if [ $? != 0 ]; then
-        exit 1;
-    fi;
-
-    npm prune --production
-
-    echo "Packaging source code"
-    rm -rf ${sourceFileName}
-    zip -r ${sourceFileName} lib/* lib/*/** node_modules/*/** > /dev/null 2>&1
-    echo "Local file ${sourceFileName} created."
+    make clean
+    make q
+    make package.zip
 }
 
 # Publishes the source file and CFN template to S3.
