@@ -17,7 +17,7 @@ describe('ApiAuthorizerEvent', function () {
                     identitySource: 'IdentitySource',
                     name: 'Name',
                     authorizerCredentials: 'AuthorizerCredentials',
-                    authorizerResultTtlInSeconds: 'AuthorizerResultTtlInSeconds',
+                    authorizerResultTtlInSeconds: '600',
                     identityValidationExpression: 'IdentityValidationExpression'
                 },
                 OldResourceProperties: {
@@ -26,7 +26,7 @@ describe('ApiAuthorizerEvent', function () {
                     identitySource: 'IdentitySource2',
                     name: 'Name2',
                     authorizerCredentials: 'AuthorizerCredentials2',
-                    authorizerResultTtlInSeconds: 'AuthorizerResultTtlInSeconds2',
+                    authorizerResultTtlInSeconds: '700',
                     identityValidationExpression: 'IdentityValidationExpression2'
                 }
             };
@@ -39,7 +39,7 @@ describe('ApiAuthorizerEvent', function () {
             expect(parameters.params.identitySource).to.equal('IdentitySource');
             expect(parameters.params.name).to.equal('Name');
             expect(parameters.params.authorizerCredentials).to.equal('AuthorizerCredentials');
-            expect(parameters.params.authorizerResultTtlInSeconds).to.equal('AuthorizerResultTtlInSeconds');
+            expect(parameters.params.authorizerResultTtlInSeconds).to.equal('600');
             expect(parameters.params.identityValidationExpression).to.equal('IdentityValidationExpression');
             expect(parameters.params.type).to.equal('TOKEN'); // Default value only
 
@@ -48,7 +48,7 @@ describe('ApiAuthorizerEvent', function () {
             expect(parameters.old.identitySource).to.equal('IdentitySource2');
             expect(parameters.old.name).to.equal('Name2');
             expect(parameters.old.authorizerCredentials).to.equal('AuthorizerCredentials2');
-            expect(parameters.old.authorizerResultTtlInSeconds).to.equal('AuthorizerResultTtlInSeconds2');
+            expect(parameters.old.authorizerResultTtlInSeconds).to.equal('700');
             expect(parameters.old.identityValidationExpression).to.equal('IdentityValidationExpression2');
             done();
         });
@@ -83,7 +83,7 @@ describe('ApiAuthorizerEvent', function () {
         it('should set default ttl to 300', function (done) {
             delete event.ResourceProperties.authorizerResultTtlInSeconds;
             var parameters = testSubject.getParameters(event);
-            expect(parameters.params.authorizerResultTtlInSeconds).to.equal(300);
+            expect(parameters.params.authorizerResultTtlInSeconds).to.equal('300');
             done();
         });
         it('should not validate parameters id RequestType is Delete', function (done) {

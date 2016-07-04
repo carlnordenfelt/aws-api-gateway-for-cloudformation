@@ -13,12 +13,12 @@ describe('ApiImportEvent', function () {
             event = {
                 ResourceProperties: {
                     apiDefinition: { api: 'Api1' },
-                    failOnWarnings: true,
+                    failOnWarnings: 'true',
                     parameters: { param: 'Param1' }
                 },
                 OldResourceProperties: {
                     apiDefinition: { api: 'Api2' },
-                    failOnWarnings: false,
+                    failOnWarnings: 'false',
                     parameters: { param: 'Param2' }
                 }
             };
@@ -27,12 +27,12 @@ describe('ApiImportEvent', function () {
         it('should give both old and new parameters', function (done) {
             var parameters = testSubject.getParameters(event);
             expect(parameters.params.apiDefinition.api).to.equal('Api1');
-            expect(parameters.params.failOnWarnings).to.equal(true);
+            expect(parameters.params.failOnWarnings).to.equal('true');
             expect(parameters.params.parameters.param).to.equal('Param1');
             expect(parameters.params.updateMode).to.equal('overwrite');
 
             expect(parameters.old.apiDefinition.api).to.equal('Api2');
-            expect(parameters.old.failOnWarnings).to.equal(false);
+            expect(parameters.old.failOnWarnings).to.equal('false');
             expect(parameters.old.parameters.param).to.equal('Param2');
             done();
         });
@@ -47,7 +47,7 @@ describe('ApiImportEvent', function () {
             delete event.ResourceProperties.failOnWarnings;
             var parameters = testSubject.getParameters(event);
             expect(parameters.params.apiDefinition.api).to.equal('Api1');
-            expect(parameters.params.failOnWarnings).to.equal(false);
+            expect(parameters.params.failOnWarnings).to.equal('false');
             expect(parameters.params.parameters.param).to.equal('Param1');
             expect(parameters.params.updateMode).to.equal('overwrite');
             done();
@@ -56,7 +56,7 @@ describe('ApiImportEvent', function () {
             event.ResourceProperties.restApiId = 'RestApiId';
             var parameters = testSubject.getParameters(event);
             expect(parameters.params.apiDefinition.api).to.equal('Api1');
-            expect(parameters.params.failOnWarnings).to.equal(true);
+            expect(parameters.params.failOnWarnings).to.equal('true');
             expect(parameters.params.parameters.param).to.equal('Param1');
             expect(parameters.params.restApiId).to.equal('RestApiId');
             expect(parameters.params.updateMode).to.equal('merge');

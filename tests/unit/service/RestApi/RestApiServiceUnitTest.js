@@ -75,30 +75,30 @@ describe('RestApiService', function () {
     describe('getForResponse', function () {
         it('should get a rest api', function (done) {
             testSubject.getForResponse('123', function (error, restApi) {
-                expect(error).to.be.undefined;
+                expect(error).to.equal(undefined);
                 expect(restApi.parentResourceId).to.equal(1234);
-                expect(getRestApiStub.called).to.be.true;
-                expect(getApiParentResourceStub.called).to.be.true;
+                expect(getRestApiStub.called).to.equal(true);
+                expect(getApiParentResourceStub.called).to.equal(true);
                 done();
             });
         });
         it('should return an error when getting rest api', function (done) {
             getRestApiStub.yields({});
             testSubject.getForResponse('123', function (error, restApi) {
-                expect(error).to.be.an.Error;
-                expect(restApi).to.be.undefined;
-                expect(getRestApiStub.called).to.be.true;
-                expect(getApiParentResourceStub.called).to.be.false;
+                expect(error).to.be.an('object');
+                expect(restApi).to.equal(undefined);
+                expect(getRestApiStub.called).to.equal(true);
+                expect(getApiParentResourceStub.called).to.equal(false);
                 done();
             });
         });
         it('should return an error when getting parent resource', function (done) {
             getApiParentResourceStub.yields({});
             testSubject.getForResponse('123', function (error, restApi) {
-                expect(error).to.be.an.Error;
-                expect(restApi).to.be.undefined;
-                expect(getRestApiStub.called).to.be.true;
-                expect(getApiParentResourceStub.called).to.be.true;
+                expect(error).to.be.an('object');
+                expect(restApi).to.equal(undefined);
+                expect(getRestApiStub.called).to.equal(true);
+                expect(getApiParentResourceStub.called).to.equal(true);
                 done();
             });
         });
@@ -108,8 +108,9 @@ describe('RestApiService', function () {
         it('should find a rest api', function (done) {
             getRestApisStub.yields(undefined, { items: [{ name: 'ApiName' }] });
             testSubject.findApiByName('ApiName', undefined, function (error, restApi) {
-                expect(error).to.be.undefined;
-                expect(getRestApisStub.called).to.be.true;
+                expect(error).to.equal(undefined);
+                expect(restApi).to.be.an('object');
+                expect(getRestApisStub.called).to.equal(true);
                 done();
             });
         });
@@ -117,16 +118,17 @@ describe('RestApiService', function () {
             getRestApisStub.yields('getError');
             testSubject.findApiByName('ApiName', undefined, function (error, restApi) {
                 expect(error).to.equal('getError');
-                expect(getRestApisStub.called).to.be.true;
+                expect(restApi).to.equal(undefined);
+                expect(getRestApisStub.called).to.equal(true);
                 done();
             });
         });
         it('should not return error if api not found', function (done) {
             getRestApisStub.yields({ code : 'NotFoundException' });
             testSubject.findApiByName('ApiName', undefined, function (error, restApi) {
-                expect(error).to.be.undefined;
-                expect(restApi).to.be.undefined;
-                expect(getRestApisStub.called).to.be.true;
+                expect(error).to.equal(undefined);
+                expect(restApi).to.equal(undefined);
+                expect(getRestApisStub.called).to.equal(true);
                 done();
             });
         });
@@ -134,18 +136,18 @@ describe('RestApiService', function () {
             getRestApisStub.onFirstCall().yields(undefined, { items: [{}], position: 1 });
             getRestApisStub.onSecondCall().yields(undefined, { items: [{ name: 'ApiName' }] });
             testSubject.findApiByName('ApiName', undefined, function (error, restApi) {
-                expect(error).to.be.undefined;
+                expect(error).to.equal(undefined);
                 expect(restApi).to.be.an('object');
-                expect(getRestApisStub.calledTwice).to.be.true;
+                expect(getRestApisStub.calledTwice).to.equal(true);
                 done();
             });
         });
         it('should not return anything if not found', function (done) {
             getRestApisStub.yields(undefined, { items: [{ name: 'ApiName' }] });
             testSubject.findApiByName('ApiName2', undefined, function (error, restApi) {
-                expect(error).to.be.undefined;
-                expect(restApi).to.be.undefined;
-                expect(getRestApisStub.called).to.be.true;
+                expect(error).to.equal(undefined);
+                expect(restApi).to.equal(undefined);
+                expect(getRestApisStub.called).to.equal(true);
                 done();
             });
         });
@@ -157,39 +159,39 @@ describe('RestApiService', function () {
              event = { 
                  name: 'ApiName',
                  description: 'ApiDesc',
-                 corsConfig: {}
+                 corsConfiguration: {}
              };
         });
         it('should create a rest api without description and cors', function (done) {
             delete event.description;
-            delete event.corsConfig;
+            delete event.corsConfiguration;
             testSubject.createApi(event, function (error, restApi) {
-                expect(error).to.be.undefined;
+                expect(error).to.equal(undefined);
                 expect(restApi.parentResourceId).to.equal(1234);
-                expect(getApiParentResourceStub.called).to.be.true;
-                expect(putOptionsMethodStub.called).to.be.false;
-                expect(deleteRestApiStub.called).to.be.false;
+                expect(getApiParentResourceStub.called).to.equal(true);
+                expect(putOptionsMethodStub.called).to.equal(false);
+                expect(deleteRestApiStub.called).to.equal(false);
                 done();
             });
         });
         it('should create a rest api with description and cors', function (done) {
             testSubject.createApi(event, function (error, restApi) {
-                expect(error).to.be.undefined;
+                expect(error).to.equal(undefined);
                 expect(restApi.parentResourceId).to.equal(1234);
-                expect(getApiParentResourceStub.called).to.be.true;
-                expect(putOptionsMethodStub.called).to.be.true;
-                expect(deleteRestApiStub.called).to.be.false;
+                expect(getApiParentResourceStub.called).to.equal(true);
+                expect(putOptionsMethodStub.called).to.equal(true);
+                expect(deleteRestApiStub.called).to.equal(false);
                 done();
             });
         });
         it('should return an error when creating rest api', function (done) {
             createRestApiStub.yields({});
             testSubject.createApi(event, function (error, restApi) {
-                expect(error).to.be.an.Error;
-                expect(restApi).to.be.undefined;
-                expect(getApiParentResourceStub.called).to.be.false;
-                expect(putOptionsMethodStub.called).to.be.false;
-                expect(deleteRestApiStub.called).to.be.false;
+                expect(error).to.be.an('object');
+                expect(restApi).to.equal(undefined);
+                expect(getApiParentResourceStub.called).to.equal(false);
+                expect(putOptionsMethodStub.called).to.equal(false);
+                expect(deleteRestApiStub.called).to.equal(false);
                 done();
             });
         });
@@ -197,10 +199,10 @@ describe('RestApiService', function () {
             getApiParentResourceStub.yields('resourceError');
             testSubject.createApi(event, function (error, restApi) {
                 expect(error).to.equal('resourceError');
-                expect(restApi).to.be.undefined;
-                expect(getApiParentResourceStub.called).to.be.true;
-                expect(putOptionsMethodStub.called).to.be.false;
-                expect(deleteRestApiStub.called).to.be.true;
+                expect(restApi).to.equal(undefined);
+                expect(getApiParentResourceStub.called).to.equal(true);
+                expect(putOptionsMethodStub.called).to.equal(false);
+                expect(deleteRestApiStub.called).to.equal(true);
                 done();
             });
         });
@@ -209,10 +211,10 @@ describe('RestApiService', function () {
             deleteRestApiStub.yields('deleteError');
             testSubject.createApi(event, function (error, restApi) {
                 expect(error).to.equal('deleteError');
-                expect(restApi).to.be.undefined;
-                expect(getApiParentResourceStub.called).to.be.true;
-                expect(putOptionsMethodStub.called).to.be.false;
-                expect(deleteRestApiStub.called).to.be.true;
+                expect(restApi).to.equal(undefined);
+                expect(getApiParentResourceStub.called).to.equal(true);
+                expect(putOptionsMethodStub.called).to.equal(false);
+                expect(deleteRestApiStub.called).to.equal(true);
                 done();
             });
         });
@@ -220,10 +222,10 @@ describe('RestApiService', function () {
             putOptionsMethodStub.yields('corsError');
             testSubject.createApi(event, function (error, restApi) {
                 expect(error).to.equal('corsError');
-                expect(restApi).to.be.undefined;
-                expect(getApiParentResourceStub.called).to.be.true;
-                expect(putOptionsMethodStub.called).to.be.true;
-                expect(deleteRestApiStub.called).to.be.true;
+                expect(restApi).to.equal(undefined);
+                expect(getApiParentResourceStub.called).to.equal(true);
+                expect(putOptionsMethodStub.called).to.equal(true);
+                expect(deleteRestApiStub.called).to.equal(true);
                 done();
             });
         });
@@ -232,10 +234,10 @@ describe('RestApiService', function () {
             deleteRestApiStub.yields('deleteError');
             testSubject.createApi(event, function (error, restApi) {
                 expect(error).to.equal('deleteError');
-                expect(restApi).to.be.undefined;
-                expect(getApiParentResourceStub.called).to.be.true;
-                expect(putOptionsMethodStub.called).to.be.true;
-                expect(deleteRestApiStub.called).to.be.true;
+                expect(restApi).to.equal(undefined);
+                expect(getApiParentResourceStub.called).to.equal(true);
+                expect(putOptionsMethodStub.called).to.equal(true);
+                expect(deleteRestApiStub.called).to.equal(true);
                 done();
             });
         });
@@ -244,8 +246,8 @@ describe('RestApiService', function () {
     describe('deleteApi', function () {
         it('should delete a rest api', function (done) {
             testSubject.deleteApi('123', function (error) {
-                expect(error).to.be.undefined;
-                expect(deleteRestApiStub.called).to.be.true;
+                expect(error).to.equal(undefined);
+                expect(deleteRestApiStub.called).to.equal(true);
                 done();
             });
         });
@@ -253,15 +255,15 @@ describe('RestApiService', function () {
             deleteRestApiStub.yields('deleteError');
             testSubject.deleteApi('123', function (error) {
                 expect(error).to.equal('deleteError');
-                expect(deleteRestApiStub.called).to.be.true;
+                expect(deleteRestApiStub.called).to.equal(true);
                 done();
             });
         });
         it('should not return error if api is not found', function (done) {
             deleteRestApiStub.yields({ code: 'NotFoundException' });
             testSubject.deleteApi('123', function (error) {
-                expect(error).to.be.undefined;
-                expect(deleteRestApiStub.called).to.be.true;
+                expect(error).to.equal(undefined);
+                expect(deleteRestApiStub.called).to.equal(true);
                 done();
             });
         });
@@ -274,8 +276,8 @@ describe('RestApiService', function () {
                 old: { name: 'ApiName2' }
             };
             testSubject.patchApi('RestApiId', event, function (error) {
-                expect(error).to.be.undefined;
-                expect(updateRestApiStub.called).to.be.true;
+                expect(error).to.equal(undefined);
+                expect(updateRestApiStub.called).to.equal(true);
                 done();
             });
         });
@@ -285,8 +287,8 @@ describe('RestApiService', function () {
                 old: { description: 'ApiDesc2', name: 'ApiName2' }
             };
             testSubject.patchApi('RestApiId', event, function (error) {
-                expect(error).to.be.undefined;
-                expect(updateRestApiStub.called).to.be.true;
+                expect(error).to.equal(undefined);
+                expect(updateRestApiStub.called).to.equal(true);
                 done();
             });
         });
@@ -296,8 +298,8 @@ describe('RestApiService', function () {
                 old: { description: 'ApiDesc', name: 'ApiName2' }
             };
             testSubject.patchApi('RestApiId', event, function (error) {
-                expect(error).to.be.undefined;
-                expect(updateRestApiStub.called).to.be.false;
+                expect(error).to.equal(undefined);
+                expect(updateRestApiStub.called).to.equal(false);
                 done();
             });
         });
@@ -309,7 +311,7 @@ describe('RestApiService', function () {
             updateRestApiStub.yields({ code: 'NotFoundException' });
             testSubject.patchApi('RestApiId', event, function (error) {
                 expect(error.code).to.equal('NotFoundException');
-                expect(updateRestApiStub.called).to.be.true;
+                expect(updateRestApiStub.called).to.equal(true);
                 done();
             });
         });

@@ -1,0 +1,42 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "ApiDomainName Request",
+    "type": "object",
+    "properties": {
+        "domainName": {
+            "type": "string",
+            "required": true
+        },
+        "certificateName": {
+            "type": "string",
+            "required": true
+        },
+        "iamServerCertificateName": {
+            "type": "string"
+        },
+        "certificateBody": {
+            "type": "string"
+        },
+        "certificateChain": {
+            "type": "string"
+        },
+        "certificatePrivateKey": {
+            "type": "string",
+            "required": true
+        }
+    },
+    "oneOf": [
+        { "title": "certificateBody", "required": ["certificateBody"] },
+        { "title": "iamServerCertificateName", "required": ["iamServerCertificateName"] }
+    ],
+    "dependencies": {
+        "certificateBody": {
+            "properties": {
+                "certificateChain": {
+                    "type": "string",
+                    "required": true
+                }
+            }
+        }
+    }
+}

@@ -13,14 +13,14 @@ describe('ApiModelEvent', function () {
                 ResourceProperties: {
                     restApiId: 'RestApiId',
                     name: 'ModelName',
-                    contentType: 'ContentType',
+                    contentType: 'application/json',
                     schema: {},
                     description: 'ModelDesc'
                 },
                 OldResourceProperties: {
                     restApiId: 'RestApiId2',
                     name: 'ModelName2',
-                    contentType: 'ContentType2',
+                    contentType: 'application/xml',
                     schema: {},
                     description: 'ModelDesc2'
                 }
@@ -28,13 +28,13 @@ describe('ApiModelEvent', function () {
             var parameters = testSubject.getParameters(event);
             expect(parameters.params.restApiId).to.equal('RestApiId');
             expect(parameters.params.name).to.equal('ModelName');
-            expect(parameters.params.contentType).to.equal('ContentType');
+            expect(parameters.params.contentType).to.equal('application/json');
             expect(parameters.params.schema).to.be.an('object');
             expect(parameters.params.description).to.equal('ModelDesc');
 
             expect(parameters.old.restApiId).to.equal('RestApiId2');
             expect(parameters.old.name).to.equal('ModelName2');
-            expect(parameters.old.contentType).to.equal('ContentType2');
+            expect(parameters.old.contentType).to.equal('application/xml');
             expect(parameters.old.schema).to.be.an('object');
             expect(parameters.old.description).to.equal('ModelDesc2');
             done();

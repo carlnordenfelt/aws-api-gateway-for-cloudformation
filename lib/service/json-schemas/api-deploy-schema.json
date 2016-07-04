@@ -1,0 +1,43 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "ApiDeploy Request",
+    "type": "object",
+    "properties": {
+        "restApiId": {
+            "description": "Id of the Rest API you want to deploy.",
+            "type": "string",
+            "required": true
+        },
+        "description": {
+            "description": "A description for the Deployment.",
+            "type": "string"
+        },
+        "stageName": {
+            "description": "Name of the Stage you want to deploy to. If the Stage does not exist it will be created.",
+            "type": "string",
+            "required": true
+        },
+        "stageDescription": {
+            "description": "The description for the Stage resource.",
+            "type": "string",
+            "default": ""
+        },
+        "cacheClusterEnabled": {
+            "type": "string",
+            "pattern": "^(true|false)$",
+            "default": "false"
+        },
+        "cacheClusterSize": {
+            "enum": ["0.5", "1.6", "6.1", "13.5", "28.4", "58.2", "118", "237"],
+            "default": "0.5"
+        },
+        "stageVariables": {
+            "description": "Stage variables defined as string key/string value pairs.",
+            "type": "object"
+        },
+        "methodSettings": {
+            "description": "Method specific settings defined as json path keys & string values.",
+            "type": "object"
+        }
+    }
+}

@@ -65,22 +65,26 @@ describe('ApiDomainNameEvent', function () {
             delete event.OldResourceProperties;
             var parameters = testSubject.getParameters(event);
             expect(parameters.params).to.be.an('object');
-            expect(parameters.old).to.be.undefined;
+            expect(parameters.old).to.be.null;
             done();
         });
-        it('should yield an error due to missing certificateBody, certificateChain and iamServerCertificateName', function (done) {
+        it('should yield an error due to missing certificateBody and iamServerCertificateName', function (done) {
             delete event.ResourceProperties.certificateBody;
-            delete event.ResourceProperties.certificateChain;
+            delete event.ResourceProperties.iamServerCertificateName;
             delete event.OldResourceProperties;
             var fn = function () { testSubject.getParameters(event); };
             expect(fn).to.throw(Error);
-            expect(fn).to.throw(/iamServerCertificateName or certificateBody and certificateChain/);
+            expect(fn).to.throw(/iamServerCertificateName/);
+            expect(fn).to.throw(/certificateBody/);
             done();
         });
         it('should yield an error due to missing certificateBody', function (done) {
             delete event.ResourceProperties.certificateBody;
             delete event.OldResourceProperties;
-            var fn = function () { testSubject.getParameters(event); };
+            var fn = function () {
+                var result = testSubject.getParameters(event);
+                console.log(result);
+            };
             expect(fn).to.throw(Error);
             expect(fn).to.throw(/certificateBody/);
             done();

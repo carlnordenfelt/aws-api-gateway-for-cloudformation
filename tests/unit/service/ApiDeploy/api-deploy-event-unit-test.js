@@ -12,11 +12,9 @@ describe('ApiDeployEvent', function () {
             ResourceProperties: {
                 restApiId: 'RestApiId',
                 stageName: 'StageName',
-                stageConfig: {
-                    cacheClusterEnabled: true,
-                    cacheClusterSize: 0.5,
-                    description: 'TestStage'
-                },
+                cacheClusterEnabled: 'true',
+                cacheClusterSize: '0.5',
+                stageDescription: 'TestStage',
                 methodSettings: {
                     '*/*/metrics/enabled': true,
                     '*/*/logging/loglevel': 'ERROR',
@@ -31,11 +29,9 @@ describe('ApiDeployEvent', function () {
             OldResourceProperties: {
                 restApiId: 'RestApiId2',
                 stageName: 'StageName2',
-                stageConfig: {
-                    cacheClusterEnabled: false,
-                    cacheClusterSize: 1.0,
-                    description: 'TestStage2'
-                },
+                cacheClusterEnabled: 'false',
+                cacheClusterSize: '1.0',
+                stageDescription: 'TestStage2',
                 methodSettings: {
                     '*/*/metrics/enabled': false,
                     '*/*/logging/loglevel': 'ERROR2',
@@ -56,9 +52,9 @@ describe('ApiDeployEvent', function () {
             var parameters = testSubject.getParameters(event);
             expect(parameters.params.restApiId).to.equal('RestApiId');
             expect(parameters.params.stageName).to.equal('StageName');
-            expect(parameters.params.stageConfig.cacheClusterEnabled).to.equal(true);
-            expect(parameters.params.stageConfig.cacheClusterSize).to.equal(0.5);
-            expect(parameters.params.stageConfig.description).to.equal('TestStage');
+            expect(parameters.params.cacheClusterEnabled).to.equal('true');
+            expect(parameters.params.cacheClusterSize).to.equal('0.5');
+            expect(parameters.params.stageDescription).to.equal('TestStage');
             expect(parameters.params.methodSettings['*/*/metrics/enabled']).to.equal(true);
             expect(parameters.params.methodSettings['*/*/logging/loglevel']).to.equal('ERROR');
             expect(parameters.params.methodSettings['no-params/GET/logging/loglevel']).to.equal('INFO');
@@ -68,9 +64,9 @@ describe('ApiDeployEvent', function () {
 
             expect(parameters.old.restApiId).to.equal('RestApiId2');
             expect(parameters.old.stageName).to.equal('StageName2');
-            expect(parameters.old.stageConfig.cacheClusterEnabled).to.equal(false);
-            expect(parameters.old.stageConfig.cacheClusterSize).to.equal(1.0);
-            expect(parameters.old.stageConfig.description).to.equal('TestStage2');
+            expect(parameters.old.cacheClusterEnabled).to.equal('false');
+            expect(parameters.old.cacheClusterSize).to.equal('1.0');
+            expect(parameters.old.stageDescription).to.equal('TestStage2');
             expect(parameters.old.methodSettings['*/*/metrics/enabled']).to.equal(false);
             expect(parameters.old.methodSettings['*/*/logging/loglevel']).to.equal('ERROR2');
             expect(parameters.old.methodSettings['no-params/GET/logging/loglevel']).to.equal('INFO2');
@@ -80,19 +76,20 @@ describe('ApiDeployEvent', function () {
             done();
         });
         it('should get params with defaults', function (done) {
-            delete event.ResourceProperties.stageConfig;
+            delete event.ResourceProperties.cacheClusterEnabled;
+            delete event.ResourceProperties.cacheClusterSize;
+            delete event.ResourceProperties.stageDescription;
             var parameters = testSubject.getParameters(event);
-            expect(parameters.params.stageConfig).to.be.an('object');
-            expect(parameters.params.stageConfig.cacheClusterEnabled).to.equal(false);
-            expect(parameters.params.stageConfig.cacheClusterSize).to.equal(0.5);
-            expect(parameters.params.stageConfig.description).to.equal('');
+            expect(parameters.params.cacheClusterEnabled).to.equal('false');
+            expect(parameters.params.cacheClusterSize).to.equal('0.5');
+            expect(parameters.params.stageDescription).to.equal('');
             done();
         });
         it('should get new params only if old params are not set', function (done) {
             delete event.OldResourceProperties;
             var parameters = testSubject.getParameters(event);
             expect(parameters.params).to.be.an('object');
-            expect(parameters.old).to.be.undefined;
+            expect(parameters.old).to.be.null;
             done();
         });
         it('should yield an error due to missing restApiId', function (done) {
@@ -120,12 +117,11 @@ describe('ApiDeployEvent', function () {
 
     describe('getPatchOperations', function () {
         it('should give only valid patch operations', function (done) {
-            delete event.OldResourceProperties.stageConfig.description;
+            delete event.OldResourceProperties.stageDescription;
             delete event.ResourceProperties.stageVariables.testVar2;
             delete event.ResourceProperties.methodSettings['no-params/GET/logging/dataTrace'];
-            event.OldResourceProperties.stageConfig.cacheClusterEnabled = true;
+            event.OldResourceProperties.cacheClusterEnabled = 'true';
             event.ResourceProperties.stageVariables.testVar3 = 'TestVar3';
-            event.ResourceProperties.methodSettings['no-params/GET/metrics/enabled'] = true;
             event.ResourceProperties.methodSettings['no-params/GET/metrics/enabled'] = true;
             var parameters = testSubject.getParameters(event);
             var patchOperations = testSubject.getPatchOperations(parameters);
@@ -133,7 +129,7 @@ describe('ApiDeployEvent', function () {
             expect(patchOperations).to.be.an.Array;
             expect(patchOperations.length).to.equal(9);
             expect(_.find(patchOperations, { path: '/cacheClusterSize' }).op).to.equal('replace');
-            expect(_.find(patchOperations, { path: '/cacheClusterSize' }).value).to.equal(0.5);
+            expect(_.find(patchOperations, { path: '/cacheClusterSize' }).value).to.equal('0.5');
             expect(_.find(patchOperations, { path: '/description' }).value).to.equal('TestStage');
             expect(_.find(patchOperations, { path: '/description' }).op).to.equal('replace');
             expect(_.find(patchOperations, { path: '/variables/testVar1' }).value).to.equal('TestValue1');
@@ -148,20 +144,19 @@ describe('ApiDeployEvent', function () {
             done();
         });
         it('should give patch operations for defaults only', function (done) {
-            delete event.ResourceProperties.stageConfig;
+            delete event.ResourceProperties.stageDescription;
+            delete event.ResourceProperties.cacheClusterEnabled;
+            delete event.ResourceProperties.cacheClusterSize;
             delete event.ResourceProperties.stageVariables;
             delete event.ResourceProperties.methodSettings;
+            event.OldResourceProperties.cacheClusterEnabled = 'true';
             var parameters = testSubject.getParameters(event);
             var patchOperations = testSubject.getPatchOperations(parameters);
             expect(patchOperations).to.be.an.Array;
-            expect(patchOperations.length).to.equal(2);
-            done();
-        });
-        it('coverage only', function (done) {
-            var parameters = testSubject.getParameters(event);
-            delete parameters.params.stageConfig;
-            var patchOperations = testSubject.getPatchOperations(parameters);
-            expect(patchOperations).to.be.an.Array;
+            expect(_.find(patchOperations, { path: '/cacheClusterSize' })).to.be.an('object');
+            expect(_.find(patchOperations, { path: '/cacheClusterEnabled' })).to.be.an('object');
+            expect(_.find(patchOperations, { path: '/description' })).to.be.an('object');
+            expect(patchOperations.length).to.equal(3);
             done();
         });
     });

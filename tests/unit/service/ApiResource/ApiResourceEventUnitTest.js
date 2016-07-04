@@ -35,22 +35,25 @@ describe('ApiResourceEvent', function () {
             expect(parameters.params.restApiId).to.equal('RestApiId');
             expect(parameters.params.parentId).to.equal('ParentId');
             expect(parameters.params.pathPart).to.equal('PathPart');
-            expect(parameters.params.corsConfig).to.be.an('object');
-            expect(parameters.params.corsConfig.allowMethods).be.an.Array;
-            expect(parameters.params.corsConfig.allowOrigin).to.equal('*');
-            expect(parameters.params.corsConfig.allowHeaders).to.equal(Constants.CORS_DEFAULT_ALLOWED_HEADERS);
-
+            expect(parameters.params.corsConfiguration).to.be.an('object');
+            expect(parameters.params.corsConfiguration.allowMethods).be.an('array');
+            expect(parameters.params.corsConfiguration.allowOrigin).to.equal('*');
+            expect(parameters.params.corsConfiguration.allowHeaders.length).to.equal(4);
+            expect(parameters.params.corsConfiguration.allowHeaders).to.contain('Content-Type');
+            expect(parameters.params.corsConfiguration.allowHeaders).to.contain('X-Amz-Date');
+            expect(parameters.params.corsConfiguration.allowHeaders).to.contain('Authorization');
+            expect(parameters.params.corsConfiguration.allowHeaders).to.contain('X-Api-Key');
             expect(parameters.old.restApiId).to.equal('RestApiId2');
             expect(parameters.old.parentId).to.equal('ParentId2');
             expect(parameters.old.pathPart).to.equal('PathPart2');
-            expect(parameters.old.corsConfig).to.be.an('object');
+            expect(parameters.old.corsConfiguration).to.be.an('object');
             done();
         });
-        it('should give all CORS methods with wildcard', function (done) {
-            event.ResourceProperties.corsConfiguration.allowMethods = '*';
+        it('should give CORS with all methods', function (done) {
+            delete event.ResourceProperties.corsConfiguration.allowMethods;
             var parameters = testSubject.getParameters(event);
-            expect(parameters.params.corsConfig.allowMethods).be.an.Array;
-            expect(parameters.params.corsConfig.allowMethods.length).to.equals(Constants.CORS_ALL_METHODS.length);
+            expect(parameters.params.corsConfiguration.allowMethods).be.an('array');
+            expect(parameters.params.corsConfiguration.allowMethods.length).to.equals(Constants.CORS_ALL_METHODS.length);
             done();
         });
         it('should give parameters without cors', function (done) {
@@ -59,7 +62,7 @@ describe('ApiResourceEvent', function () {
             expect(parameters.params.restApiId).to.equal('RestApiId');
             expect(parameters.params.parentId).to.equal('ParentId');
             expect(parameters.params.pathPart).to.equal('PathPart');
-            expect(parameters.params.corsConfig).to.be.undefined;
+            expect(parameters.params.corsConfiguration).to.equal(undefined);
             done();
         });
         it('should yield an error due to missing restApiId', function (done) {
@@ -84,13 +87,6 @@ describe('ApiResourceEvent', function () {
             expect(fn).to.throw(/parentId/);
             done();
         });
-        it('should yield an error due to missing corsConfiguration.allowMethods', function (done) {
-            delete event.ResourceProperties.corsConfiguration.allowMethods;
-            var fn = function () { testSubject.getParameters(event); };
-            expect(fn).to.throw(Error);
-            expect(fn).to.throw(/corsConfiguration.allowMethods/);
-            done();
-        });
         it('should not validate parameters if RequestType is Delete', function (done) {
             delete event.ResourceProperties.parentId;
             delete event.OldResourceProperties;
@@ -106,16 +102,16 @@ describe('ApiResourceEvent', function () {
                 allowOrigin: 'Origin',
                 allowHeaders: [],
                 exposeHeaders: [],
-                allowCredentials: true,
-                maxAge: 123
+                allowCredentials: 'true',
+                maxAge: '123'
             };
             var parameters = testSubject.getParameters(event);
-            expect(parameters.params.corsConfig.allowMethods).be.an.Array;
-            expect(parameters.params.corsConfig.allowOrigin).to.equal('Origin');
-            expect(parameters.params.corsConfig.allowHeaders).be.an.Array;
-            expect(parameters.params.corsConfig.exposeHeaders).be.an.Array;
-            expect(parameters.params.corsConfig.allowCredentials).be.an.true;
-            expect(parameters.params.corsConfig.maxAge).to.equal(123);
+            expect(parameters.params.corsConfiguration.allowMethods).be.an('array');
+            expect(parameters.params.corsConfiguration.allowOrigin).to.equal('Origin');
+            expect(parameters.params.corsConfiguration.allowHeaders).be.an('array');
+            expect(parameters.params.corsConfiguration.exposeHeaders).be.an('array');
+            expect(parameters.params.corsConfiguration.allowCredentials).be.equal('true');
+            expect(parameters.params.corsConfiguration.maxAge).to.equal('123');
             done();
         });
     });
@@ -141,7 +137,7 @@ describe('ApiResourceEvent', function () {
                 }
             };
             var patchOperations = testSubject.getPatchOperations(event);
-            expect(patchOperations).to.be.an.Array;
+            expect(patchOperations).to.be.an('array');
             expect(patchOperations.length).to.equal(2);
             expect(patchOperations[0].path).to.equal('/parentId');
             expect(patchOperations[1].path).to.equal('/pathPart');

@@ -1,0 +1,149 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "ApiMethod Request",
+    "type": "object",
+    "properties": {
+        "restApiId": {
+            "type": "string",
+            "required": true
+        },
+        "resourceId": {
+            "type": "string",
+            "required": true
+        },
+        "lastModified": {
+            "type": "string"
+        },
+        "method": {
+            "type": "object",
+            "required": true,
+            "properties": {
+                "httpMethod": {
+                    "enum": ["GET", "HEAD", "POST", "PUT", "DELETE", "TRACE"],
+                    "required": true
+                },
+                "authorizationType": {
+                    "enum": ["NONE", "AWS_IAM", "CUSTOM"],
+                    "default": "NONE"
+                },
+                "authorizerId": {
+                    "type": "string"
+                },
+                "apiKeyRequired": {
+                    "type": "string",
+                    "pattern": "^(true|false)$",
+                    "default": "false"
+                },
+                "requestModels": {
+                    "type": "object",
+                    "patternProperties": {
+                        "^.+/.+": {
+                            "type": "string"
+                        }
+                    },
+                    "additionalProperties": false
+                },
+                "parameters": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                        "type": "string",
+                        "pattern": "^(querystring|path|header).(.)+"
+                    },
+                    "uniqueItems": true
+                }
+            }
+        },
+        "integration": {
+            "type": "object",
+            "required": true,
+            "properties": {
+                "type": {
+                    "enum": ["HTTP", "AWS", "MOCK"],
+                    "required": true
+                },
+                "credentials": {
+                    "type": "string"
+                },
+                "cacheNamespace": {
+                    "type": "string"
+                },
+                "cacheKeyParameters": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "httpMethod": {
+                    "enum": ["GET", "HEAD", "POST", "PUT", "DELETE", "TRACE"]
+                },
+                "passthroughBehavior": {
+                    "enum": ["WHEN_NO_MATCH", "NEVER", "WHEN_NO_TEMPLATES"],
+                    "default": "WHEN_NO_MATCH"
+                },
+                "requestTemplates": {
+                    "type": "object",
+                    "patternProperties": {
+                        "^.+/.+": {
+                            "oneOf": [{ "type": "string" }, { "type": "object" }]
+                        }
+                    }
+                },
+                "requestParameters": {
+                    "type": "object",
+                    "patternProperties": {
+                        "^integration.request.(querystring|header|path).[.]+": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "uri": {
+                    "type": "string"
+                }
+            }
+        },
+        "responses": {
+            "type": "object",
+            "patternProperties": {
+                "^.+$": {
+                    "type": "object",
+                    "properties": {
+                        "statusCode": {
+                            "type": "string",
+                            "pattern": "^[0-9]+$",
+                            "required": true
+                        },
+                        "headers": {
+                            "type": "object",
+                            "patternProperties": {
+                                "^.+$": {
+                                    "type": "string",
+                                    "pattern": "^(('(.)+')|(integration.response.(header|body).(.)+))$"
+                                }
+                            }
+                        },
+                        "responseTemplates": {
+                            "type": "object",
+                            "patternProperties": {
+                                "^.+/.+": {
+                                    "oneOf": [{ "type": "string" }, { "type": "object" }]
+                                }
+                            },
+                            "additionalProperties": false
+                        },
+                        "responseModels": {
+                            "type": "object",
+                            "patternProperties": {
+                                "^.+/.+": {
+                                    "type": "string"
+                                }
+                            },
+                            "additionalProperties": false
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "additionalProperties": false
+}

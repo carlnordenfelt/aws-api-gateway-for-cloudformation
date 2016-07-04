@@ -50,18 +50,18 @@ describe('RestAPiEvent', function () {
             expect(parameters.params.description).to.equal('ApiDesc');
             done();
         });
-        it('should give all CORS methods with wildcard', function (done) {
-            event.ResourceProperties.corsConfiguration.allowMethods = '*';
+        it('should give all CORS methods without allowMethods', function (done) {
+            delete event.ResourceProperties.corsConfiguration.allowMethods;
             var parameters = testSubject.getParameters(event);
-            expect(parameters.params.corsConfig.allowMethods).be.an.Array;
-            expect(parameters.params.corsConfig.allowMethods.length).to.equals(Constants.CORS_ALL_METHODS.length);
+            expect(parameters.params.corsConfiguration.allowMethods).be.an.Array;
+            expect(parameters.params.corsConfiguration.allowMethods.length).to.equals(Constants.CORS_ALL_METHODS.length);
             done();
         });
         it('should give parameters without cors', function (done) {
             delete event.ResourceProperties.corsConfiguration;
             delete event.OldResourceProperties; // Coverage
             var parameters = testSubject.getParameters(event);
-            expect(parameters.params.corsConfig).to.be.undefined;
+            expect(parameters.params.corsConfiguration).to.be.undefined;
             done();
         });
     });

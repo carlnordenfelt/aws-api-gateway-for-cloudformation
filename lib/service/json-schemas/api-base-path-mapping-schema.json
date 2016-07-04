@@ -1,0 +1,23 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "ApiBasePathMapping Request",
+    "type": "object",
+    "properties": {
+        "domainName": {
+            "type": "string",
+            "required": true
+        },
+        "restApiId": {
+            "type": "string",
+            "required": true
+        },
+        "basePath": {
+            "type": "string",
+            "default": ""
+        },
+        "stage": {
+            "type": "string",
+            "required": true
+        }
+    }
+}

@@ -45,6 +45,7 @@ describe('ApiMethodService', function () {
 
         mockery.registerMock('aws-sdk', awsSdkStub);
         testSubject = require('../../../../lib/service/ApiMethod/ApiMethodService');
+        testSubject.PUT_METHOD_STEP_DELAY_MILLIS = 1;
     });
     beforeEach(function () {
         getMethodStub.reset().resetBehavior();
@@ -209,13 +210,6 @@ describe('ApiMethodService', function () {
             });
         });
 
-        it('should throw an error if getParameters fails', function (done) {
-            delete params.params.restApiId;
-            var fn = function () { testSubject.createMethod(params, function () {}); };
-            expect(fn).to.throw(Error);
-            expect(fn).to.throw(/restApiId/);
-            done();
-        });
         it('should yield an error if getMethod for CorsOrigin fails', function (done) {
             params.params.method.httpMethod = 'GET';
             getMethodStub.yields('getMethodError');

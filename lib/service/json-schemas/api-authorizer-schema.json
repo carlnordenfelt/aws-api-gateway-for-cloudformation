@@ -1,0 +1,38 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "ApiAuthorizer Request",
+    "type": "object",
+    "properties": {
+        "authorizerUri": {
+            "type": "string",
+            "required": true
+        },
+        "identitySource": {
+            "type": "string",
+            "required": true
+        },
+        "name": {
+            "type": "string",
+            "required": true
+        },
+        "restApiId": {
+            "type": "string",
+            "required": true
+        },
+        "authorizerCredentials": {
+            "type": "string"
+        },
+        "authorizerResultTtlInSeconds": {
+            "type": "string",
+            "pattern": "^[0-9]+$",
+            "default": "300"
+        },
+        "identityValidationExpression": {
+            "type": "string"
+        },
+        "type": {
+            "type": "string",
+            "default": "TOKEN"
+        }
+    }
+}

@@ -1,0 +1,57 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "ApiResource Request",
+    "type": "object",
+    "properties": {
+        "name": {
+            "type": "string",
+            "required": true
+        },
+        "description": {
+            "type": "string"
+        },
+        "corsConfiguration": {
+            "type": "object",
+            "properties": {
+                "allowMethods": {
+                    "type": "array",
+                    "items": {
+                        "enum": ["GET", "HEAD", "POST", "PUT", "DELETE", "TRACE"]
+                    },
+                    "default": ["GET", "HEAD", "POST", "PUT", "DELETE", "TRACE"]
+                },
+                "allowHeaders": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "default": ["Content-Type", "X-Amz-Date", "Authorization", "X-Api-Key"]
+                },
+                "allowDefaultHeaders": {
+                    "type": "string",
+                    "pattern": "^(true|false)$",
+                    "default": "false"
+                },
+                "allowOrigin": {
+                    "type": "string",
+                    "default": "*"
+                },
+                "exposeHeaders": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "maxAge": {
+                    "type": "string",
+                    "pattern": "^[0-9]+$"
+                },
+                "allowCredentials": {
+                    "type": "string",
+                    "pattern": "^(true|false)$",
+                    "default": "false"
+                }
+            }
+        }
+    }
+}

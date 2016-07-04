@@ -1,0 +1,22 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "ApiImport Request",
+    "type": "object",
+    "properties": {
+        "failOnWarnings": {
+            "type": "string",
+            "pattern": "^(true|false)$",
+            "default": "false"
+        },
+        "apiDefinition": {
+            "type": "object",
+            "required": true
+        },
+        "parameters": {
+            "type": "object"
+        },
+        "restApiId": {
+            "type": "string"
+        }
+    }
+}

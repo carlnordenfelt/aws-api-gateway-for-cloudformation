@@ -1,0 +1,28 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "ApiModel Request",
+    "type": "object",
+    "properties": {
+        "restApiId": {
+            "type": "string",
+            "required": true
+        },
+        "name": {
+            "type": "string",
+            "required": true
+        },
+        "contentType": {
+            "type": "string",
+            "pattern": "^.+/.+$",
+            "default": "application/json"
+        },
+        "description": {
+            "type": "string",
+            "default": ""
+        },
+        "schema": {
+            "oneOf": [{ "type": "object" }, { "type": "string" }],
+            "default": {}
+        }
+    }
+}
