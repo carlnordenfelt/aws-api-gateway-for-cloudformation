@@ -38,6 +38,10 @@
         "methodSettings": {
             "description": "Method specific settings defined as json path keys & string values.",
             "type": "object"
+        },
+        "lastModified": {
+            "type": "string"
         }
-    }
+    },
+    "additionalProperties": false
 }

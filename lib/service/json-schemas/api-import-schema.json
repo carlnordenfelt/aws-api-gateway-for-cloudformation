@@ -17,6 +17,10 @@
         },
         "restApiId": {
             "type": "string"
+        },
+        "lastModified": {
+            "type": "string"
         }
-    }
+    },
+    "additionalProperties": false
 }

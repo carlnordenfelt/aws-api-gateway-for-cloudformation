@@ -23,6 +23,9 @@
         "certificatePrivateKey": {
             "type": "string",
             "required": true
+        },
+        "lastModified": {
+            "type": "string"
         }
     },
     "oneOf": [
@@ -38,5 +41,6 @@
                 }
             }
         }
-    }
+    },
+    "additionalProperties": false
 }

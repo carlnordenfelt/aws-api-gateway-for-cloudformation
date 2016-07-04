@@ -10,6 +10,9 @@
         "description": {
             "type": "string"
         },
+        "lastModified": {
+            "type": "string"
+        },
         "corsConfiguration": {
             "type": "object",
             "properties": {
@@ -53,5 +56,6 @@
                 }
             }
         }
-    }
+    },
+    "additionalProperties": false
 }

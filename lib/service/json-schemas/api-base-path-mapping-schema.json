@@ -18,6 +18,10 @@
         "stage": {
             "type": "string",
             "required": true
+        },
+        "lastModified": {
+            "type": "string"
         }
-    }
+    },
+    "additionalProperties": false
 }
