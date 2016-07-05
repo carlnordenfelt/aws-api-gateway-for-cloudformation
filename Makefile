@@ -16,54 +16,55 @@ GIT_NUKE_EXCLUDE = -e "/.idea"
 .PHONY: default
 default: all
 
+
 .PHONE: deps
 deps:
 	npm install --global-style json@9.0.3
 	npm install
 
-.PHONY: q
-q: test
 
 .PHONY: test
 test: lint coverage
+
 
 .PHONY: lint
 lint:
 	$(ESLINT) lib
 
+
 .PHONY: unit
 unit: test-unit
+
 
 .PHONY: test-unit
 test-unit:
 	NODE_ENV=TEST $(MOCHA) ./tests/unit --recursive
 
+
 .PHONY: ts
 ts:
 	NODE_ENV=TEST $(MOCHA) $(file) --recursive
+
 
 .PHONY: coverage
 coverage:
 	NODE_ENV=TEST $(ISTANBUL) cover --include-all-sources true $(COVERAGE_EXCLUDE) $(MOCHA) ./tests/unit -- --recursive
 	NODE_ENV=TEST $(ISTANBUL) check-coverage --statement 100 --branches 100 --functions 100 --lines 100
 
-.PHONY: package
-package: clean deps test
-	npm prune --production
-	if [ -z $(version) ]; then \
-		$(eval version=$(shell npm version patch)) \
-	fi
-	if [ -z $(version) ]; then \
-		exit 1; \
-	fi
-	zip -r source.zip lib/* lib/*/** node_modules/*/** > /dev/null 2>&1
+
+.PHONY: publish
+publish: clean deps test
+	_scripts/publish.sh -v $(version)
+
 
 .PHONY: all
 all: clean deps test
 
+
 .PHONY: clean
 clean:
 	rm -rf node_modules coverage npm-debug.log *.zip
+
 
 .PHONY: nuke
 nuke:

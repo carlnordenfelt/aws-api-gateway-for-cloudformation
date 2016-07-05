@@ -13,13 +13,9 @@ s3BucketName="apigatewaycloudformation"
 # Source file name
 sourceFileName="source.zip"
 
-action=""
 version=""
 while getopts ":a:v:" opt; do
   case ${opt} in
-    a)
-        action="${OPTARG}"
-    ;;
     v)
         version="${OPTARG}"
     ;;
@@ -55,7 +51,7 @@ function parseVersion() {
 function package() {
     make clean
     make q
-    make package.zip
+    zip -r source.zip lib/* lib/*/** node_modules/*/** > /dev/null 2>&1
 }
 
 # Publishes the source file and CFN template to S3.
@@ -106,28 +102,18 @@ function publish() {
 }
 
 function usage() {
-    echo "Usage: publish.sh -a [package|publish] -v version"
-    echo "-v is required if -a is publish"
+    echo "Usage: publish.sh -v version"
     echo "-v patch|minor|major will publish a new npm version, any other value will be used as is."
-    echo "default action is package"
     exit 1;
 }
 
-if [ -z "${action}" ]; then
-    usage
-fi
-
-if [[ "${action}" == "publish" && -z "${version}" ]]; then
+if [[ -z "${version}" ]]; then
     usage
 fi
 
 package || exit 1;
-
-if [ "${action}" == "publish" ]; then
-    version=$(parseVersion ${version}) || exit 1;
-    publish ${version}
-
-    if [[ " ${version} " != *"test/"* ]]; then
-        git push --tags
-    fi
+version=$(parseVersion ${version}) || exit 1;
+publish ${version}
+if [[ " ${version} " != *"test/"* ]]; then
+    git push --tags
 fi
