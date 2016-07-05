@@ -1,7 +1,6 @@
 'use strict';
 
-var chai = require('chai');
-var expect = chai.expect;
+var expect = require('chai').expect;
 var mockery = require('mockery');
 var sinon = require('sinon');
 
@@ -36,7 +35,7 @@ describe('Index', function () {
             updateResource: updateResourceStub
         };
 
-        mockery.registerMock('./commands/validCommand', commandStub);
+        mockery.registerMock('./commands/api-resource', commandStub);
     });
     beforeEach(function () {
         commandGetParametersStub.reset().resetBehavior();
@@ -54,7 +53,7 @@ describe('Index', function () {
         beforeEach(function () {
             context = {};
             event = {
-                ResourceType: 'Custom::validCommand',
+                ResourceType: 'Custom::ApiResource',
                 RequestType: 'Create',
                 ResourceProperties: {}
             }

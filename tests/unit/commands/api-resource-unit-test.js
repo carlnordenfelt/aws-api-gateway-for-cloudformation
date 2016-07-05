@@ -1,13 +1,12 @@
 'use strict';
 
-var chai = require('chai');
-var expect = chai.expect;
+var expect = require('chai').expect;
 var mockery = require('mockery');
 var sinon = require('sinon');
 
 var testSubject;
 
-describe('ApiResourceCommand', function () {
+describe('Api Resource Command', function () {
     var createResourceStub;
     var deleteResourceStub;
     var patchResourceStub;
@@ -24,6 +23,7 @@ describe('ApiResourceCommand', function () {
             useCleanCache: true,
             warnOnUnregistered: false
         });
+        mockery.registerAllowable('../../../lib/commands/api-resource');
 
         createResourceStub = sinon.stub();
         deleteResourceStub = sinon.stub();
@@ -45,11 +45,11 @@ describe('ApiResourceCommand', function () {
             updateCorsConfiguration: updateCorsConfigurationStub
         };
 
-        mockery.registerMock('../service/ApiResource/ApiResourceService', apiResourceServiceStub);
-        mockery.registerMock('../service/ApiResource/ApiResourceEvent', apiResourceEventStub);
-        mockery.registerMock('../service/Cors/CorsService', corsServiceStub);
+        mockery.registerMock('../service/api-resource/api-resource-service', apiResourceServiceStub);
+        mockery.registerMock('../service/api-resource/api-resource-event', apiResourceEventStub);
+        mockery.registerMock('../service/Cors/cors-service', corsServiceStub);
 
-        testSubject = require('../../../lib/commands/ApiResource');
+        testSubject = require('../../../lib/commands/api-resource');
     });
     beforeEach(function () {
         createResourceStub.reset().resetBehavior();

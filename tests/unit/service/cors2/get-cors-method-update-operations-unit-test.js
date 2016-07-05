@@ -1,7 +1,6 @@
 'use strict';
 
-var chai = require('chai');
-var expect = chai.expect;
+var expect = require('chai').expect;
 var mockery = require('mockery');
 var sinon = require('sinon');
 
@@ -28,7 +27,7 @@ describe('Cors::GetCorsMethodUpdateOperations', function () {
             }
         };
         mockery.registerMock('aws-sdk', awsSdkStub);
-        testSubject = require('../../../../lib/service/Cors/GetCorsMethodUpdateOperations');
+        testSubject = require('../../../../lib/service/Cors/get-cors-method-update-operations');
     });
     beforeEach(function () {
         getMethodStub.reset().resetBehavior();

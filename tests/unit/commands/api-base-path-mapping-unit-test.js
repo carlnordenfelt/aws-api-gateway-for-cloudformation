@@ -1,7 +1,6 @@
 'use strict';
 
-var chai = require('chai');
-var expect = chai.expect;
+var expect = require('chai').expect;
 var mockery = require('mockery');
 var sinon = require('sinon');
 
@@ -23,6 +22,7 @@ describe('ApiBasePathMappingCommand', function () {
             useCleanCache: true,
             warnOnUnregistered: false
         });
+        mockery.registerAllowable('../../../lib/commands/api-base-path-mapping');
 
         createBasePathMappingStub = sinon.stub();
         deleteBasePathMappingStub = sinon.stub();
@@ -40,9 +40,9 @@ describe('ApiBasePathMappingCommand', function () {
             getParameters: getParametersStub
         };
 
-        mockery.registerMock('../service/ApiBasePathMapping/ApiBasePathMappingService', apiBasePathMappingServiceStub);
-        mockery.registerMock('../service/ApiBasePathMapping/ApiBasePathMappingEvent', apiBasePathMappingEventStub);
-        testSubject = require('../../../lib/commands/ApiBasePathMapping');
+        mockery.registerMock('../service/api-base-path-mapping/api-base-path-mapping-service', apiBasePathMappingServiceStub);
+        mockery.registerMock('../service/api-base-path-mapping/api-base-path-mapping-event', apiBasePathMappingEventStub);
+        testSubject = require('../../../lib/commands/api-base-path-mapping');
     });
     beforeEach(function () {
         createBasePathMappingStub.reset().resetBehavior();

@@ -1,7 +1,6 @@
 'use strict';
 
-var chai = require('chai');
-var expect = chai.expect;
+var expect = require('chai').expect;
 var mockery = require('mockery');
 var sinon = require('sinon');
 
@@ -43,7 +42,7 @@ describe('ApiDomainNameService', function () {
         };
 
         mockery.registerMock('aws-sdk', awsSdkStub);
-        testSubject = require('../../../../lib/service/ApiDomainName/ApiDomainNameService');
+        testSubject = require('../../../../lib/service/api-domain-name/api-domain-name-service');
     });
     beforeEach(function () {
         getDomainNameStub.reset().resetBehavior();

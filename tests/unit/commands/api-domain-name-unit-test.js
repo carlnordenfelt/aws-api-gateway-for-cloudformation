@@ -1,13 +1,12 @@
 'use strict';
 
-var chai = require('chai');
-var expect = chai.expect;
+var expect = require('chai').expect;
 var mockery = require('mockery');
 var sinon = require('sinon');
 
 var testSubject;
 
-describe('ApiDomainCommand', function () {
+describe('Api Domain Command', function () {
     var createDomainStub;
     var deleteDomainStub;
     var patchDomainStub;
@@ -23,6 +22,7 @@ describe('ApiDomainCommand', function () {
             useCleanCache: true,
             warnOnUnregistered: false
         });
+        mockery.registerAllowable('../../../lib/commands/api-domain-name');
 
         createDomainStub = sinon.stub();
         deleteDomainStub = sinon.stub();
@@ -40,9 +40,9 @@ describe('ApiDomainCommand', function () {
             getParameters: getParametersStub
         };
 
-        mockery.registerMock('../service/ApiDomainName/ApiDomainNameService', apiDomainNameServiceStub);
-        mockery.registerMock('../service/ApiDomainName/ApiDomainNameEvent', apiDomainNameEventStub);
-        testSubject = require('../../../lib/commands/ApiDomainName');
+        mockery.registerMock('../service/api-domain-name/api-domain-name-service', apiDomainNameServiceStub);
+        mockery.registerMock('../service/api-domain-name/api-domain-name-event', apiDomainNameEventStub);
+        testSubject = require('../../../lib/commands/api-domain-name');
     });
     beforeEach(function () {
         createDomainStub.reset().resetBehavior();

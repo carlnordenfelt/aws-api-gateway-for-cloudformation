@@ -1,13 +1,12 @@
 'use strict';
 
-var chai = require('chai');
-var expect = chai.expect;
+var expect = require('chai').expect;
 var mockery = require('mockery');
 var sinon = require('sinon');
 
 var testSubject;
 
-describe('ApiImport Command', function () {
+describe('Api Import Command', function () {
     var importApiStub;
     var deleteRestApiStub;
     var updateApiStub;
@@ -23,6 +22,7 @@ describe('ApiImport Command', function () {
             useCleanCache: true,
             warnOnUnregistered: false
         });
+        mockery.registerAllowable('../../../lib/commands/api-import');
 
         importApiStub = sinon.stub();
         deleteRestApiStub = sinon.stub();
@@ -42,11 +42,11 @@ describe('ApiImport Command', function () {
         var apiRestApiEventStub = {
             getParameters: getParametersStub
         };
-        mockery.registerMock('../service/ApiImport/ApiImportService', apiApiImportServiceStub);
-        mockery.registerMock('../service/ApiImport/ApiImportEvent', apiRestApiEventStub);
-        mockery.registerMock('../service/RestApi/RestApiService', apiRestApiServiceStub);
+        mockery.registerMock('../service/api-import/api-import-service', apiApiImportServiceStub);
+        mockery.registerMock('../service/api-import/api-import-event', apiRestApiEventStub);
+        mockery.registerMock('../service/rest-api/rest-api-service', apiRestApiServiceStub);
 
-        testSubject = require('../../../lib/commands/ApiImport');
+        testSubject = require('../../../lib/commands/api-import');
     });
     beforeEach(function () {
         importApiStub.reset().resetBehavior();

@@ -1,9 +1,7 @@
 'use strict';
 
-var chai = require('chai');
-var expect = chai.expect;
-
-var testSubject = require('../../../../lib/service/ApiBasePathMapping/ApiBasePathMappingEvent');
+var expect = require('chai').expect;
+var testSubject = require('../../../../lib/service/api-base-path-mapping/api-base-path-mapping-event');
 
 describe('ApiBasePathMappingEvent', function () {
 

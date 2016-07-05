@@ -1,7 +1,6 @@
 'use strict';
 
-var chai = require('chai');
-var expect = chai.expect;
+var expect = require('chai').expect;
 var mockery = require('mockery');
 var sinon = require('sinon');
 
@@ -46,8 +45,8 @@ describe('ApiResourceService', function () {
         };
 
         mockery.registerMock('aws-sdk', awsSdkStub);
-        mockery.registerMock('../Cors/CorsService', corsServiceStub);
-        testSubject = require('../../../../lib/service/ApiResource/ApiResourceService');
+        mockery.registerMock('../Cors/cors-service', corsServiceStub);
+        testSubject = require('../../../../lib/service/api-resource/api-resource-service');
     });
     beforeEach(function () {
         getResourceStub.reset().resetBehavior();

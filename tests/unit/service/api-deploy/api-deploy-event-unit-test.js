@@ -1,10 +1,8 @@
 'use strict';
 
-var chai = require('chai');
-var expect = chai.expect;
-var _ = require('lodash');
+var expect = require('chai').expect;var _ = require('lodash');
 
-var testSubject = require('../../../../lib/service/ApiDeploy/ApiDeployEvent');
+var testSubject = require('../../../../lib/service/api-deploy/api-deploy-event');
 var event;
 describe('ApiDeployEvent', function () {
     beforeEach(function () {

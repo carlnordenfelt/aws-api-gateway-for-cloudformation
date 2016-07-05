@@ -1,12 +1,10 @@
 'use strict';
 
-var chai = require('chai');
-var expect = chai.expect;
+var expect = require('chai').expect;
 
-var testSubject = require('../../../../lib/service/ApiImport/ApiImportEvent');
+var testSubject = require('../../../../lib/service/api-import/api-import-event');
 
 describe('ApiImportEvent', function () {
-
     describe('getParameters', function () {
         var event;
         beforeEach(function () {

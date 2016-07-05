@@ -1,7 +1,6 @@
 'use strict';
 
-var chai = require('chai');
-var expect = chai.expect;
+var expect = require('chai').expect;
 var mockery = require('mockery');
 var sinon = require('sinon');
 
@@ -35,7 +34,7 @@ describe('ApiDeployService', function () {
         };
 
         mockery.registerMock('aws-sdk', awsSdkStub);
-        testSubject = require('../../../../lib/service/ApiDeploy/ApiDeployService');
+        testSubject = require('../../../../lib/service/api-deploy/api-deploy-service');
     });
     beforeEach(function () {
         getStageStub.reset().resetBehavior();

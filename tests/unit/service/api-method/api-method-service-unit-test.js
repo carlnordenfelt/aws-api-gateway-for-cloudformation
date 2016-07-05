@@ -1,10 +1,10 @@
 'use strict';
 
-var chai = require('chai');
-var expect = chai.expect;
+var expect = require('chai').expect;
 var mockery = require('mockery');
 var sinon = require('sinon');
-
+var apiMethodEvent = require('../../../../lib/service/api-method/api-method-event');
+var _ = require('lodash');
 var testSubject;
 
 describe('ApiMethodService', function () {
@@ -44,7 +44,7 @@ describe('ApiMethodService', function () {
         };
 
         mockery.registerMock('aws-sdk', awsSdkStub);
-        testSubject = require('../../../../lib/service/ApiMethod/ApiMethodService');
+        testSubject = require('../../../../lib/service/api-method/api-method-service');
         testSubject.PUT_METHOD_STEP_DELAY_MILLIS = 1;
     });
     beforeEach(function () {
@@ -108,51 +108,15 @@ describe('ApiMethodService', function () {
     });
 
     describe('createMethod', function () {
+        var event = require('./util').event;
         var params;
         beforeEach(function () {
-            params = {
-                params: {
-                    restApiId: 'RestApiId',
-                    resourceId: 'ResourceId',
-                    method: {
-                        httpMethod: 'POST',
-                        authorizationType: 'IAM',
-                        apiKeyRequired: true,
-                        parameters: ['test']
-                    },
-                    integration: {
-                        type: 'integration.type',
-                        httpMethod: 'integration.httpMethod',
-                        uri: 'integration.uri',
-                        requestTemplates: {
-                            IntegrationRequestTemplateObject: {},
-                            IntegrationRequestTemplateString: ''
-                        },
-                        cacheKeyParameters: [],
-                        cacheNamespace: ''
-                    },
-                    responses: {
-                        'default': {
-                            statusCode: '200',
-                            responseTemplates: {
-                                ResponseTemplateObject: {},
-                                ResponseTemplateString: ''
-                            }
-                        },
-                        '.*BadResponse1.*': {
-                            statusCode: '500'
-                        },
-                        '.*BadResponse2.*': {
-                            statusCode: '500'
-                        }
-                    }
-                }
-            };
+            params = apiMethodEvent.getParameters(_.cloneDeep(event));
         });
         it('should create an api method', function (done) {
             testSubject.createMethod(params, function (error, apiMethod) {
                 expect(error).to.be.undefined;
-                expect(putMethodResponseStub.calledTwice).to.be.true;
+                expect(putMethodResponseStub.calledThrice).to.be.true;
                 expect(putIntegrationResponseStub.calledThrice).to.be.true;
                 expect(apiMethod).to.be.an('object');
                 done();
@@ -174,7 +138,8 @@ describe('ApiMethodService', function () {
                 done();
             });
         });
-        it('should create an api method with cors origin but no responses', function (done) {
+        it('should create an api method with no cors origin and no responses', function (done) {
+            getMethodStub.yields();
             params.params.method.httpMethod = 'GET';
             delete params.params.responses;
             testSubject.createMethod(params, function (error, apiMethod) {

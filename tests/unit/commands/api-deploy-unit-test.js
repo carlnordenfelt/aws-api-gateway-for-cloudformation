@@ -1,13 +1,12 @@
 'use strict';
 
-var chai = require('chai');
-var expect = chai.expect;
+var expect = require('chai').expect;
 var mockery = require('mockery');
 var sinon = require('sinon');
 
 var testSubject;
 
-describe('ApiDeployCommand', function () {
+describe('Api Deploy Command', function () {
     var deployApiStub;
     var getForResponseStub;
     var getParametersStub;
@@ -21,6 +20,7 @@ describe('ApiDeployCommand', function () {
             useCleanCache: true,
             warnOnUnregistered: false
         });
+        mockery.registerAllowable('../../../lib/commands/api-deploy');
 
         deployApiStub = sinon.stub();
         getForResponseStub = sinon.stub();
@@ -34,10 +34,10 @@ describe('ApiDeployCommand', function () {
             getParameters: getParametersStub
         };
 
-        mockery.registerMock('../service/ApiDeploy/ApiDeployService', apiDeployServiceStub);
-        mockery.registerMock('../service/ApiDeploy/ApiDeployEvent', apiDeployEventStub);
+        mockery.registerMock('../service/api-deploy/api-deploy-service', apiDeployServiceStub);
+        mockery.registerMock('../service/api-deploy/api-deploy-event', apiDeployEventStub);
 
-        testSubject = require('../../../lib/commands/ApiDeploy');
+        testSubject = require('../../../lib/commands/api-deploy');
     });
     beforeEach(function () {
         deployApiStub.reset().resetBehavior();

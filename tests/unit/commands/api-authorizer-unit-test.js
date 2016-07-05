@@ -1,13 +1,12 @@
 'use strict';
 
-var chai = require('chai');
-var expect = chai.expect;
+var expect = require('chai').expect;
 var mockery = require('mockery');
 var sinon = require('sinon');
 
 var testSubject;
 
-describe('ApiAuthorizerCommand', function () {
+describe('Api Authorizer Command', function () {
     var createAuthorizerStub;
     var deleteAuthorizerStub;
     var patchAuthorizerStub;
@@ -23,6 +22,7 @@ describe('ApiAuthorizerCommand', function () {
             useCleanCache: true,
             warnOnUnregistered: false
         });
+        mockery.registerAllowable('../../../lib/commands/api-authorizer');
 
         createAuthorizerStub = sinon.stub();
         deleteAuthorizerStub = sinon.stub();
@@ -40,10 +40,9 @@ describe('ApiAuthorizerCommand', function () {
             getParameters: getParametersStub
         };
 
-        mockery.registerMock('../service/ApiAuthorizer/ApiAuthorizerService', apiAuthorizerServiceStub);
-        mockery.registerMock('../service/ApiAuthorizer/ApiAuthorizerEvent', apiAuthorizerEventStub);
-
-        testSubject = require('../../../lib/commands/ApiAuthorizer');
+        mockery.registerMock('../service/api-authorizer/api-authorizer-service', apiAuthorizerServiceStub);
+        mockery.registerMock('../service/api-authorizer/api-authorizer-event', apiAuthorizerEventStub);
+        testSubject = require('../../../lib/commands/api-authorizer');
     });
     beforeEach(function () {
         createAuthorizerStub.reset().resetBehavior();

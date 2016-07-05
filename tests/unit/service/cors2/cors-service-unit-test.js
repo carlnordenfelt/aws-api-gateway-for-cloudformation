@@ -1,7 +1,6 @@
 'use strict';
 
-var chai = require('chai');
-var expect = chai.expect;
+var expect = require('chai').expect;
 var mockery = require('mockery');
 var sinon = require('sinon');
 
@@ -48,9 +47,9 @@ describe('Cors::CorsService', function () {
         };
 
         mockery.registerMock('aws-sdk', awsSdkStub);
-        mockery.registerMock('../ApiMethod/ApiMethodService', apiMethodServiceStub);
-        mockery.registerMock('./GetCorsMethodUpdateOperations', getCorsMethodUpdateOperationsStub);
-        testSubject = require('../../../../lib/service/Cors/CorsService');
+        mockery.registerMock('../api-method/api-method-service', apiMethodServiceStub);
+        mockery.registerMock('./get-cors-method-update-operations', getCorsMethodUpdateOperationsStub);
+        testSubject = require('../../../../lib/service/Cors/cors-service');
     });
 
     var corsConfiguration;

@@ -1,13 +1,12 @@
 'use strict';
 
-var chai = require('chai');
-var expect = chai.expect;
+var expect = require('chai').expect;
 var mockery = require('mockery');
 var sinon = require('sinon');
 
 var testSubject;
 
-describe('ApiMethodCommand', function () {
+describe('Api Method Command', function () {
     var createMethodStub;
     var deleteMethodStub;
     var getForResponseStub;
@@ -22,6 +21,7 @@ describe('ApiMethodCommand', function () {
             useCleanCache: true,
             warnOnUnregistered: false
         });
+        mockery.registerAllowable('../../../lib/commands/api-method');
 
         createMethodStub = sinon.stub();
         deleteMethodStub = sinon.stub();
@@ -37,10 +37,10 @@ describe('ApiMethodCommand', function () {
             getParameters: getParametersStub
         };
 
-        mockery.registerMock('../service/ApiMethod/ApiMethodService', apiMethodServiceStub);
-        mockery.registerMock('../service/ApiMethod/ApiMethodEvent', apiMethodEventStub);
+        mockery.registerMock('../service/api-method/api-method-service', apiMethodServiceStub);
+        mockery.registerMock('../service/api-method/api-method-event', apiMethodEventStub);
 
-        testSubject = require('../../../lib/commands/ApiMethod');
+        testSubject = require('../../../lib/commands/api-method');
     });
     beforeEach(function () {
         createMethodStub.reset().resetBehavior();

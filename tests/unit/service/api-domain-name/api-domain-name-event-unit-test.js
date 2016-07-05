@@ -1,9 +1,8 @@
 'use strict';
 
-var chai = require('chai');
-var expect = chai.expect;
+var expect = require('chai').expect;
 
-var testSubject = require('../../../../lib/service/ApiDomainName/ApiDomainNameEvent');
+var testSubject = require('../../../../lib/service/api-domain-name/api-domain-name-event');
 
 describe('ApiDomainNameEvent', function () {
 

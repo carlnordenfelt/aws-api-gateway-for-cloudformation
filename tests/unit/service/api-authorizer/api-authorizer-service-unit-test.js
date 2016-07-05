@@ -1,7 +1,6 @@
 'use strict';
 
-var chai = require('chai');
-var expect = chai.expect;
+var expect = require('chai').expect;
 var mockery = require('mockery');
 var sinon = require('sinon');
 
@@ -38,7 +37,7 @@ describe('ApiAuthorizerService', function () {
         };
 
         mockery.registerMock('aws-sdk', awsSdkStub);
-        testSubject = require('../../../../lib/service/ApiAuthorizer/ApiAuthorizerService');
+        testSubject = require('../../../../lib/service/api-authorizer/api-authorizer-service');
     });
     beforeEach(function () {
         getAuthorizer.reset().resetBehavior();

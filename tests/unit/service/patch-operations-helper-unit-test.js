@@ -2,7 +2,7 @@
 
 var expect = require('chai').expect;
 
-var testSubject = require('../../../lib/service/patchOperationsHelper.js');
+var testSubject = require('../../../lib/service/patch-operations-helper.js');
 
 describe('patchOperationsHelper', function () {
     describe('getAllowedModifications', function () {

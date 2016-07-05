@@ -1,13 +1,12 @@
 'use strict';
 
-var chai = require('chai');
-var expect = chai.expect;
+var expect = require('chai').expect;
 var mockery = require('mockery');
 var sinon = require('sinon');
 
 var testSubject;
 
-describe('ApiModelCommand', function () {
+describe('Api Model Command', function () {
     var createModelStub;
     var deleteModelStub;
     var patchModelStub;
@@ -23,6 +22,7 @@ describe('ApiModelCommand', function () {
             useCleanCache: true,
             warnOnUnregistered: false
         });
+        mockery.registerAllowable('../../../lib/commands/api-model');
 
         createModelStub = sinon.stub();
         deleteModelStub = sinon.stub();
@@ -40,10 +40,10 @@ describe('ApiModelCommand', function () {
             getParameters: getParametersStub
         };
 
-        mockery.registerMock('../service/ApiModel/ApiModelService', apiModelServiceStub);
-        mockery.registerMock('../service/ApiModel/ApiModelEvent', apiModelEventStub);
+        mockery.registerMock('../service/api-model/api-model-service', apiModelServiceStub);
+        mockery.registerMock('../service/api-model/api-model-event', apiModelEventStub);
 
-        testSubject = require('../../../lib/commands/ApiModel');
+        testSubject = require('../../../lib/commands/api-model');
     });
     beforeEach(function () {
         createModelStub.reset().resetBehavior();

@@ -1,13 +1,12 @@
 'use strict';
 
-var chai = require('chai');
-var expect = chai.expect;
+var expect = require('chai').expect;
 var mockery = require('mockery');
 var sinon = require('sinon');
 
 var testSubject;
 
-describe('ApiModelService', function () {
+describe('APi Import Service', function () {
     var importRestApiStub;
     var putRestApiStub;
 
@@ -32,7 +31,7 @@ describe('ApiModelService', function () {
         };
 
         mockery.registerMock('aws-sdk', awsSdkStub);
-        testSubject = require('../../../../lib/service/ApiImport/ApiImportService');
+        testSubject = require('../../../../lib/service/api-import/api-import-service');
     });
     beforeEach(function () {
         importRestApiStub.reset().resetBehavior();

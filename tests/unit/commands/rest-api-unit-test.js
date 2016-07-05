@@ -1,7 +1,6 @@
 'use strict';
 
-var chai = require('chai');
-var expect = chai.expect;
+var expect = require('chai').expect;
 var mockery = require('mockery');
 var sinon = require('sinon');
 
@@ -24,6 +23,7 @@ describe('RestApiCommand', function () {
             useCleanCache: true,
             warnOnUnregistered: false
         });
+        mockery.registerAllowable('../../../lib/commands/rest-api');
 
         createRestApiStub = sinon.stub();
         deleteRestApiStub = sinon.stub();
@@ -45,11 +45,10 @@ describe('RestApiCommand', function () {
             updateCorsConfiguration: updateCorsConfigurationStub
         };
 
-        mockery.registerMock('../service/RestApi/RestApiService', apiRestApiServiceStub);
-        mockery.registerMock('../service/RestApi/RestApiEvent', apiRestApiEventStub);
-        mockery.registerMock('../service/Cors/CorsService', corsServiceStub);
-
-        testSubject = require('../../../lib/commands/RestApi');
+        mockery.registerMock('../service/rest-api/rest-api-service', apiRestApiServiceStub);
+        mockery.registerMock('../service/rest-api/rest-api-event', apiRestApiEventStub);
+        mockery.registerMock('../service/Cors/cors-service', corsServiceStub);
+        testSubject = require('../../../lib/commands/rest-api');
     });
     beforeEach(function () {
         createRestApiStub.reset().resetBehavior();

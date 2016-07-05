@@ -1,10 +1,9 @@
 'use strict';
 
-var chai = require('chai');
-var expect = chai.expect;
+var expect = require('chai').expect;
 
-var Constants = require('../../../../lib/service/Constants');
-var testSubject = require('../../../../lib/service/ApiResource/ApiResourceEvent');
+var Constants = require('../../../../lib/service/constants2');
+var testSubject = require('../../../../lib/service/api-resource/api-resource-event');
 
 describe('ApiResourceEvent', function () {
 
@@ -95,12 +94,12 @@ describe('ApiResourceEvent', function () {
             expect(parameters.params.restApiId).to.equal('RestApiId');
             done();
         });
-
         it('should get parameters with complete cors config', function (done) {
             event.ResourceProperties.corsConfiguration = {
                 allowMethods: [],
                 allowOrigin: 'Origin',
-                allowHeaders: [],
+                allowHeaders: ['x-test-header'],
+                allowDefaultHeaders: 'true',
                 exposeHeaders: [],
                 allowCredentials: 'true',
                 maxAge: '123'
@@ -109,6 +108,7 @@ describe('ApiResourceEvent', function () {
             expect(parameters.params.corsConfiguration.allowMethods).be.an('array');
             expect(parameters.params.corsConfiguration.allowOrigin).to.equal('Origin');
             expect(parameters.params.corsConfiguration.allowHeaders).be.an('array');
+            expect(parameters.params.corsConfiguration.allowHeaders.length).to.equal(5);
             expect(parameters.params.corsConfiguration.exposeHeaders).be.an('array');
             expect(parameters.params.corsConfiguration.allowCredentials).be.equal('true');
             expect(parameters.params.corsConfiguration.maxAge).to.equal('123');

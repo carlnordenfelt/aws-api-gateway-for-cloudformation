@@ -2,76 +2,14 @@
 
 var expect = require('chai').expect;
 var _ = require('lodash');
-var testSubject = require('../../../../lib/service/ApiMethod/ApiMethodEvent');
+var testSubject = require('../../../../lib/service/api-method/api-method-event');
 
 describe('ApiMethodEvent', function () {
     describe('getParameters', function () {
         var event;
         beforeEach(function () {
-            event = {
-                ResourceProperties: {
-                    restApiId: 'RestApiId',
-                    resourceId: 'ResourceId',
-                    lastModified: "123",
-                    method: {
-                        httpMethod: 'GET',
-                        authorizationType: 'AWS_IAM',
-                        authorizerId: 'authorizerIdValue',
-                        apiKeyRequired: 'true',
-                        requestModels: {
-                            'application/json': 'ModelName'
-                        },
-                        parameters: [
-                            'header.test',
-                            'path.test',
-                            'querystring.test'
-                        ]
-                    },
-                    integration: {
-                        type: 'AWS',
-                        credentials: 'credentialsValue',
-                        cacheNamespace: 'cacheNamespaceValue',
-                        cacheKeyParameters: ['cacheKeyParameters1'],
-                        httpMethod: 'POST',
-                        uri: 'integration.uri',
-                        passthroughBehavior: 'WHEN_NO_MATCH',
-                        requestTemplates: {
-                            'application/json': {},
-                            'application/xml': ''
-                        },
-                        requestParameters: {
-                            "integration.request.querystring.x": "'value'",
-                            "integration.request.header.y": "'value'",
-                            "integration.request.path.z": "'value'"
-                        }
-                    },
-                    responses: {
-                        'default': {
-                            statusCode: "200",
-                            headers: {
-                                "x-static-header": "'test'",
-                                "x-dynamic-header": "integration.response.header.xyz",
-                                "x-dynamic-body-header": "integration.response.body.xyz"
-                            },
-                            responseTemplates: {
-                                'application/json': {},
-                                'application/xml': ''
-                            },
-                            responseModels: {
-                                'application/json': 'ModelName'
-                            }
-                        },
-                        selectionPattern1: {
-                            statusCode: "400"
-                        },
-                        selectionPattern2: {
-                            statusCode: "500"
-                        }
-                    }
-                }
-            };
+            event = _.cloneDeep(require('./util').event);
         });
-
         it('should give both old and new parameters', function (done) {
             var parameters = testSubject.getParameters(event);
             expect(parameters.params.restApiId).to.equal('RestApiId');
@@ -82,10 +20,10 @@ describe('ApiMethodEvent', function () {
             expect(parameters.params.integration).to.be.an('object');
             expect(parameters.params.integration.httpMethod).to.equal('POST');
             expect(parameters.params.integration.passthroughBehavior).to.equal('WHEN_NO_MATCH');
-            expect(parameters.params.responses).to.be.an('array');
-            expect(parameters.params.responses[0].selectionPattern).to.be.undefined;
-            expect(parameters.params.responses[1].selectionPattern).to.equal('selectionPattern1');
-            expect(parameters.params.responses[2].selectionPattern).to.equal('selectionPattern2');
+            expect(parameters.params.responses).to.be.an('object');
+            expect(parameters.params.responses.default.statusCode).to.equal('200');
+            expect(parameters.params.responses.selectionPattern1.statusCode).to.equal('400');
+            expect(parameters.params.responses.selectionPattern2.statusCode).to.equal('500');
             done();
         });
         it('should return valid parameters with valid defaults', function (done) {
@@ -120,8 +58,8 @@ describe('ApiMethodEvent', function () {
             expect(parameters.params.integration.type).to.equal('MOCK');
             expect(parameters.params.integration.httpMethod).to.equal(undefined);
             expect(parameters.params.integration.passthroughBehavior).to.equal('WHEN_NO_MATCH');
-            expect(parameters.params.responses).to.be.an('array');
-            expect(parameters.params.responses[0].selectionPattern).to.be.undefined;
+            expect(parameters.params.responses).to.be.an('object');
+            expect(parameters.params.responses.default.statusCode).to.equal('200');
             done();
         });
         it('should not do validation if RequestType is set to delete', function (done) {

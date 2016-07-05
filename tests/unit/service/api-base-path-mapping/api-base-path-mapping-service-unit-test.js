@@ -1,7 +1,6 @@
 'use strict';
 
-var chai = require('chai');
-var expect = chai.expect;
+var expect = require('chai').expect;
 var mockery = require('mockery');
 var sinon = require('sinon');
 
@@ -44,7 +43,7 @@ describe('ApiBasePathMappingService', function () {
         };
 
         mockery.registerMock('aws-sdk', awsSdkStub);
-        testSubject = require('../../../../lib/service/ApiBasePathMapping/ApiBasePathMappingService');
+        testSubject = require('../../../../lib/service/api-base-path-mapping/api-base-path-mapping-service');
     });
     beforeEach(function () {
         getBasePathMappingStub.reset().resetBehavior();

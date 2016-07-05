@@ -1,13 +1,10 @@
 'use strict';
 
-var chai = require('chai');
-var expect = chai.expect;
-
-var testSubject = require('../../../../lib/service/ApiAuthorizer/ApiAuthorizerEvent');
-var event;
+var expect = require('chai').expect;
+var testSubject = require('../../../../lib/service/api-authorizer/api-authorizer-event');
 
 describe('ApiAuthorizerEvent', function () {
-
+    var event;
     describe('getParameters', function () {
         beforeEach(function (done) {
             event = {
