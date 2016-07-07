@@ -8,43 +8,34 @@
         },
         "ApiDns": {
             "Type": "String",
-            "Description": "Domain name where the API will be available at. e.g api.example.com. Omit if you do not want to create a custom domain name.",
-            "Default": ""
+            "Description": "Domain name where the API will be available at. e.g api.example.com."
         },
         "DnsHostedZoneId": {
             "Type": "String",
-            "Description": "HostedZoneId where your custom domain name alias will be created. Required only if you want to create a custom domain name.",
-            "Default": ""
+            "Description": "HostedZoneId where your custom domain name alias will be created."
         },
         "CertificateBody": {
             "Type": "String",
-            "Description": "Certificate body. Required only if you want to create a custom domain name.",
-            "Default": ""
+            "Description": "Certificate body."
         },
         "CertificateChain": {
             "Type": "String",
-            "Description": "Certificate body. Required only if you want to create a custom domain name.",
-            "Default": ""
+            "Description": "Certificate chain."
         },
         "CertificatePrivateKey": {
             "Type": "String",
-            "Description": "Certificate body. Required only if you want to create a custom domain name.",
-            "NoEcho": true,
-            "Default": ""
+            "Description": "Certificate private key.",
+            "NoEcho": true
         },
         "BasePath": {
             "Type": "String",
-            "Description": "Base path of the API, to be appended after the custom domain name. Required only if you want to create a custom domain name. Can be empty.",
+            "Description": "Base path of the API, to be appended after the custom domain name. Can be empty.",
             "Default": ""
-
         },
         "StageName": {
             "Type": "String",
-            "Description": "Name of the stage (existing or not) that you want the API to be deployed in. Required only if you want to create a custom domain name."
+            "Description": "Name of the stage (existing or not) that you want the API to be deployed in."
         }
-    },
-    "Conditions": {
-        "CreateDomain": { "Fn::Not": [{ "Fn::Equals": [{ "Ref": "ApiDns" }, ""] }] }
     },
     "Mappings": {
         "CloudFront": {
@@ -234,7 +225,6 @@
         },
         "TestDomainName": {
             "Type": "Custom::ApiDomainName",
-            "Condition": "CreateDomain",
             "Properties": {
                 "ServiceToken": { "Ref": "ServiceToken" },
                 "domainName": { "Ref": "ApiDns" },
@@ -246,7 +236,6 @@
         },
         "TestBasePathMapping": {
             "Type": "Custom::ApiBasePathMapping",
-            "Condition": "CreateDomain",
             "Properties": {
                 "ServiceToken": { "Ref": "ServiceToken" },
                 "restApiId": { "Ref": "TestRestApi" },
@@ -258,7 +247,6 @@
         },
         "TestDnsRecord": {
             "Type": "AWS::Route53::RecordSet",
-            "Condition": "CreateDomain",
             "Properties": {
                 "AliasTarget": {
                     "DNSName": { "Fn::GetAtt": ["TestDomainName", "distributionDomainName"] },
@@ -272,13 +260,10 @@
     },
     "Outputs": {
         "RestApiId": {
-            "Value": { "Fn::GetAtt": ["TestRestApi", "id"] }
+            "Value": { "Ref": "TestRestApi" }
         },
-        "ParentResourceId": {
-            "Value": { "Fn::GetAtt": ["TestRestApi", "parentResourceId"] }
-        },
-        "TestResourceId": {
-            "Value": { "Fn::GetAtt": ["TestApiResource", "id"] }
+        "ApiUri": {
+            "Value": { "Fn::GetAtt": ["TestDomainName", "domainName"] }
         }
     }
 }
