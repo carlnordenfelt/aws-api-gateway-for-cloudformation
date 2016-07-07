@@ -13,6 +13,7 @@ describe('RestApiCommand', function () {
     var getForResponseStub;
     var getParametersStub;
     var updateCorsConfigurationStub;
+    var isValidResourceIdStub;
 
     after(function () {
         mockery.deregisterAll();
@@ -31,6 +32,7 @@ describe('RestApiCommand', function () {
         getForResponseStub = sinon.stub();
         getParametersStub = sinon.stub();
         updateCorsConfigurationStub = sinon.stub();
+        isValidResourceIdStub = sinon.stub();
 
         var apiRestApiServiceStub = {
             createApi: createRestApiStub,
@@ -39,7 +41,8 @@ describe('RestApiCommand', function () {
             getForResponse: getForResponseStub
         };
         var apiRestApiEventStub = {
-            getParameters: getParametersStub
+            getParameters: getParametersStub,
+            isValidResourceId: isValidResourceIdStub
         };
         var corsServiceStub = {
             updateCorsConfiguration: updateCorsConfigurationStub
@@ -63,6 +66,8 @@ describe('RestApiCommand', function () {
         getParametersStub.returns({ params: {} });
         updateCorsConfigurationStub.reset().resetBehavior();
         updateCorsConfigurationStub.yields(undefined, {});
+        isValidResourceIdStub.reset().resetBehavior();
+        isValidResourceIdStub.returns(true);
     });
 
     describe('getParameters', function () {
@@ -111,8 +116,8 @@ describe('RestApiCommand', function () {
     describe('deleteResource', function () {
         it('should delete the rest api', function (done) {
             testSubject.deleteResource({}, {}, { params: {} }, function (error) {
-                expect(error).to.be.undefined;
-                expect(deleteRestApiStub.called).to.be.true;
+                expect(error).to.equal(undefined);
+                expect(deleteRestApiStub.called).to.equal(true);
                 done();
             });
         });
@@ -120,7 +125,15 @@ describe('RestApiCommand', function () {
             deleteRestApiStub.yields('deleteError');
             testSubject.deleteResource({}, {}, { params: {} }, function (error) {
                 expect(error).to.equal('deleteError');
-                expect(deleteRestApiStub.called).to.be.true;
+                expect(deleteRestApiStub.called).to.equal(true);
+                done();
+            });
+        });
+        it('should do nothing if physical resource id is invalid', function (done) {
+            isValidResourceIdStub.returns(false);
+            testSubject.deleteResource({}, {}, { params: {} }, function (error) {
+                expect(error).to.equal(undefined);
+                expect(deleteRestApiStub.called).to.equal(false);
                 done();
             });
         });

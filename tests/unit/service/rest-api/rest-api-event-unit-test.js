@@ -105,4 +105,15 @@ describe('RestAPiEvent', function () {
             done();
         });
     });
+
+    describe('isValidResourceId', function () {
+        it('should return true', function (done) {
+            expect(testSubject.isValidResourceId('abc123')).to.equal(true);
+            done();
+        });
+        it('should return false', function (done) {
+            expect(testSubject.isValidResourceId('2016/07/05/[$LATEST]5ade9ec0d70249e19e8f9e4cda6e58b7	')).to.equal(false);
+            done();
+        });
+    });
 });

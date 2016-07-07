@@ -38,10 +38,12 @@ describe('validator', function () {
                         }
                     }
                 }
-            }
+            },
+            additionalProperties: false
         };
         event = {
             ResourceProperties: {
+                ServiceToken: 'abc123',
                 requiredProperty: 'RequiredProperty',
                 standardProperty: 'StandardProperty',
                 defaultValueProperty: 'DefaultValueProperty',
