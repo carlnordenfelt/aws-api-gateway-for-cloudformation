@@ -1542,7 +1542,7 @@
                                     </h3>
                                 </div>
                                 <div class="panel-body">
-                                    <p>The model schema. This can be represented by either a JSON object or a valid JSON string.</p>
+                                    <p>The model schema. This can be represented by either a JSON Schema object or a stringified JSON Schema object.</p>
                                     <table class="table">
                                         <tr><th>Type</th><td>String</td></tr>
                                         <tr><th>Default</th><td>Empty object</td></tr>
@@ -1569,7 +1569,9 @@
                                         "name": "TestModelName",
                                         "contentType": "application/json",
                                         "description": "This is my model",
-                                        "schema": "..."
+                                        "schema": {
+                                            ...
+                                        }
                                     }
                                 }
                             </pre>
