@@ -59,7 +59,8 @@
                     "pattern": "^(true|false)$",
                     "default": "false"
                 }
-            }
+            },
+            "additionalProperties": false
         }
     },
     "additionalProperties": false
