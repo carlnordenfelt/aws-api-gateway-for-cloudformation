@@ -1,0 +1,108 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "Enable CORS on Parent Resource",
+    "Parameters": {
+        "ApiGatewayServiceToken": {
+            "Type": "String",
+            "Description": "ServiceToken Lambda Arn for API Gateway."
+        },
+        "Force": {
+            "Type": "String"
+        }
+    },
+    "Resources": {
+        "RestApi": {
+            "Type": "Custom::RestApi",
+            "Properties": {
+                "ServiceToken": { "Ref": "ApiGatewayServiceToken" },
+                "name": "ApiTest"
+            }
+        },
+        "TestResource": {
+            "Type": "Custom::ApiResource",
+            "Properties": {
+                "ServiceToken": { "Ref": "ApiGatewayServiceToken" },
+                "restApiId": { "Ref": "RestApi" },
+                "parentId": { "Fn::GetAtt": ["RestApi", "parentResourceId"] },
+                "pathPart": "child",
+                "corsConfiguration": {
+                    "allowDefaultHeaders": true,
+                    "allowOrigin": "https://www.example.com"
+                }
+            }
+        },
+        "TestApiMethod" : {
+            "Type" : "Custom::ApiMethod",
+            "Properties" : {
+                "ServiceToken": { "Ref": "ApiGatewayServiceToken" },
+                "restApiId": { "Ref": "RestApi" },
+                "resourceId": { "Ref": "TestResource" },
+                "method": {
+                    "httpMethod": "GET",
+                    "requestModels": {
+                        "application/json": { "Fn::GetAtt": ["TestModelWithParent", "name"] }
+                    },
+                    "parameters": [
+                        "querystring.sortBy",
+                        "header.x-test-header",
+                        "path.entityType"
+                    ]
+                },
+                "integration": {
+                    "type": "MOCK",
+                    "requestTemplates": {
+                        "application/json": "{\"statusCode\": 200}"
+                    },
+                    "passthroughBehavior": "NEVER"
+                },
+                "responses": {
+                    "default": {
+                        "statusCode": "200"
+                    }
+                }
+            }
+        },
+        "TestModel": {
+            "Type" : "Custom::ApiModel",
+            "Properties" : {
+                "ServiceToken": { "Ref": "ApiGatewayServiceToken" },
+                "restApiId": { "Ref": "RestApi" },
+                "name": "TestModelName",
+                "contentType": "application/json",
+                "description": "A test model",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "country": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "TestModelWithParent": {
+            "Type": "Custom::ApiModel",
+            "Properties": {
+                "ServiceToken": { "Ref": "ApiGatewayServiceToken" },
+                "restApiId": { "Ref": "RestApi" },
+                "name": "TestModelWithParent",
+                "contentType": "application/json",
+                "schema": {
+                    "allOf": [
+                        {
+                            "$ref": { "Fn::Join": ["", ["https://apigateway.amazonaws.com/restapis/", { "Ref": "RestApi" }, "/models/", { "Fn::GetAtt": ["TestModel", "name"] }]] }
+                        },
+                        {
+                            "type": "object",
+                            "properties": {
+                                "accountName": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}
