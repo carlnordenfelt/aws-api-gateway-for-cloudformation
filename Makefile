@@ -53,8 +53,20 @@ coverage:
 
 
 .PHONY: publish
-publish: clean deps test
-	_scripts/publish.sh -v $(version)
+publish:
+	@if [ -z $(v) ]; then \
+		echo "Missing -v argument"; \
+		exit 1; \
+	fi
+	make clean
+	make deps
+	make test
+	_scripts/publish.sh -v $(v)
+
+
+.PHONY: upload-web
+upload-web:
+	_scripts/upload-web.sh
 
 
 .PHONY: all

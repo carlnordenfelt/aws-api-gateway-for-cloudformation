@@ -49,8 +49,7 @@ function parseVersion() {
 
 # Packages the source code to a zip file (${sourceFileName})
 function package() {
-    make clean
-    make q
+    npm prune --production
     zip -r source.zip lib/* lib/*/** node_modules/*/** > /dev/null 2>&1
 }
 
