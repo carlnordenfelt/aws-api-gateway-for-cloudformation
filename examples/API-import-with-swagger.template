@@ -369,15 +369,13 @@
                 "ServiceToken": { "Ref": "ApiGatewayServiceToken" },
                 "restApiId": { "Ref": "RestApi" },
                 "stageName": "TestStage",
-                "stageConfig": {
-                    "cacheClusterEnabled": true,
-                    "cacheClusterSize": 0.5,
-                    "description": "My TestStage"
-                },
+                "cacheClusterEnabled": true,
+                "cacheClusterSize": 0.5,
+                "stageDescription": "My TestStage",
                 "methodSettings": {
                     "*/*/metrics/enabled": true,
-                    "no-param/GET/logging/loglevel": "INFO",
-                    "no-param/GET/logging/dataTrace": true
+                    "pets/GET/logging/loglevel": "INFO",
+                    "pets/GET/logging/dataTrace": true
                 },
                 "stageVariables": {
                     "testVar1": "testValue1",

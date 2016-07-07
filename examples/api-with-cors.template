@@ -32,7 +32,7 @@
             "Type" : "Custom::ApiMethod",
             "Properties" : {
                 "ServiceToken": { "Ref": "ApiGatewayServiceToken" },
-                "restApiId": { "Fn::GetAtt": ["RestApi", "id"] },
+                "restApiId": { "Ref": "RestApi" },
                 "resourceId": { "Fn::GetAtt": ["RestApi", "parentResourceId"] },
                 "method": {
                     "httpMethod": "GET"
@@ -49,6 +49,41 @@
                     },
                     ".*NotFound.*": {
                         "statusCode": "404"
+                    }
+                }
+            }
+        },
+        "TestResource": {
+            "Type": "Custom::ApiResource",
+            "Properties": {
+                "ServiceToken": { "Ref": "ApiGatewayServiceToken" },
+                "restApiId": { "Ref": "RestApi" },
+                "parentId": { "Fn::GetAtt": ["RestApi", "parentResourceId"] },
+                "pathPart": "child",
+                "corsConfiguration": {
+                    "allowDefaultHeaders": true,
+                    "allowOrigin": "https://www.example.com"
+                }
+            }
+        },
+        "TestChildApiMethod" : {
+            "Type" : "Custom::ApiMethod",
+            "Properties" : {
+                "ServiceToken": { "Ref": "ApiGatewayServiceToken" },
+                "restApiId": { "Ref": "RestApi" },
+                "resourceId": { "Ref": "TestResource" },
+                "method": {
+                    "httpMethod": "GET"
+                },
+                "integration": {
+                    "type": "MOCK",
+                    "requestTemplates": {
+                        "application/json": "{\"statusCode\": 200}"
+                    }
+                },
+                "responses": {
+                    "default": {
+                        "statusCode": "200"
                     }
                 }
             }
