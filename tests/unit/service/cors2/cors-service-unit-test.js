@@ -74,7 +74,7 @@ describe('Cors::CorsService', function () {
             allowHeaders: ['x-header'],
             exposeHeaders: ['x-expose'],
             maxAge: 123,
-            allowCredentials: true
+            allowCredentials: 'true'
         };
     });
 
