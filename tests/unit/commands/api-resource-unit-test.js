@@ -47,7 +47,7 @@ describe('Api Resource Command', function () {
 
         mockery.registerMock('../service/api-resource/api-resource-service', apiResourceServiceStub);
         mockery.registerMock('../service/api-resource/api-resource-event', apiResourceEventStub);
-        mockery.registerMock('../service/Cors/cors-service', corsServiceStub);
+        mockery.registerMock('../service/cors/cors-service', corsServiceStub);
 
         testSubject = require('../../../lib/commands/api-resource');
     });

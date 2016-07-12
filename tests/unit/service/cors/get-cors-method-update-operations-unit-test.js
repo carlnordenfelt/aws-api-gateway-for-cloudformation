@@ -27,7 +27,7 @@ describe('Cors::GetCorsMethodUpdateOperations', function () {
             }
         };
         mockery.registerMock('aws-sdk', awsSdkStub);
-        testSubject = require('../../../../lib/service/Cors/get-cors-method-update-operations');
+        testSubject = require('../../../../lib/service/cors/get-cors-method-update-operations');
     });
     beforeEach(function () {
         getMethodStub.reset().resetBehavior();

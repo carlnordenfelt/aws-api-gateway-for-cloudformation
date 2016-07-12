@@ -50,7 +50,7 @@ describe('RestApiCommand', function () {
 
         mockery.registerMock('../service/rest-api/rest-api-service', apiRestApiServiceStub);
         mockery.registerMock('../service/rest-api/rest-api-event', apiRestApiEventStub);
-        mockery.registerMock('../service/Cors/cors-service', corsServiceStub);
+        mockery.registerMock('../service/cors/cors-service', corsServiceStub);
         testSubject = require('../../../lib/commands/rest-api');
     });
     beforeEach(function () {

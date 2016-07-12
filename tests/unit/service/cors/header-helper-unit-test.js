@@ -1,7 +1,7 @@
 'use strict';
 
 var expect = require('chai').expect;
-var testSubject = require('../../../../lib/service/Cors/header-helper');
+var testSubject = require('../../../../lib/service/cors/header-helper');
 
 describe('Cors::HeaderHelper', function () {
 

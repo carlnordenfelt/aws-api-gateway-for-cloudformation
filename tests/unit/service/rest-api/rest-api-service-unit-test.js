@@ -50,7 +50,7 @@ describe('RestApiService', function () {
         };
 
         mockery.registerMock('aws-sdk', awsSdkStub);
-        mockery.registerMock('../Cors/cors-service', corsServiceStub);
+        mockery.registerMock('../cors/cors-service', corsServiceStub);
         mockery.registerMock('../api-resource/api-resource-service', apiResourceServiceStub);
         testSubject = require('../../../../lib/service/rest-api/rest-api-service');
     });

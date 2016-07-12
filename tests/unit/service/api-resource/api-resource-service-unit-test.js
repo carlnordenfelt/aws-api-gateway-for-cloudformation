@@ -45,7 +45,7 @@ describe('ApiResourceService', function () {
         };
 
         mockery.registerMock('aws-sdk', awsSdkStub);
-        mockery.registerMock('../Cors/cors-service', corsServiceStub);
+        mockery.registerMock('../cors/cors-service', corsServiceStub);
         testSubject = require('../../../../lib/service/api-resource/api-resource-service');
     });
     beforeEach(function () {

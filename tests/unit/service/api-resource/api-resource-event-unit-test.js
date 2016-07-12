@@ -2,7 +2,7 @@
 
 var expect = require('chai').expect;
 
-var Constants = require('../../../../lib/service/constants2');
+var Constants = require('../../../../lib/service/constants');
 var testSubject = require('../../../../lib/service/api-resource/api-resource-event');
 
 describe('ApiResourceEvent', function () {

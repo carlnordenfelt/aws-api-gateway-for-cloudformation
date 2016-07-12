@@ -49,7 +49,7 @@ describe('Cors::CorsService', function () {
         mockery.registerMock('aws-sdk', awsSdkStub);
         mockery.registerMock('../api-method/api-method-service', apiMethodServiceStub);
         mockery.registerMock('./get-cors-method-update-operations', getCorsMethodUpdateOperationsStub);
-        testSubject = require('../../../../lib/service/Cors/cors-service');
+        testSubject = require('../../../../lib/service/cors/cors-service');
     });
 
     var corsConfiguration;
