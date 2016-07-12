@@ -48,7 +48,7 @@ describe('ApiResourceService', function () {
         mockery.registerMock('../cors/cors-service', corsServiceStub);
         testSubject = require('../../../../lib/service/api-resource/api-resource-service');
     });
-    beforeEach(function () {
+    beforeEach(function () {
         getResourceStub.reset().resetBehavior();
         getResourceStub.yields(undefined, {});
         getResourcesStub.reset().resetBehavior();
@@ -66,7 +66,7 @@ describe('ApiResourceService', function () {
     describe('getForResponse', function () {
         it('should get an api resource', function (done) {
             testSubject.getForResponse('RestApiId', 'ResourceId', function (error, apiResource) {
-                expect(error).to.be.undefined;
+                expect(error).to.equal(undefined);
                 expect(apiResource).to.be.an('object');
                 done();
             });
@@ -74,8 +74,8 @@ describe('ApiResourceService', function () {
         it('should return an error when getting api resource', function (done) {
             getResourceStub.yields({});
             testSubject.getForResponse('RestApiId', 'ResourceId', function (error, apiResource) {
-                expect(error).to.be.an.Error;
-                expect(apiResource).to.be.undefined;
+                expect(error).to.be.an('object');
+                expect(apiResource).to.equal(undefined);
                 done();
             });
         });
@@ -84,26 +84,26 @@ describe('ApiResourceService', function () {
     describe('createResource', function () {
         it('should create an api resource without cors config', function (done) {
             testSubject.createResource('RestApiId', 'ParentId', 'PathPart', undefined, function (error, apiResource) {
-                expect(error).to.be.undefined;
+                expect(error).to.equal(undefined);
                 expect(apiResource).to.be.equal('ResourceId');
-                expect(putOptionsMethodStub.called).to.be.false;
+                expect(putOptionsMethodStub.called).to.equal(false);
                 done();
             });
         });
         it('should create an api resource with cors', function (done) {
             testSubject.createResource('RestApiId', 'ParentId', 'PathPart', {}, function (error, apiResource) {
-                expect(error).to.be.undefined;
+                expect(error).to.equal(undefined);
                 expect(apiResource).to.be.equal('ResourceId');
-                expect(putOptionsMethodStub.called).to.be.true;
+                expect(putOptionsMethodStub.called).to.equal(true);
                 done();
             });
         });
         it('should return an error when creating api model', function (done) {
             createResourceStub.yields({});
             testSubject.createResource('RestApiId', 'ParentId', 'PathPart', undefined, function (error, apiResource) {
-                expect(error).to.be.an.Error;
-                expect(apiResource).to.be.undefined;
-                expect(putOptionsMethodStub.called).to.be.false;
+                expect(error).to.be.an('object');
+                expect(apiResource).to.equal(undefined);
+                expect(putOptionsMethodStub.called).to.equal(false);
                 done();
             });
         });
@@ -111,9 +111,9 @@ describe('ApiResourceService', function () {
             putOptionsMethodStub.yields('corsError');
             testSubject.createResource('RestApiId', 'ParentId', 'PathPart', {}, function (error, apiResource) {
                 expect(error).to.be.equal('corsError');
-                expect(apiResource).to.be.undefined;
-                expect(putOptionsMethodStub.called).to.be.true;
-                expect(deleteResourceStub.called).to.be.true;
+                expect(apiResource).to.equal(undefined);
+                expect(putOptionsMethodStub.called).to.equal(true);
+                expect(deleteResourceStub.called).to.equal(true);
                 done();
             });
         });
@@ -122,9 +122,9 @@ describe('ApiResourceService', function () {
             deleteResourceStub.yields('deleteError');
             testSubject.createResource('RestApiId', 'ParentId', 'PathPart', {}, function (error, apiResource) {
                 expect(error).to.be.equal('deleteError');
-                expect(apiResource).to.be.undefined;
-                expect(putOptionsMethodStub.called).to.be.true;
-                expect(deleteResourceStub.called).to.be.true;
+                expect(apiResource).to.equal(undefined);
+                expect(putOptionsMethodStub.called).to.equal(true);
+                expect(deleteResourceStub.called).to.equal(true);
                 done();
             });
         });
@@ -133,7 +133,7 @@ describe('ApiResourceService', function () {
     describe('deleteResource', function () {
         it('should delete an api resource', function (done) {
             testSubject.deleteResource('ResourceId', 'RestApiId', function (error) {
-                expect(error).to.be.undefined;
+                expect(error).to.equal(undefined);
                 done();
             });
         });
@@ -170,7 +170,7 @@ describe('ApiResourceService', function () {
         });
         it('should patch an api resource', function (done) {
             testSubject.patchResource('ResourceId', 'RestApiId', event, function (error) {
-                expect(error).to.be.undefined;
+                expect(error).to.equal(undefined);
                 done();
             });
         });
@@ -178,8 +178,8 @@ describe('ApiResourceService', function () {
             delete event.params.parentId;
             delete event.params.pathPart;
             testSubject.patchResource('ResourceId', 'RestApiId', event, function (error) {
-                expect(error).to.be.undefined;
-                expect(updateResourceStub.called).to.be.false;
+                expect(error).to.equal(undefined);
+                expect(updateResourceStub.called).to.equal(false);
                 done();
             });
         });
@@ -204,7 +204,7 @@ describe('ApiResourceService', function () {
                 { pathPart: '/test2', parentId: 'ParentId2' }
             ] });
             testSubject.getResource(params, undefined, function (error, apiResource) {
-                expect(error).to.be.undefined;
+                expect(error).to.equal(undefined);
                 expect(apiResource).to.be.an('object');
                 done();
             });
@@ -215,7 +215,7 @@ describe('ApiResourceService', function () {
         it('should find an api resource', function (done) {
             getResourcesStub.yields(undefined, { items: [{ pathPart: '/', parentId: undefined }] });
             testSubject.getApiParentResource('RestApiId', function (error, apiResource) {
-                expect(error).to.be.undefined;
+                expect(error).to.equal(undefined);
                 expect(apiResource).to.be.an('object');
                 done();
             });
@@ -224,23 +224,23 @@ describe('ApiResourceService', function () {
             getResourcesStub.yields('getError');
             testSubject.getApiParentResource('RestApiId', function (error, apiResource) {
                 expect(error).to.equal('getError');
-                expect(apiResource).to.be.undefined
+                expect(apiResource).to.equal(undefined);
                 done();
             });
         });
         it('should not return error if api not found', function (done) {
             getResourcesStub.yields({ code : 'NotFoundException' });
             testSubject.getApiParentResource('RestApiId', function (error, apiResource) {
-                expect(error).to.be.undefined;
-                expect(apiResource).to.be.undefined;
+                expect(error).to.equal(undefined);
+                expect(apiResource).to.equal(undefined);
                 done();
             });
         });
         it('should not return anything if not found', function (done) {
             getResourcesStub.yields(undefined, { items: [{ pathPart: '/test', parentId: 'ParentId' }] });
             testSubject.getApiParentResource('RestApiId', function (error, apiResource) {
-                expect(error).to.be.undefined;
-                expect(apiResource).to.be.undefined;
+                expect(error).to.equal(undefined);
+                expect(apiResource).to.equal(undefined);
                 done();
             });
         });
@@ -248,7 +248,7 @@ describe('ApiResourceService', function () {
             getResourcesStub.onFirstCall().yields(undefined, { items: [{}], position: 1 });
             getResourcesStub.onSecondCall().yields(undefined, { items: [{ pathPart: '/', parentId: undefined }] });
             testSubject.getApiParentResource('RestApiId', function (error, apiResource) {
-                expect(error).to.be.undefined;
+                expect(error).to.equal(undefined);
                 expect(apiResource).to.be.an('object');
                 done();
             });

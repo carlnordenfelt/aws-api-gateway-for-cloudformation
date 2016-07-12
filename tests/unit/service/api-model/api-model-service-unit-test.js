@@ -39,7 +39,7 @@ describe('ApiModelService', function () {
         mockery.registerMock('aws-sdk', awsSdkStub);
         testSubject = require('../../../../lib/service/api-model/api-model-service');
     });
-    beforeEach(function () {
+    beforeEach(function () {
         getModelStub.reset().resetBehavior();
         getModelStub.yields(undefined, {});
         createModelStub.reset().resetBehavior();
@@ -53,7 +53,7 @@ describe('ApiModelService', function () {
     describe('getForResponse', function () {
         it('should get an api model', function (done) {
             testSubject.getForResponse('ModelName', 'RestApiId', function (error, apiModel) {
-                expect(error).to.be.undefined;
+                expect(error).to.equal(undefined);
                 expect(apiModel).to.be.an('object');
                 done();
             });
@@ -61,8 +61,8 @@ describe('ApiModelService', function () {
         it('should return an error when getting api model', function (done) {
             getModelStub.yields({});
             testSubject.getForResponse('ModelName', 'RestApiId', function (error, apiModel) {
-                expect(error).to.be.an.Error;
-                expect(apiModel).to.be.undefined;
+                expect(error).to.be.an('object');
+                expect(apiModel).to.equal(undefined);
                 done();
             });
         });
@@ -81,7 +81,7 @@ describe('ApiModelService', function () {
         });
         it('should create an api model without description', function (done) {
             testSubject.createModel(params, function (error, apiModel) {
-                expect(error).to.be.undefined;
+                expect(error).to.equal(undefined);
                 expect(apiModel).to.be.an('object');
                 done();
             });
@@ -89,7 +89,7 @@ describe('ApiModelService', function () {
         it('should create a model with default schema', function (done) {
             delete params.schema;
             testSubject.createModel(params, function (error, apiModel) {
-                expect(error).to.be.undefined;
+                expect(error).to.equal(undefined);
                 expect(apiModel).to.be.an('object');
                 done();
             });
@@ -97,8 +97,8 @@ describe('ApiModelService', function () {
         it('should return an error when creating api model', function (done) {
             createModelStub.yields({});
             testSubject.createModel(params, function (error, apiModel) {
-                expect(error).to.be.an.Error;
-                expect(apiModel).to.be.undefined;
+                expect(error).to.be.an('object');
+                expect(apiModel).to.equal(undefined);
                 done();
             });
         });
@@ -107,7 +107,7 @@ describe('ApiModelService', function () {
     describe('deleteModel', function () {
         it('should delete an api model', function (done) {
             testSubject.deleteModel('ModelName', 'RestApiId', function (error) {
-                expect(error).to.be.undefined;
+                expect(error).to.equal(undefined);
                 done();
             });
         });
@@ -127,7 +127,7 @@ describe('ApiModelService', function () {
                 old: { description: 'ModelDesc2', schema: { test: "Schema2" } }
             };
             testSubject.patchModel('ModelName', 'RestApiId', event, function (error) {
-                expect(error).to.be.undefined;
+                expect(error).to.equal(undefined);
                 done();
             });
         });
@@ -137,8 +137,8 @@ describe('ApiModelService', function () {
                 old: { name: 'ModelName2', description: 'ModelDesc2' }
             };
             testSubject.patchModel('ModelName', 'RestApiId', event, function (error) {
-                expect(error).to.be.undefined;
-                expect(updateModelStub.called).to.be.false;
+                expect(error).to.equal(undefined);
+                expect(updateModelStub.called).to.equal(false);
                 done();
             });
         });

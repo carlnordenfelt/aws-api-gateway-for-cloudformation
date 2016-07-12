@@ -87,7 +87,7 @@ describe('ApiDeployEvent', function () {
             delete event.OldResourceProperties;
             var parameters = testSubject.getParameters(event);
             expect(parameters.params).to.be.an('object');
-            expect(parameters.old).to.be.null;
+            expect(parameters.old).to.equal(null);
             done();
         });
         it('should yield an error due to missing restApiId', function (done) {
@@ -105,7 +105,7 @@ describe('ApiDeployEvent', function () {
             done();
         });
         it('should not validate parameters id RequestType is Delete', function (done) {
-            event.RequestType =  'Delete';
+            event.RequestType = 'Delete';
             delete event.ResourceProperties.restApiId;
             var parameters = testSubject.getParameters(event);
             expect(parameters.params.stageName).to.equal('StageName');
@@ -124,7 +124,7 @@ describe('ApiDeployEvent', function () {
             var parameters = testSubject.getParameters(event);
             var patchOperations = testSubject.getPatchOperations(parameters);
 
-            expect(patchOperations).to.be.an.Array;
+            expect(patchOperations).to.be.an('Array');
             expect(patchOperations.length).to.equal(9);
             expect(_.find(patchOperations, { path: '/cacheClusterSize' }).op).to.equal('replace');
             expect(_.find(patchOperations, { path: '/cacheClusterSize' }).value).to.equal('0.5');
@@ -138,7 +138,7 @@ describe('ApiDeployEvent', function () {
             expect(_.find(patchOperations, { path: '/~1no-params/GET/logging/loglevel' }).value).to.equal('INFO');
             expect(_.find(patchOperations, { path: '/~1no-params/GET/metrics/enabled' }).value).to.equal(true);
             expect(_.find(patchOperations, { path: '/~1no-params/GET/metrics/enabled' }).op).to.equal('replace');
-            expect(_.find(patchOperations, { path: '/~1no-params/GET/logging/dataTrace' })).to.be.undefined;
+            expect(_.find(patchOperations, { path: '/~1no-params/GET/logging/dataTrace' })).to.equal(undefined);
             done();
         });
         it('should give patch operations for defaults only', function (done) {
@@ -150,7 +150,7 @@ describe('ApiDeployEvent', function () {
             event.OldResourceProperties.cacheClusterEnabled = 'true';
             var parameters = testSubject.getParameters(event);
             var patchOperations = testSubject.getPatchOperations(parameters);
-            expect(patchOperations).to.be.an.Array;
+            expect(patchOperations).to.be.an('Array');
             expect(_.find(patchOperations, { path: '/cacheClusterSize' })).to.be.an('object');
             expect(_.find(patchOperations, { path: '/cacheClusterEnabled' })).to.be.an('object');
             expect(_.find(patchOperations, { path: '/description' })).to.be.an('object');

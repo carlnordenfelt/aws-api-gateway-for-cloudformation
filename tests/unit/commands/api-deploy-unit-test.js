@@ -39,7 +39,7 @@ describe('Api Deploy Command', function () {
 
         testSubject = require('../../../lib/commands/api-deploy');
     });
-    beforeEach(function () {
+    beforeEach(function () {
         deployApiStub.reset().resetBehavior();
         deployApiStub.yields(undefined);
         getForResponseStub.reset().resetBehavior();
@@ -57,7 +57,7 @@ describe('Api Deploy Command', function () {
         it('should get error', function (done) {
             getParametersStub.returns(new Error());
             var parameters = testSubject.getParameters();
-            expect(parameters.params).to.be.an.Error;
+            expect(parameters).to.be.an('Error');
             done();
         });
     });
@@ -65,9 +65,9 @@ describe('Api Deploy Command', function () {
     describe('createResource', function () {
         it('should create resource', function (done) {
             testSubject.createResource({}, {}, { params: {} }, function (error) {
-                expect(error).to.be.null;
-                expect(deployApiStub.called).to.be.true;
-                expect(getForResponseStub.called).to.be.true;
+                expect(error).to.equal(null);
+                expect(deployApiStub.called).to.equal(true);
+                expect(getForResponseStub.called).to.equal(true);
                 done();
             });
         });
@@ -75,8 +75,8 @@ describe('Api Deploy Command', function () {
             deployApiStub.yields('createError');
             testSubject.createResource({}, {}, { params: {} }, function (error) {
                 expect(error).to.equal('createError');
-                expect(deployApiStub.called).to.be.true;
-                expect(getForResponseStub.called).to.be.false;
+                expect(deployApiStub.called).to.equal(true);
+                expect(getForResponseStub.called).to.equal(false);
                 done();
             });
         });
@@ -84,8 +84,8 @@ describe('Api Deploy Command', function () {
             getForResponseStub.yields('getForResponseError');
             testSubject.createResource({}, {}, { params: {} }, function (error) {
                 expect(error).to.equal('getForResponseError');
-                expect(deployApiStub.called).to.be.true;
-                expect(getForResponseStub.called).to.be.true;
+                expect(deployApiStub.called).to.equal(true);
+                expect(getForResponseStub.called).to.equal(true);
                 done();
             });
         });
@@ -94,7 +94,7 @@ describe('Api Deploy Command', function () {
     describe('deleteResource', function () {
         it('should delete resource', function (done) {
             testSubject.deleteResource({}, {}, { params: {} }, function (error) {
-                expect(error).to.be.undefined;
+                expect(error).to.equal(undefined);
                 done();
             });
         });
@@ -103,10 +103,10 @@ describe('Api Deploy Command', function () {
     describe('updateResource', function () {
         it('should update resource', function (done) {
             testSubject.updateResource({}, {}, { params: {}}, function (error, resource) {
-                expect(error).to.be.null;
+                expect(error).to.equal(null);
                 expect(resource).to.be.an('object');
-                expect(deployApiStub.called).to.be.true;
-                expect(getForResponseStub.called).to.be.true;
+                expect(deployApiStub.called).to.equal(true);
+                expect(getForResponseStub.called).to.equal(true);
                 done();
             });
         });

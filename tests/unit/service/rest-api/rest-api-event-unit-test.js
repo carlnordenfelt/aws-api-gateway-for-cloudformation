@@ -51,7 +51,7 @@ describe('RestAPiEvent', function () {
         it('should give all CORS methods without allowMethods', function (done) {
             delete event.ResourceProperties.corsConfiguration.allowMethods;
             var parameters = testSubject.getParameters(event);
-            expect(parameters.params.corsConfiguration.allowMethods).be.an.Array;
+            expect(parameters.params.corsConfiguration.allowMethods).to.be.an('Array');
             expect(parameters.params.corsConfiguration.allowMethods.length).to.equals(Constants.CORS_ALL_METHODS.length);
             done();
         });
@@ -59,7 +59,7 @@ describe('RestAPiEvent', function () {
             delete event.ResourceProperties.corsConfiguration;
             delete event.OldResourceProperties; // Coverage
             var parameters = testSubject.getParameters(event);
-            expect(parameters.params.corsConfiguration).to.be.undefined;
+            expect(parameters.params.corsConfiguration).to.equal(undefined);
             done();
         });it('should get parameters with complete cors config', function (done) {
             event.ResourceProperties.corsConfiguration = {
@@ -72,12 +72,12 @@ describe('RestAPiEvent', function () {
                 maxAge: '123'
             };
             var parameters = testSubject.getParameters(event);
-            expect(parameters.params.corsConfiguration.allowMethods).be.an('array');
+            expect(parameters.params.corsConfiguration.allowMethods).to.be.an('array');
             expect(parameters.params.corsConfiguration.allowOrigin).to.equal('Origin');
-            expect(parameters.params.corsConfiguration.allowHeaders).be.an('array');
+            expect(parameters.params.corsConfiguration.allowHeaders).to.be.an('array');
             expect(parameters.params.corsConfiguration.allowHeaders.length).to.equal(5);
-            expect(parameters.params.corsConfiguration.exposeHeaders).be.an('array');
-            expect(parameters.params.corsConfiguration.allowCredentials).be.equal('true');
+            expect(parameters.params.corsConfiguration.exposeHeaders).to.be.an('array');
+            expect(parameters.params.corsConfiguration.allowCredentials).to.equal('true');
             expect(parameters.params.corsConfiguration.maxAge).to.equal('123');
             done();
         });
@@ -96,7 +96,7 @@ describe('RestAPiEvent', function () {
                 }
             };
             var patchOperations = testSubject.getPatchOperations(event);
-            expect(patchOperations).to.be.an.Array;
+            expect(patchOperations).to.be.an('Array');
             expect(patchOperations.length).to.equal(2);
             expect(patchOperations[0].path).to.equal('/name');
             expect(patchOperations[0].op).to.equal('replace');

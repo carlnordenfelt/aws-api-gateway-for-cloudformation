@@ -1,0 +1,14 @@
+{
+    "globals": {
+        "it": true,
+        "describe": true,
+        "after": true,
+        "afterEach": true,
+        "before": true,
+        "beforeEach": true
+    },
+    "rules": {
+        "import/no-extraneous-dependencies": [2, { "devDependencies": true, "optionalDependencies": false }],
+        "no-magic-numbers": 0
+    }
+}

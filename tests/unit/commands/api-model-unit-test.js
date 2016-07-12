@@ -45,7 +45,7 @@ describe('Api Model Command', function () {
 
         testSubject = require('../../../lib/commands/api-model');
     });
-    beforeEach(function () {
+    beforeEach(function () {
         createModelStub.reset().resetBehavior();
         createModelStub.yields(undefined);
         deleteModelStub.reset().resetBehavior();
@@ -67,7 +67,7 @@ describe('Api Model Command', function () {
         it('should get error', function (done) {
             getParametersStub.returns(new Error());
             var parameters = testSubject.getParameters();
-            expect(parameters.params).to.be.an.Error;
+            expect(parameters).to.be.an('Error');
             done();
         });
     });
@@ -75,9 +75,9 @@ describe('Api Model Command', function () {
     describe('createResource', function () {
         it('should create resource', function (done) {
             testSubject.createResource({}, {}, { params: {} }, function (error) {
-                expect(error).to.be.null;
-                expect(createModelStub.called).to.be.true;
-                expect(getForResponseStub.called).to.be.true;
+                expect(error).to.equal(null);
+                expect(createModelStub.called).to.equal(true);
+                expect(getForResponseStub.called).to.equal(true);
                 done();
             });
         });
@@ -85,8 +85,8 @@ describe('Api Model Command', function () {
             createModelStub.yields('createError');
             testSubject.createResource({}, {}, { params: {} }, function (error) {
                 expect(error).to.equal('createError');
-                expect(createModelStub.called).to.be.true;
-                expect(getForResponseStub.called).to.be.false;
+                expect(createModelStub.called).to.equal(true);
+                expect(getForResponseStub.called).to.equal(false);
                 done();
             });
         });
@@ -94,8 +94,8 @@ describe('Api Model Command', function () {
             getForResponseStub.yields('getForResponseError');
             testSubject.createResource({}, {}, { params: {} }, function (error) {
                 expect(error).to.equal('getForResponseError');
-                expect(createModelStub.called).to.be.true;
-                expect(getForResponseStub.called).to.be.true;
+                expect(createModelStub.called).to.equal(true);
+                expect(getForResponseStub.called).to.equal(true);
                 done();
             });
         });
@@ -104,8 +104,8 @@ describe('Api Model Command', function () {
     describe('deleteResource', function () {
         it('should delete resource', function (done) {
             testSubject.deleteResource({}, {}, { params: {} }, function (error) {
-                expect(error).to.be.undefined;
-                expect(deleteModelStub.called).to.be.true;
+                expect(error).to.equal(undefined);
+                expect(deleteModelStub.called).to.equal(true);
                 done();
             });
         });
@@ -113,7 +113,7 @@ describe('Api Model Command', function () {
             deleteModelStub.yields('deleteError');
             testSubject.deleteResource({}, {}, { params: {} }, function (error) {
                 expect(error).to.equal('deleteError');
-                expect(deleteModelStub.called).to.be.true;
+                expect(deleteModelStub.called).to.equal(true);
                 done();
             });
         });
@@ -122,10 +122,10 @@ describe('Api Model Command', function () {
     describe('updateResource', function () {
         it('should update resource', function (done) {
             testSubject.updateResource({}, {}, { params: {}}, function (error, resource) {
-                expect(error).to.be.null;
+                expect(error).to.equal(null);
                 expect(resource).to.be.an('object');
-                expect(patchModelStub.called).to.be.true;
-                expect(getForResponseStub.called).to.be.true;
+                expect(patchModelStub.called).to.equal(true);
+                expect(getForResponseStub.called).to.equal(true);
                 done();
             });
         });
@@ -133,9 +133,9 @@ describe('Api Model Command', function () {
             patchModelStub.yields('updateError');
             testSubject.updateResource({}, {}, { params: {} }, function (error, resource) {
                 expect(error).to.equal('updateError');
-                expect(resource).to.be.undefined;
-                expect(patchModelStub.called).to.be.true;
-                expect(getForResponseStub.called).to.be.false;
+                expect(resource).to.equal(undefined);
+                expect(patchModelStub.called).to.equal(true);
+                expect(getForResponseStub.called).to.equal(false);
                 done();
             });
         });
@@ -143,9 +143,9 @@ describe('Api Model Command', function () {
             getForResponseStub.yields('getForResponseError');
             testSubject.updateResource({}, {}, { params: {} }, function (error, resource) {
                 expect(error).to.equal('getForResponseError');
-                expect(resource).to.be.undefined;
-                expect(patchModelStub.called).to.be.true;
-                expect(getForResponseStub.called).to.be.true;
+                expect(resource).to.equal(undefined);
+                expect(patchModelStub.called).to.equal(true);
+                expect(getForResponseStub.called).to.equal(true);
                 done();
             });
         });
@@ -153,9 +153,9 @@ describe('Api Model Command', function () {
             patchModelStub.yields('API Model not found');
             testSubject.updateResource({}, {}, { params: {} }, function (error, resource) {
                 expect(error).to.equal('API Model not found');
-                expect(resource).to.be.undefined;
-                expect(patchModelStub.called).to.be.true;
-                expect(getForResponseStub.called).to.be.false;
+                expect(resource).to.equal(undefined);
+                expect(patchModelStub.called).to.equal(true);
+                expect(getForResponseStub.called).to.equal(false);
                 done();
             });
         });

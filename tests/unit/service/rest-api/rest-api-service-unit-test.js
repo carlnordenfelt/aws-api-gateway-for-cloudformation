@@ -54,7 +54,7 @@ describe('RestApiService', function () {
         mockery.registerMock('../api-resource/api-resource-service', apiResourceServiceStub);
         testSubject = require('../../../../lib/service/rest-api/rest-api-service');
     });
-    beforeEach(function () {
+    beforeEach(function () {
         getRestApiStub.reset().resetBehavior();
         getRestApiStub.yields(undefined, {});
         createRestApiStub.reset().resetBehavior();
@@ -155,7 +155,7 @@ describe('RestApiService', function () {
     describe('createApi', function () {
         var event;
         beforeEach(function () {
-             event = { 
+             event = {
                  name: 'ApiName',
                  description: 'ApiDesc',
                  corsConfiguration: {}

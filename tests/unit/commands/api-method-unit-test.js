@@ -42,7 +42,7 @@ describe('Api Method Command', function () {
 
         testSubject = require('../../../lib/commands/api-method');
     });
-    beforeEach(function () {
+    beforeEach(function () {
         createMethodStub.reset().resetBehavior();
         createMethodStub.yields(undefined);
         deleteMethodStub.reset().resetBehavior();
@@ -62,7 +62,7 @@ describe('Api Method Command', function () {
         it('should get error', function (done) {
             getParametersStub.returns(new Error());
             var parameters = testSubject.getParameters();
-            expect(parameters.params).to.be.an.Error;
+            expect(parameters).to.be.an('Error');
             done();
         });
     });
@@ -70,7 +70,7 @@ describe('Api Method Command', function () {
     describe('createMethod', function () {
         it('should create resource', function (done) {
             testSubject.createResource({}, {}, { params: { method: {}} }, function (error) {
-                expect(error).to.be.undefined;
+                expect(error).to.equal(undefined);
                 done();
             });
         });
@@ -78,8 +78,8 @@ describe('Api Method Command', function () {
             createMethodStub.yields('createError');
             testSubject.createResource({}, {}, { params: { method: {}} }, function (error) {
                 expect(error).to.equal('createError');
-                expect(createMethodStub.called).to.be.true;
-                expect(getForResponseStub.called).to.be.false;
+                expect(createMethodStub.called).to.equal(true);
+                expect(getForResponseStub.called).to.equal(false);
                 done();
             });
         });
@@ -88,8 +88,8 @@ describe('Api Method Command', function () {
             testSubject.createResource({}, {}, { params: { resourceId: 'test', method: { httpMethod: 'GET' }} }, function (error) {
                 expect(error.message).to.equal('createError');
                 expect(error.physicalResourceId).to.equal('test/GET');
-                expect(createMethodStub.called).to.be.true;
-                expect(getForResponseStub.called).to.be.false;
+                expect(createMethodStub.called).to.equal(true);
+                expect(getForResponseStub.called).to.equal(false);
                 done();
             });
         });
@@ -98,8 +98,8 @@ describe('Api Method Command', function () {
             testSubject.createResource({}, {}, { params: { resourceId: 'test', method: { httpMethod: 'GET' }} }, function (error) {
                 expect(error.code).to.equal('createError');
                 expect(error.physicalResourceId).to.equal('test/GET');
-                expect(createMethodStub.called).to.be.true;
-                expect(getForResponseStub.called).to.be.false;
+                expect(createMethodStub.called).to.equal(true);
+                expect(getForResponseStub.called).to.equal(false);
                 done();
             });
         });
@@ -107,8 +107,8 @@ describe('Api Method Command', function () {
             getForResponseStub.yields('getForResponseError');
             testSubject.createResource({}, {}, { params: { method: {}} }, function (error) {
                 expect(error).to.equal('getForResponseError');
-                expect(createMethodStub.called).to.be.true;
-                expect(getForResponseStub.called).to.be.true;
+                expect(createMethodStub.called).to.equal(true);
+                expect(getForResponseStub.called).to.equal(true);
                 done();
             });
         });
@@ -117,15 +117,15 @@ describe('Api Method Command', function () {
     describe('deleteResource', function () {
         it('should delete resource', function (done) {
             testSubject.deleteResource({ PhysicalResourceId: 'test/GET' }, {}, { params: {method: {}} }, function (error) {
-                expect(error).to.be.undefined;
-                expect(deleteMethodStub.called).to.be.true;
+                expect(error).to.equal(undefined);
+                expect(deleteMethodStub.called).to.equal(true);
                 done();
             });
         });
         it('should do nothingif physical resource id is not set properly', function (done) {
             testSubject.deleteResource({ PhysicalResourceId: 'dummy' }, {}, { params: {method: {}} }, function (error) {
-                expect(error).to.be.undefined;
-                expect(deleteMethodStub.called).to.be.false;
+                expect(error).to.equal(undefined);
+                expect(deleteMethodStub.called).to.equal(false);
                 done();
             });
         });
@@ -133,7 +133,7 @@ describe('Api Method Command', function () {
             deleteMethodStub.yields('deleteError');
             testSubject.deleteResource({ PhysicalResourceId: 'test/GET' }, {}, { params: {method: {}} }, function (error) {
                 expect(error).to.equal('deleteError');
-                expect(deleteMethodStub.called).to.be.true;
+                expect(deleteMethodStub.called).to.equal(true);
                 done();
             });
         });
@@ -142,21 +142,21 @@ describe('Api Method Command', function () {
     describe('updateResource', function () {
         it('should update resource', function (done) {
             testSubject.updateResource({ PhysicalResourceId: 'test/GET' }, {}, { params: {method: {}} }, function (error, resource) {
-                expect(error).to.be.undefined;
+                expect(error).to.equal(undefined);
                 expect(resource).to.be.an('object');
-                expect(deleteMethodStub.called).to.be.true;
-                expect(createMethodStub.called).to.be.true;
-                expect(getForResponseStub.called).to.be.true;
+                expect(deleteMethodStub.called).to.equal(true);
+                expect(createMethodStub.called).to.equal(true);
+                expect(getForResponseStub.called).to.equal(true);
                 done();
             });
         });
         it('should do nothing if PhysicalResourceId is not properly set', function (done) {
             testSubject.updateResource({ PhysicalResourceId: 'dummy' }, {}, { params: {method: {}} }, function (error, resource) {
                 expect(error).to.equal('Resource not found');
-                expect(resource).to.be.undefined;
-                expect(deleteMethodStub.called).to.be.false;
-                expect(createMethodStub.called).to.be.false;
-                expect(getForResponseStub.called).to.be.false;
+                expect(resource).to.equal(undefined);
+                expect(deleteMethodStub.called).to.equal(false);
+                expect(createMethodStub.called).to.equal(false);
+                expect(getForResponseStub.called).to.equal(false);
                 done();
             });
         });
@@ -164,10 +164,10 @@ describe('Api Method Command', function () {
             deleteMethodStub.yields('deleteError');
             testSubject.updateResource({ PhysicalResourceId: 'test/GET' }, {}, { params: {method: {}} }, function (error, resource) {
                 expect(error).to.equal('deleteError');
-                expect(resource).to.be.undefined;
-                expect(deleteMethodStub.called).to.be.true;
-                expect(createMethodStub.called).to.be.false;
-                expect(getForResponseStub.called).to.be.false;
+                expect(resource).to.equal(undefined);
+                expect(deleteMethodStub.called).to.equal(true);
+                expect(createMethodStub.called).to.equal(false);
+                expect(getForResponseStub.called).to.equal(false);
                 done();
             });
         });
@@ -175,10 +175,10 @@ describe('Api Method Command', function () {
             createMethodStub.yields('createError');
             testSubject.updateResource({ PhysicalResourceId: 'test/GET' }, {}, { params: {method: {}} }, function (error, resource) {
                 expect(error).to.equal('createError');
-                expect(resource).to.be.undefined;
-                expect(deleteMethodStub.called).to.be.true;
-                expect(createMethodStub.called).to.be.true;
-                expect(getForResponseStub.called).to.be.false;
+                expect(resource).to.equal(undefined);
+                expect(deleteMethodStub.called).to.equal(true);
+                expect(createMethodStub.called).to.equal(true);
+                expect(getForResponseStub.called).to.equal(false);
                 done();
             });
         });
@@ -186,10 +186,10 @@ describe('Api Method Command', function () {
             getForResponseStub.yields('getForResponseError');
             testSubject.updateResource({ PhysicalResourceId: 'test/GET' }, {}, { params: {method: {}} }, function (error, resource) {
                 expect(error).to.equal('getForResponseError');
-                expect(resource).to.be.undefined;
-                expect(deleteMethodStub.called).to.be.true;
-                expect(createMethodStub.called).to.be.true;
-                expect(getForResponseStub.called).to.be.true;
+                expect(resource).to.equal(undefined);
+                expect(deleteMethodStub.called).to.equal(true);
+                expect(createMethodStub.called).to.equal(true);
+                expect(getForResponseStub.called).to.equal(true);
                 done();
             });
         });

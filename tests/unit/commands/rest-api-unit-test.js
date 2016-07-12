@@ -53,7 +53,7 @@ describe('RestApiCommand', function () {
         mockery.registerMock('../service/cors/cors-service', corsServiceStub);
         testSubject = require('../../../lib/commands/rest-api');
     });
-    beforeEach(function () {
+    beforeEach(function () {
         createRestApiStub.reset().resetBehavior();
         createRestApiStub.yields(undefined, {});
         deleteRestApiStub.reset().resetBehavior();
@@ -79,7 +79,7 @@ describe('RestApiCommand', function () {
         it('should get error', function (done) {
             getParametersStub.returns(new Error());
             var parameters = testSubject.getParameters();
-            expect(parameters.params).to.be.an.Error;
+            expect(parameters).to.be.an('Error');
             done();
         });
     });
@@ -87,9 +87,9 @@ describe('RestApiCommand', function () {
     describe('createResource', function () {
         it('should create resource', function (done) {
             testSubject.createResource({}, {}, { params: {} }, function (error) {
-                expect(error).to.be.undefined;
-                expect(createRestApiStub.called).to.be.true;
-                expect(getForResponseStub.called).to.be.true;
+                expect(error).to.equal(undefined);
+                expect(createRestApiStub.called).to.equal(true);
+                expect(getForResponseStub.called).to.equal(true);
                 done();
             });
         });
@@ -97,8 +97,8 @@ describe('RestApiCommand', function () {
             createRestApiStub.yields('createError');
             testSubject.createResource({}, {}, { params: {} }, function (error) {
                 expect(error).to.equal('createError');
-                expect(createRestApiStub.called).to.be.true;
-                expect(getForResponseStub.called).to.be.false;
+                expect(createRestApiStub.called).to.equal(true);
+                expect(getForResponseStub.called).to.equal(false);
                 done();
             });
         });
@@ -106,8 +106,8 @@ describe('RestApiCommand', function () {
             getForResponseStub.yields('getForResponseError');
             testSubject.createResource({}, {}, { params: {} }, function (error) {
                 expect(error).to.equal('getForResponseError');
-                expect(createRestApiStub.called).to.be.true;
-                expect(getForResponseStub.called).to.be.true;
+                expect(createRestApiStub.called).to.equal(true);
+                expect(getForResponseStub.called).to.equal(true);
                 done();
             });
         });
@@ -142,11 +142,11 @@ describe('RestApiCommand', function () {
     describe('updateResource', function () {
         it('should update rest api', function (done) {
             testSubject.updateResource({}, {}, { params: {}}, function (error, resource) {
-                expect(error).to.be.undefined;
+                expect(error).to.equal(undefined);
                 expect(resource).to.be.an('object');
-                expect(patchRestApiStub.called).to.be.true;
-                expect(updateCorsConfigurationStub.called).to.be.true;
-                expect(getForResponseStub.called).to.be.true;
+                expect(patchRestApiStub.called).to.equal(true);
+                expect(updateCorsConfigurationStub.called).to.equal(true);
+                expect(getForResponseStub.called).to.equal(true);
                 done();
             });
         });
@@ -154,10 +154,10 @@ describe('RestApiCommand', function () {
             patchRestApiStub.yields('updateError');
             testSubject.updateResource({}, {}, { params: {} }, function (error, resource) {
                 expect(error).to.equal('updateError');
-                expect(resource).to.be.undefined;
-                expect(patchRestApiStub.called).to.be.true;
-                expect(updateCorsConfigurationStub.called).to.be.false;
-                expect(getForResponseStub.called).to.be.false;
+                expect(resource).to.equal(undefined);
+                expect(patchRestApiStub.called).to.equal(true);
+                expect(updateCorsConfigurationStub.called).to.equal(false);
+                expect(getForResponseStub.called).to.equal(false);
                 done();
             });
         });
@@ -165,10 +165,10 @@ describe('RestApiCommand', function () {
             getForResponseStub.yields('getForResponseError');
             testSubject.updateResource({}, {}, { params: {} }, function (error, resource) {
                 expect(error).to.equal('getForResponseError');
-                expect(resource).to.be.undefined;
-                expect(patchRestApiStub.called).to.be.true;
-                expect(getForResponseStub.called).to.be.true;
-                expect(updateCorsConfigurationStub.called).to.be.false;
+                expect(resource).to.equal(undefined);
+                expect(patchRestApiStub.called).to.equal(true);
+                expect(getForResponseStub.called).to.equal(true);
+                expect(updateCorsConfigurationStub.called).to.equal(false);
                 done();
             });
         });
@@ -176,10 +176,10 @@ describe('RestApiCommand', function () {
             getForResponseStub.yields('Rest API not found');
             testSubject.updateResource({}, {}, { params: {} }, function (error, resource) {
                 expect(error).to.equal('Rest API not found');
-                expect(resource).to.be.undefined;
-                expect(patchRestApiStub.called).to.be.true;
-                expect(getForResponseStub.called).to.be.true;
-                expect(updateCorsConfigurationStub.called).to.be.false;
+                expect(resource).to.equal(undefined);
+                expect(patchRestApiStub.called).to.equal(true);
+                expect(getForResponseStub.called).to.equal(true);
+                expect(updateCorsConfigurationStub.called).to.equal(false);
                 done();
             });
         });
@@ -187,9 +187,9 @@ describe('RestApiCommand', function () {
             updateCorsConfigurationStub.yields('corsError');
             testSubject.updateResource({}, {}, { params: {} }, function (error) {
                 expect(error).to.equal('corsError');
-                expect(patchRestApiStub.called).to.be.true;
-                expect(getForResponseStub.called).to.be.true;
-                expect(updateCorsConfigurationStub.called).to.be.true;
+                expect(patchRestApiStub.called).to.equal(true);
+                expect(getForResponseStub.called).to.equal(true);
+                expect(updateCorsConfigurationStub.called).to.equal(true);
                 done();
             });
         });

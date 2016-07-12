@@ -70,7 +70,9 @@ describe('certificateParser', function () {
         describe('Parse INVALID part', function () {
             it('should throw an error', function (done) {
                 var certificate = '-----BEGIN RSA PRIVATE KEY-----\nline1\nline2\n-----END RSA PRIVATE KEY-----';
-                function test() { testSubject.parseCertificate(certificate, 'INVALID') }
+                function test() {
+                    testSubject.parseCertificate(certificate, 'INVALID');
+                }
                 expect(test).to.throw(Error);
                 done();
             });

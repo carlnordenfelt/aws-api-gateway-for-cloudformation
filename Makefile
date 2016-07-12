@@ -29,7 +29,7 @@ test: lint coverage
 
 .PHONY: lint
 lint:
-	$(ESLINT) lib
+	$(ESLINT) lib tests
 
 
 .PHONY: unit

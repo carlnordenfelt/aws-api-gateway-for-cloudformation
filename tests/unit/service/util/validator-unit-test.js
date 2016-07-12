@@ -1,7 +1,6 @@
 'use strict';
 
 var expect = require('chai').expect;
-var _ = require('lodash');
 
 describe('validator', function () {
     var subject = require('../../../../lib/service/util/validator');
@@ -105,7 +104,7 @@ describe('validator', function () {
             event.RequestType = 'Delete';
             delete event.OldResourceProperties.requiredProperty;
             var result = subject.validate(event, schema);
-            expect(event.OldResourceProperties.standardProperty).to.equal('StandardProperty2');
+            expect(result.old.standardProperty).to.equal('StandardProperty2');
             done();
         });
         it('should not yield old result if there are no OldResourceProperties', function (done) {

@@ -36,7 +36,7 @@ describe('ApiDeployService', function () {
         mockery.registerMock('aws-sdk', awsSdkStub);
         testSubject = require('../../../../lib/service/api-deploy/api-deploy-service');
     });
-    beforeEach(function () {
+    beforeEach(function () {
         getStageStub.reset().resetBehavior();
         getStageStub.yields(undefined, {});
         createDeploymentStub.reset().resetBehavior();
@@ -48,7 +48,7 @@ describe('ApiDeployService', function () {
     describe('getForResponse', function () {
         it('should get an api stage', function (done) {
             testSubject.getForResponse('StageName', 'RestApiId', function (error, apiStage) {
-                expect(error).to.be.undefined;
+                expect(error).to.equal(undefined);
                 expect(apiStage).to.be.an('object');
                 done();
             });
@@ -56,8 +56,8 @@ describe('ApiDeployService', function () {
         it('should return an error when getting api stage', function (done) {
             getStageStub.yields({});
             testSubject.getForResponse('StageName', 'RestApiId', function (error, apiStage) {
-                expect(error).to.be.an.Error;
-                expect(apiStage).to.be.undefined;
+                expect(error).to.be.an('object');
+                expect(apiStage).to.equal(undefined);
                 done();
             });
         });
@@ -89,9 +89,9 @@ describe('ApiDeployService', function () {
         });
         it('should create an api deployment and patch the stage', function (done) {
             testSubject.deployApi(event, function (error) {
-                expect(error).to.be.undefined;
-                expect(createDeploymentStub.calledOnce).to.be.true;
-                expect(updateStageStub.calledOnce).to.be.true;
+                expect(error).to.equal(undefined);
+                expect(createDeploymentStub.calledOnce).to.equal(true);
+                expect(updateStageStub.calledOnce).to.equal(true);
                 done();
             });
         });
@@ -99,8 +99,8 @@ describe('ApiDeployService', function () {
             createDeploymentStub.yields({});
             testSubject.deployApi(event, function (error) {
                 expect(error).to.be.an('object');
-                expect(createDeploymentStub.calledOnce).to.be.true;
-                expect(updateStageStub.calledOnce).to.be.false;
+                expect(createDeploymentStub.calledOnce).to.equal(true);
+                expect(updateStageStub.calledOnce).to.equal(false);
                 done();
             });
         });
@@ -108,8 +108,8 @@ describe('ApiDeployService', function () {
             updateStageStub.yields({});
             testSubject.deployApi(event, function (error) {
                 expect(error).to.be.an('object');
-                expect(createDeploymentStub.calledOnce).to.be.true;
-                expect(updateStageStub.calledOnce).to.be.true;
+                expect(createDeploymentStub.calledOnce).to.equal(true);
+                expect(updateStageStub.calledOnce).to.equal(true);
                 done();
             });
         });
@@ -117,9 +117,9 @@ describe('ApiDeployService', function () {
             updateStageStub.yields({});
             event.old = event.params;
             testSubject.deployApi(event, function (error) {
-                expect(error).to.be.undefined;
-                expect(createDeploymentStub.calledOnce).to.be.true;
-                expect(updateStageStub.calledOnce).to.be.false;
+                expect(error).to.equal(undefined);
+                expect(createDeploymentStub.calledOnce).to.equal(true);
+                expect(updateStageStub.calledOnce).to.equal(false);
                 done();
             });
         });

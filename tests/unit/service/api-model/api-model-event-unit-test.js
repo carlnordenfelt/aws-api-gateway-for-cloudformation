@@ -103,7 +103,7 @@ describe('ApiModelEvent', function () {
                 }
             };
             var patchOperations = testSubject.getPatchOperations(event);
-            expect(patchOperations).to.be.an.Array;
+            expect(patchOperations).to.be.an('Array');
             expect(patchOperations.length).to.equal(2);
             expect(patchOperations[0].path).to.equal('/schema');
             expect(patchOperations[1].path).to.equal('/description');

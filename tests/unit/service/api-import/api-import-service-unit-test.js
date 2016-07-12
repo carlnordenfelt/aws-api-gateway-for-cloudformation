@@ -33,7 +33,7 @@ describe('APi Import Service', function () {
         mockery.registerMock('aws-sdk', awsSdkStub);
         testSubject = require('../../../../lib/service/api-import/api-import-service');
     });
-    beforeEach(function () {
+    beforeEach(function () {
         importRestApiStub.reset().resetBehavior();
         importRestApiStub.yields(undefined, {});
         putRestApiStub.reset().resetBehavior();
@@ -51,7 +51,7 @@ describe('APi Import Service', function () {
         });
         it('should import an API', function (done) {
             testSubject.importApi(params, function (error, restApi) {
-                expect(error).to.be.undefined;
+                expect(error).to.equal(undefined);
                 expect(restApi).to.be.an('object');
                 done();
             });
@@ -60,8 +60,8 @@ describe('APi Import Service', function () {
             importRestApiStub.yields({});
             params.failOnWarnings = false; // coverage
             testSubject.importApi(params, function (error, restApi) {
-                expect(error).to.be.an.Error;
-                expect(restApi).to.be.undefined;
+                expect(error).to.be.an('object');
+                expect(restApi).to.equal(undefined);
                 done();
             });
         });
@@ -79,7 +79,7 @@ describe('APi Import Service', function () {
         });
         it('should update an API', function (done) {
             testSubject.updateApi('RestApiId', params, function (error, restApi) {
-                expect(error).to.be.undefined;
+                expect(error).to.equal(undefined);
                 expect(restApi).to.be.an('object');
                 done();
             });
@@ -88,8 +88,8 @@ describe('APi Import Service', function () {
             putRestApiStub.yields({});
             params.failOnWarnings = false; // coverage
             testSubject.updateApi('RestApiId', params, function (error, restApi) {
-                expect(error).to.be.an.Error;
-                expect(restApi).to.be.undefined;
+                expect(error).to.be.an('object');
+                expect(restApi).to.equal(undefined);
                 done();
             });
         });

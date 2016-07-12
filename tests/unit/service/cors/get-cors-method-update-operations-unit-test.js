@@ -29,7 +29,7 @@ describe('Cors::GetCorsMethodUpdateOperations', function () {
         mockery.registerMock('aws-sdk', awsSdkStub);
         testSubject = require('../../../../lib/service/cors/get-cors-method-update-operations');
     });
-    beforeEach(function () {
+    beforeEach(function () {
         getMethodStub.reset().resetBehavior();
         getMethodStub.yields(undefined, {});
     });
@@ -51,7 +51,7 @@ describe('Cors::GetCorsMethodUpdateOperations', function () {
             };
             getMethodStub.withArgs(stubParams, sinon.match.any).yields(undefined, yieldMethodWithStatusCodes([200, 400]));
             testSubject('RestApiId', 'ResourceId', newMethods, newOrigin, oldMethods, oldOrigin, function (error, operations) {
-                expect(error).to.be.undefined;
+                expect(error).to.equal(undefined);
 
                 expect(operations.length).to.equal(2);
                 expect(operations[0].httpMethod).to.equal('GET');
@@ -73,7 +73,7 @@ describe('Cors::GetCorsMethodUpdateOperations', function () {
             newOrigin = '*';
             getMethodStub.withArgs(stubParams, sinon.match.any).yields(undefined, yieldMethodWithStatusCodes([200, 400]));
             testSubject('RestApiId', 'ResourceId', newMethods, newOrigin, oldMethods, oldOrigin, function (error, operations) {
-                expect(error).to.be.undefined;
+                expect(error).to.equal(undefined);
                 expect(operations.length).to.equal(0);
                 done();
             });
@@ -82,6 +82,7 @@ describe('Cors::GetCorsMethodUpdateOperations', function () {
         it('should get no changes if method does not exist', function (done) {
             getMethodStub.yields({ code: 'NotFoundException' });
             testSubject('RestApiId', 'ResourceId', newMethods, newOrigin, oldMethods, oldOrigin, function (error, operations) {
+                expect(error).to.equal(undefined);
                 expect(operations.length).to.equal(0);
                 done();
             });
@@ -90,7 +91,7 @@ describe('Cors::GetCorsMethodUpdateOperations', function () {
             getMethodStub.yields('getMethodError');
             testSubject('RestApiId', 'ResourceId', newMethods, newOrigin, oldMethods, oldOrigin, function (error, operations) {
                 expect(error).to.equal('getMethodError');
-                expect(operations).to.be.undefined;
+                expect(operations).to.equal(undefined);
                 done();
             });
         });
@@ -99,7 +100,7 @@ describe('Cors::GetCorsMethodUpdateOperations', function () {
             newMethods = ['OPTIONS'];
             oldMethods = [];
             testSubject('RestApiId', 'ResourceId', newMethods, newOrigin, oldMethods, oldOrigin, function (error, operations) {
-                expect(error).to.be.undefined;
+                expect(error).to.equal(undefined);
                 expect(operations.length).to.equal(0);
                 done();
             });
@@ -108,7 +109,7 @@ describe('Cors::GetCorsMethodUpdateOperations', function () {
             newMethods = [];
             oldMethods = ['OPTIONS'];
             testSubject('RestApiId', 'ResourceId', newMethods, newOrigin, oldMethods, oldOrigin, function (error, operations) {
-                expect(error).to.be.undefined;
+                expect(error).to.equal(undefined);
                 expect(operations.length).to.equal(0);
                 done();
             });
@@ -117,7 +118,7 @@ describe('Cors::GetCorsMethodUpdateOperations', function () {
             newMethods = ['OPTIONS'];
             oldMethods = ['OPTIONS'];
             testSubject('RestApiId', 'ResourceId', newMethods, newOrigin, oldMethods, oldOrigin, function (error, operations) {
-                expect(error).to.be.undefined;
+                expect(error).to.equal(undefined);
                 expect(operations.length).to.equal(0);
                 done();
             });

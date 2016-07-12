@@ -48,7 +48,7 @@ describe('Api Import Command', function () {
 
         testSubject = require('../../../lib/commands/api-import');
     });
-    beforeEach(function () {
+    beforeEach(function () {
         importApiStub.reset().resetBehavior();
         importApiStub.yields(undefined, {});
         deleteRestApiStub.reset().resetBehavior();
@@ -70,7 +70,7 @@ describe('Api Import Command', function () {
         it('should get error', function (done) {
             getParametersStub.returns(new Error());
             var parameters = testSubject.getParameters();
-            expect(parameters.params).to.be.an.Error;
+            expect(parameters).to.be.an('Error');
             done();
         });
     });
@@ -78,17 +78,17 @@ describe('Api Import Command', function () {
     describe('createResource', function () {
         it('should create resource', function (done) {
             testSubject.createResource({}, {}, { params: {} }, function (error) {
-                expect(error).to.be.undefined;
-                expect(importApiStub.called).to.be.true;
-                expect(getForResponseStub.called).to.be.true;
+                expect(error).to.equal(undefined);
+                expect(importApiStub.called).to.equal(true);
+                expect(getForResponseStub.called).to.equal(true);
                 done();
             });
         });
         it('should update resource if restApiId is given as parameter', function (done) {
             testSubject.createResource({}, {}, { params: { restApiId: '123'} }, function (error) {
-                expect(error).to.be.undefined;
-                expect(updateApiStub.called).to.be.true;
-                expect(getForResponseStub.called).to.be.true;
+                expect(error).to.equal(undefined);
+                expect(updateApiStub.called).to.equal(true);
+                expect(getForResponseStub.called).to.equal(true);
                 done();
             });
         });
@@ -96,8 +96,8 @@ describe('Api Import Command', function () {
             importApiStub.yields('createError');
             testSubject.createResource({}, {}, { params: {} }, function (error) {
                 expect(error).to.equal('createError');
-                expect(importApiStub.called).to.be.true;
-                expect(getForResponseStub.called).to.be.false;
+                expect(importApiStub.called).to.equal(true);
+                expect(getForResponseStub.called).to.equal(false);
                 done();
             });
         });
@@ -105,8 +105,8 @@ describe('Api Import Command', function () {
             getForResponseStub.yields('getForResponseError');
             testSubject.createResource({}, {}, { params: {} }, function (error) {
                 expect(error).to.equal('getForResponseError');
-                expect(importApiStub.called).to.be.true;
-                expect(getForResponseStub.called).to.be.true;
+                expect(importApiStub.called).to.equal(true);
+                expect(getForResponseStub.called).to.equal(true);
                 done();
             });
         });
@@ -115,22 +115,22 @@ describe('Api Import Command', function () {
     describe('deleteResource', function () {
         it('should delete the rest api', function (done) {
             testSubject.deleteResource({}, {}, { params: {} }, function (error) {
-                expect(error).to.be.undefined;
-                expect(deleteRestApiStub.called).to.be.true;
+                expect(error).to.equal(undefined);
+                expect(deleteRestApiStub.called).to.equal(true);
                 done();
             });
         });
         it('should do nothing if restApiId is given in params', function (done) {
             testSubject.deleteResource({}, {}, { params: { restApiId: '123' } }, function (error) {
-                expect(error).to.be.undefined;
-                expect(deleteRestApiStub.called).to.be.false;
+                expect(error).to.equal(undefined);
+                expect(deleteRestApiStub.called).to.equal(false);
                 done();
             });
         });
         it('should do nothing if restApiId is invalid', function (done) {
             testSubject.deleteResource({}, {}, { params: { restApiId: '123/4432' } }, function (error) {
-                expect(error).to.be.undefined;
-                expect(deleteRestApiStub.called).to.be.false;
+                expect(error).to.equal(undefined);
+                expect(deleteRestApiStub.called).to.equal(false);
                 done();
             });
         });
@@ -138,7 +138,7 @@ describe('Api Import Command', function () {
             deleteRestApiStub.yields('deleteError');
             testSubject.deleteResource({}, {}, { params: {} }, function (error) {
                 expect(error).to.equal('deleteError');
-                expect(deleteRestApiStub.called).to.be.true;
+                expect(deleteRestApiStub.called).to.equal(true);
                 done();
             });
         });
@@ -147,10 +147,10 @@ describe('Api Import Command', function () {
     describe('updateResource', function () {
         it('should update rest api', function (done) {
             testSubject.updateResource({}, {}, { params: {}}, function (error, resource) {
-                expect(error).to.be.undefined;
+                expect(error).to.equal(undefined);
                 expect(resource).to.be.an('object');
-                expect(updateApiStub.called).to.be.true;
-                expect(getForResponseStub.called).to.be.true;
+                expect(updateApiStub.called).to.equal(true);
+                expect(getForResponseStub.called).to.equal(true);
                 done();
             });
         });
@@ -158,9 +158,9 @@ describe('Api Import Command', function () {
             updateApiStub.yields('updateError');
             testSubject.updateResource({}, {}, { params: {} }, function (error, resource) {
                 expect(error).to.equal('updateError');
-                expect(resource).to.be.undefined;
-                expect(updateApiStub.called).to.be.true;
-                expect(getForResponseStub.called).to.be.false;
+                expect(resource).to.equal(undefined);
+                expect(updateApiStub.called).to.equal(true);
+                expect(getForResponseStub.called).to.equal(false);
                 done();
             });
         });
@@ -168,9 +168,9 @@ describe('Api Import Command', function () {
             getForResponseStub.yields('getForResponseError');
             testSubject.updateResource({}, {}, { params: {} }, function (error, resource) {
                 expect(error).to.equal('getForResponseError');
-                expect(resource).to.be.undefined;
-                expect(updateApiStub.called).to.be.true;
-                expect(getForResponseStub.called).to.be.true;
+                expect(resource).to.equal(undefined);
+                expect(updateApiStub.called).to.equal(true);
+                expect(getForResponseStub.called).to.equal(true);
                 done();
             });
         });
@@ -178,9 +178,9 @@ describe('Api Import Command', function () {
             updateApiStub.yields('Rest API not found');
             testSubject.updateResource({}, {}, { params: {} }, function (error, resource) {
                 expect(error).to.equal('Rest API not found');
-                expect(resource).to.be.undefined;
-                expect(updateApiStub.called).to.be.true;
-                expect(getForResponseStub.called).to.be.false;
+                expect(resource).to.equal(undefined);
+                expect(updateApiStub.called).to.equal(true);
+                expect(getForResponseStub.called).to.equal(false);
                 done();
             });
         });

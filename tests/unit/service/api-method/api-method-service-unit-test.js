@@ -47,7 +47,7 @@ describe('ApiMethodService', function () {
         testSubject = require('../../../../lib/service/api-method/api-method-service');
         testSubject.PUT_METHOD_STEP_DELAY_MILLIS = 1;
     });
-    beforeEach(function () {
+    beforeEach(function () {
         getMethodStub.reset().resetBehavior();
         getMethodStub.yields(undefined, {
             methodResponses: {
@@ -88,20 +88,20 @@ describe('ApiMethodService', function () {
     describe('getForResponse', function () {
         it('should get an api method', function (done) {
             testSubject.getForResponse('RestApiId', 'ResourceId', 'HttpMethod', function (error, apiMethod) {
-                expect(error).to.be.undefined;
+                expect(error).to.equal(undefined);
                 expect(apiMethod).to.be.an('object');
-                expect(apiMethod.methodResponses).to.be.undefined;
-                expect(apiMethod.requestModels).to.be.undefined;
-                expect(apiMethod.methodIntegration.integrationResponses).to.be.undefined;
-                expect(apiMethod.methodIntegration.requestTemplates).to.be.undefined;
+                expect(apiMethod.methodResponses).to.equal(undefined);
+                expect(apiMethod.requestModels).to.equal(undefined);
+                expect(apiMethod.methodIntegration.integrationResponses).to.equal(undefined);
+                expect(apiMethod.methodIntegration.requestTemplates).to.equal(undefined);
                 done();
             });
         });
         it('should return an error when getting api method', function (done) {
             getMethodStub.yields({});
             testSubject.getForResponse('RestApiId', 'ResourceId', 'HttpMethod', function (error, apiMethod) {
-                expect(error).to.be.an.Error;
-                expect(apiMethod).to.be.undefined;
+                expect(error).to.be.an('object');
+                expect(apiMethod).to.equal(undefined);
                 done();
             });
         });
@@ -115,9 +115,9 @@ describe('ApiMethodService', function () {
         });
         it('should create an api method', function (done) {
             testSubject.createMethod(params, function (error, apiMethod) {
-                expect(error).to.be.undefined;
-                expect(putMethodResponseStub.calledThrice).to.be.true;
-                expect(putIntegrationResponseStub.calledThrice).to.be.true;
+                expect(error).to.equal(undefined);
+                expect(putMethodResponseStub.calledThrice).to.equal(true);
+                expect(putIntegrationResponseStub.calledThrice).to.equal(true);
                 expect(apiMethod).to.be.an('object');
                 done();
             });
@@ -125,7 +125,7 @@ describe('ApiMethodService', function () {
         it('should create an api method without parameters', function (done) {
             delete params.params.method.parameters;
             testSubject.createMethod(params, function (error, apiMethod) {
-                expect(error).to.be.undefined;
+                expect(error).to.equal(undefined);
                 expect(apiMethod).to.be.an('object');
                 done();
             });
@@ -133,7 +133,7 @@ describe('ApiMethodService', function () {
         it('should create an api method with cors origin', function (done) {
             params.params.method.httpMethod = 'GET';
             testSubject.createMethod(params, function (error, apiMethod) {
-                expect(error).to.be.undefined;
+                expect(error).to.equal(undefined);
                 expect(apiMethod).to.be.an('object');
                 done();
             });
@@ -143,7 +143,7 @@ describe('ApiMethodService', function () {
             params.params.method.httpMethod = 'GET';
             delete params.params.responses;
             testSubject.createMethod(params, function (error, apiMethod) {
-                expect(error).to.be.undefined;
+                expect(error).to.equal(undefined);
                 expect(apiMethod).to.be.an('object');
                 done();
             });
@@ -152,7 +152,7 @@ describe('ApiMethodService', function () {
             params.params.method.httpMethod = 'GET';
             params.params.responses.default.headers = { test: 'xyz' };
             testSubject.createMethod(params, function (error, apiMethod) {
-                expect(error).to.be.undefined;
+                expect(error).to.equal(undefined);
                 expect(apiMethod).to.be.an('object');
                 done();
             });
@@ -160,7 +160,7 @@ describe('ApiMethodService', function () {
         it('should not require cache settings', function (done) {
             delete params.params.integration.cacheKeyParameters;
             testSubject.createMethod(params, function (error, apiMethod) {
-                expect(error).to.be.undefined;
+                expect(error).to.equal(undefined);
                 expect(apiMethod).to.be.an('object');
                 done();
             });
@@ -169,7 +169,7 @@ describe('ApiMethodService', function () {
             params.params.method.authorizationType = 'CUSTOM';
             params.params.method.authorizerId = 'AuthorizerId';
             testSubject.createMethod(params, function (error, apiMethod) {
-                expect(error).to.be.undefined;
+                expect(error).to.equal(undefined);
                 expect(apiMethod).to.be.an('object');
                 done();
             });
@@ -179,25 +179,22 @@ describe('ApiMethodService', function () {
             params.params.method.httpMethod = 'GET';
             getMethodStub.yields('getMethodError');
             testSubject.createMethod(params, function (error, apiMethod) {
-                expect(error).to.be.an.Error;
                 expect(error).to.equal('getMethodError');
-                expect(apiMethod).to.be.undefined;
+                expect(apiMethod).to.equal(undefined);
                 done();
             });
         });
         it('should yield an error if putMethod fails', function (done) {
             putMethodStub.yields('putMethodError');
             testSubject.createMethod(params, function (error, apiMethod) {
-                expect(error).to.be.an.Error;
                 expect(error).to.equal('putMethodError');
-                expect(apiMethod).to.be.undefined;
+                expect(apiMethod).to.equal(undefined);
                 done();
             });
         });
         it('should yield an error if putIntegration fails', function (done) {
             putIntegrationStub.yields('putIntegrationError');
             testSubject.createMethod(params, function (error, apiMethod) {
-                expect(error).to.be.an.Error;
                 expect(error).to.equal('putIntegrationError');
                 expect(apiMethod).to.an('object');
                 done();
@@ -206,7 +203,6 @@ describe('ApiMethodService', function () {
         it('should yield an error if putMethodResponse fails', function (done) {
             putMethodResponseStub.yields('putMethodResponseError');
             testSubject.createMethod(params, function (error, apiMethod) {
-                expect(error).to.be.an.Error;
                 expect(error).to.equal('putMethodResponseError');
                 expect(apiMethod).to.an('object');
                 done();
@@ -215,7 +211,6 @@ describe('ApiMethodService', function () {
         it('should yield an error if putIntegration fails', function (done) {
             putIntegrationResponseStub.yields('putIntegrationResponseError');
             testSubject.createMethod(params, function (error, apiMethod) {
-                expect(error).to.be.an.Error;
                 expect(error).to.equal('putIntegrationResponseError');
                 expect(apiMethod).to.an('object');
                 done();
@@ -226,7 +221,7 @@ describe('ApiMethodService', function () {
     describe('deleteMethod', function () {
         it('should delete an api method', function (done) {
             testSubject.deleteMethod('ResourceId', 'RestApiId', 'HttpMethod', function (error) {
-                expect(error).to.be.undefined;
+                expect(error).to.equal(undefined);
                 done();
             });
         });
@@ -240,7 +235,7 @@ describe('ApiMethodService', function () {
         it('should return nothing if method does not exist', function (done) {
             deleteMethodStub.yields({ code: 'NotFoundException' });
             testSubject.deleteMethod('ResourceId','RestApiId', 'HttpMethod', function (error) {
-                expect(error).to.be.undefined;
+                expect(error).to.equal(undefined);
                 done();
             });
         });
@@ -259,7 +254,7 @@ describe('ApiMethodService', function () {
         });
         it('should receive a CORS origin', function (done) {
             testSubject.getCorsOrigin(params, function (error, origin) {
-                expect(error).to.be.undefined;
+                expect(error).to.equal(undefined);
                 expect(origin).to.equal('*');
                 done();
             });
@@ -267,24 +262,24 @@ describe('ApiMethodService', function () {
         it('should not receive a CORS origin for non-CORS enabled method', function (done) {
             params.method.httpMethod = 'POST';
             testSubject.getCorsOrigin(params, function (error, origin) {
-                expect(error).to.be.undefined;
-                expect(origin).to.be.undefined;
+                expect(error).to.equal(undefined);
+                expect(origin).to.equal(undefined);
                 done();
             });
         });
         it('should not receive a CORS origin for OPTIONS method', function (done) {
             params.method.httpMethod = 'OPTIONS';
             testSubject.getCorsOrigin(params, function (error, origin) {
-                expect(error).to.be.undefined;
-                expect(origin).to.be.undefined;
+                expect(error).to.equal(undefined);
+                expect(origin).to.equal(undefined);
                 done();
             });
         });
         it('should not receive a CORS origin if there is none set', function (done) {
             getMethodStub.yields(undefined, { methodIntegration: {} });
             testSubject.getCorsOrigin(params, function (error, origin) {
-                expect(error).to.be.undefined;
-                expect(origin).to.be.undefined;
+                expect(error).to.equal(undefined);
+                expect(origin).to.equal(undefined);
                 done();
             });
         });
@@ -292,7 +287,7 @@ describe('ApiMethodService', function () {
             getMethodStub.yields('getMethod');
             testSubject.getCorsOrigin(params, function (error, origin) {
                 expect(error).to.equal('getMethod');
-                expect(origin).to.be.undefined;
+                expect(origin).to.equal(undefined);
                 done();
             });
         });

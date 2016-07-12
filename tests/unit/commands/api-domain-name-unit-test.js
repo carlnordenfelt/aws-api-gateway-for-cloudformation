@@ -44,7 +44,7 @@ describe('Api Domain Command', function () {
         mockery.registerMock('../service/api-domain-name/api-domain-name-event', apiDomainNameEventStub);
         testSubject = require('../../../lib/commands/api-domain-name');
     });
-    beforeEach(function () {
+    beforeEach(function () {
         createDomainStub.reset().resetBehavior();
         createDomainStub.yields(undefined, {});
         deleteDomainStub.reset().resetBehavior();
@@ -66,7 +66,7 @@ describe('Api Domain Command', function () {
         it('should get error', function (done) {
             getParametersStub.returns(new Error());
             var parameters = testSubject.getParameters();
-            expect(parameters.params).to.be.an.Error;
+            expect(parameters).to.be.an('Error');
             done();
         });
     });
@@ -74,10 +74,10 @@ describe('Api Domain Command', function () {
     describe('createResource', function () {
         it('should create resource', function (done) {
             testSubject.createResource({}, {}, { params: {} }, function (error, resource) {
-                expect(error).to.be.undefined;
+                expect(error).to.equal(undefined);
                 expect(resource).to.be.an('object');
-                expect(createDomainStub.called).to.be.true;
-                expect(getForResponseStub.called).to.be.true;
+                expect(createDomainStub.called).to.equal(true);
+                expect(getForResponseStub.called).to.equal(true);
                 done();
             });
         });
@@ -85,9 +85,9 @@ describe('Api Domain Command', function () {
             createDomainStub.yields('createError');
             testSubject.createResource({}, {}, { params: {} }, function (error, resource) {
                 expect(error).to.equal('createError');
-                expect(resource).to.be.undefined;
-                expect(createDomainStub.called).to.be.true;
-                expect(getForResponseStub.called).to.be.false;
+                expect(resource).to.equal(undefined);
+                expect(createDomainStub.called).to.equal(true);
+                expect(getForResponseStub.called).to.equal(false);
                 done();
             });
         });
@@ -95,9 +95,9 @@ describe('Api Domain Command', function () {
             getForResponseStub.yields('getForResponseError');
             testSubject.createResource({}, {}, { params: {} }, function (error, resource) {
                 expect(error).to.equal('getForResponseError');
-                expect(resource).to.be.undefined;
-                expect(createDomainStub.called).to.be.true;
-                expect(getForResponseStub.called).to.be.true;
+                expect(resource).to.equal(undefined);
+                expect(createDomainStub.called).to.equal(true);
+                expect(getForResponseStub.called).to.equal(true);
                 done();
             });
         });
@@ -106,8 +106,8 @@ describe('Api Domain Command', function () {
     describe('deleteResource', function () {
         it('should delete resource', function (done) {
             testSubject.deleteResource({}, {}, { params: {} }, function (error) {
-                expect(error).to.be.undefined;
-                expect(deleteDomainStub.called).to.be.true;
+                expect(error).to.equal(undefined);
+                expect(deleteDomainStub.called).to.equal(true);
                 done();
             });
         });
@@ -115,8 +115,8 @@ describe('Api Domain Command', function () {
             deleteDomainStub.yields('deleteError');
             testSubject.deleteResource({}, {}, { params: {} }, function (error, resource) {
                 expect(error).to.equal('deleteError');
-                expect(resource).to.be.undefined;
-                expect(deleteDomainStub.called).to.be.true;
+                expect(resource).to.equal(undefined);
+                expect(deleteDomainStub.called).to.equal(true);
                 done();
             });
         });
@@ -125,10 +125,10 @@ describe('Api Domain Command', function () {
     describe('updateResource', function () {
         it('should update resource', function (done) {
             testSubject.updateResource({}, {}, { params: {} }, function (error, resource) {
-                expect(error).to.be.undefined;
+                expect(error).to.equal(undefined);
                 expect(resource).to.be.an('object');
-                expect(patchDomainStub.called).to.be.true;
-                expect(getForResponseStub.called).to.be.true;
+                expect(patchDomainStub.called).to.equal(true);
+                expect(getForResponseStub.called).to.equal(true);
                 done();
             });
         });
@@ -136,9 +136,9 @@ describe('Api Domain Command', function () {
             patchDomainStub.yields('updateError');
             testSubject.updateResource({}, {}, { params: {} }, function (error, resource) {
                 expect(error).to.equal('updateError');
-                expect(resource).to.be.undefined;
-                expect(patchDomainStub.called).to.be.true;
-                expect(getForResponseStub.called).to.be.false;
+                expect(resource).to.equal(undefined);
+                expect(patchDomainStub.called).to.equal(true);
+                expect(getForResponseStub.called).to.equal(false);
                 done();
             });
         });
@@ -146,9 +146,9 @@ describe('Api Domain Command', function () {
             getForResponseStub.yields('getForResponseError');
             testSubject.updateResource({}, {}, { params: {} }, function (error, resource) {
                 expect(error).to.equal('getForResponseError');
-                expect(resource).to.be.undefined;
-                expect(patchDomainStub.called).to.be.true;
-                expect(getForResponseStub.called).to.be.true;
+                expect(resource).to.equal(undefined);
+                expect(patchDomainStub.called).to.equal(true);
+                expect(getForResponseStub.called).to.equal(true);
                 done();
             });
         });

@@ -39,7 +39,7 @@ describe('ApiAuthorizerService', function () {
         mockery.registerMock('aws-sdk', awsSdkStub);
         testSubject = require('../../../../lib/service/api-authorizer/api-authorizer-service');
     });
-    beforeEach(function () {
+    beforeEach(function () {
         getAuthorizer.reset().resetBehavior();
         getAuthorizer.yields(undefined, {});
         createAuthorizerStub.reset().resetBehavior();
@@ -53,7 +53,7 @@ describe('ApiAuthorizerService', function () {
     describe('getForResponse', function () {
         it('should get an authorizer', function (done) {
             testSubject.getForResponse('AuthorizerId', 'RestApiId', function (error, apiAuthorizer) {
-                expect(error).to.be.undefined;
+                expect(error).to.equal(undefined);
                 expect(apiAuthorizer).to.be.an('object');
                 done();
             });
@@ -61,8 +61,8 @@ describe('ApiAuthorizerService', function () {
         it('should return an error when getting api model', function (done) {
             getAuthorizer.yields({});
             testSubject.getForResponse('AuthorizerId', 'RestApiId', function (error, apiAuthorizer) {
-                expect(error).to.be.an.Error;
-                expect(apiAuthorizer).to.be.undefined;
+                expect(error).to.be.an('object');
+                expect(apiAuthorizer).to.equal(undefined);
                 done();
             });
         });
@@ -84,8 +84,7 @@ describe('ApiAuthorizerService', function () {
         it('should create an authorizer', function (done) {
             createAuthorizerStub.yields(undefined, {});
             testSubject.createAuthorizer(params, function (error, apiAuthorizer) {
-                expect(error).to.be.an.Error;
-                expect(error).to.be.undefined;
+                expect(error).to.equal(undefined);
                 expect(apiAuthorizer).to.be.an('object');
                 done();
             });
@@ -95,8 +94,7 @@ describe('ApiAuthorizerService', function () {
             delete params.identityValidationExpression;
             createAuthorizerStub.yields(undefined, {});
             testSubject.createAuthorizer(params, function (error, apiAuthorizer) {
-                expect(error).to.be.an.Error;
-                expect(error).to.be.undefined;
+                expect(error).to.equal(undefined);
                 expect(apiAuthorizer).to.be.an('object');
                 done();
             });
@@ -104,8 +102,8 @@ describe('ApiAuthorizerService', function () {
         it('should return an error when creating an authorizer', function (done) {
             createAuthorizerStub.yields({});
             testSubject.createAuthorizer(params, function (error, apiAuthorizer) {
-                expect(error).to.be.an.Error;
-                expect(apiAuthorizer).to.be.undefined;
+                expect(error).to.be.an('object');
+                expect(apiAuthorizer).to.equal(undefined);
                 done();
             });
         });
@@ -114,7 +112,7 @@ describe('ApiAuthorizerService', function () {
     describe('delete authorizer', function () {
         it('should delete an api authorizer', function (done) {
             testSubject.deleteAuthorizer('AuthorizerId', 'RestApiId', function (error) {
-                expect(error).to.be.undefined;
+                expect(error).to.equal(undefined);
                 done();
             });
         });
@@ -149,8 +147,8 @@ describe('ApiAuthorizerService', function () {
                 }
             };
             testSubject.patchAuthorizer('AuthorizerId', event, function (error) {
-                expect(error).to.be.undefined;
-                expect(updateAuthorizerStub.called).to.be.true;
+                expect(error).to.equal(undefined);
+                expect(updateAuthorizerStub.called).to.equal(true);
                 done();
             });
         });
@@ -160,8 +158,8 @@ describe('ApiAuthorizerService', function () {
                 old: { name: 'AuthorizerName' }
             };
             testSubject.patchAuthorizer('AuthorizerId', event, function (error) {
-                expect(error).to.be.undefined;
-                expect(updateAuthorizerStub.called).to.be.false;
+                expect(error).to.equal(undefined);
+                expect(updateAuthorizerStub.called).to.equal(false);
                 done();
             });
         });

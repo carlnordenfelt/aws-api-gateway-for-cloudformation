@@ -114,7 +114,7 @@ describe('ApiBasePathMappingEvent', function () {
                 }
             };
             var patchOperations = testSubject.getPatchOperations(event);
-            expect(patchOperations).to.be.an.Array;
+            expect(patchOperations).to.be.an('Array');
             expect(patchOperations.length).to.equal(3);
             done();
         });

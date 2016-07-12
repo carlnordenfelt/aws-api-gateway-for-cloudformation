@@ -53,7 +53,7 @@ describe('Cors::CorsService', function () {
     });
 
     var corsConfiguration;
-    beforeEach(function () {
+    beforeEach(function () {
         deleteMethodStub.reset().resetBehavior();
         deleteMethodStub.yields(undefined, {});
         createMethodStub.reset().resetBehavior();

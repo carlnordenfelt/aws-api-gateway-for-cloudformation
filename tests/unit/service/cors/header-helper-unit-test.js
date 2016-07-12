@@ -77,7 +77,7 @@ describe('Cors::HeaderHelper', function () {
         it('should give undefined', function (done) {
             var allowCredentials = 'anything';
             var headersString = testSubject.getAllowCredentialsValue(allowCredentials);
-            expect(headersString).to.be.undefined;
+            expect(headersString).to.equal(undefined);
             done();
         });
     });
@@ -101,9 +101,9 @@ describe('Cors::HeaderHelper', function () {
                 allowCredentials: true
             };
             var changes = testSubject.getCorsChanges(newConfig, oldConfig);
-            expect(changes.hasOriginChanged).to.be.true;
-            expect(changes.hasMethodsChanged).to.be.true;
-            expect(changes.hasOtherChanges).to.be.true;
+            expect(changes.hasOriginChanged).to.equal(true);
+            expect(changes.hasMethodsChanged).to.equal(true);
+            expect(changes.hasOtherChanges).to.equal(true);
             done();
         });
         it('should indicate all as changed without old config', function (done) {
@@ -116,9 +116,9 @@ describe('Cors::HeaderHelper', function () {
                 allowCredentials: false
             };
             var changes = testSubject.getCorsChanges(newConfig);
-            expect(changes.hasOriginChanged).to.be.true;
-            expect(changes.hasMethodsChanged).to.be.true;
-            expect(changes.hasOtherChanges).to.be.true;
+            expect(changes.hasOriginChanged).to.equal(true);
+            expect(changes.hasMethodsChanged).to.equal(true);
+            expect(changes.hasOtherChanges).to.equal(true);
             done();
         });
         it('should indicate origin as changed', function (done) {
@@ -139,9 +139,9 @@ describe('Cors::HeaderHelper', function () {
                 allowCredentials: false
             };
             var changes = testSubject.getCorsChanges(newConfig, oldConfig);
-            expect(changes.hasOriginChanged).to.be.true;
-            expect(changes.hasMethodsChanged).to.be.false;
-            expect(changes.hasOtherChanges).to.be.false;
+            expect(changes.hasOriginChanged).to.equal(true);
+            expect(changes.hasMethodsChanged).to.equal(false);
+            expect(changes.hasOtherChanges).to.equal(false);
             done();
         });
         it('should indicate methods as changed', function (done) {
@@ -162,9 +162,9 @@ describe('Cors::HeaderHelper', function () {
                 allowCredentials: false
             };
             var changes = testSubject.getCorsChanges(newConfig, oldConfig);
-            expect(changes.hasOriginChanged).to.be.false;
-            expect(changes.hasMethodsChanged).to.be.true;
-            expect(changes.hasOtherChanges).to.be.false;
+            expect(changes.hasOriginChanged).to.equal(false);
+            expect(changes.hasMethodsChanged).to.equal(true);
+            expect(changes.hasOtherChanges).to.equal(false);
             done();
         });
         it('should indicate other changes as changed (allowHeaders)', function (done) {
@@ -185,9 +185,9 @@ describe('Cors::HeaderHelper', function () {
                 allowCredentials: false
             };
             var changes = testSubject.getCorsChanges(newConfig, oldConfig);
-            expect(changes.hasOriginChanged).to.be.false;
-            expect(changes.hasMethodsChanged).to.be.false;
-            expect(changes.hasOtherChanges).to.be.true;
+            expect(changes.hasOriginChanged).to.equal(false);
+            expect(changes.hasMethodsChanged).to.equal(false);
+            expect(changes.hasOtherChanges).to.equal(true);
             done();
         });
         it('should indicate other changes as changed (exposeHeaders)', function (done) {
@@ -208,9 +208,9 @@ describe('Cors::HeaderHelper', function () {
                 allowCredentials: false
             };
             var changes = testSubject.getCorsChanges(newConfig, oldConfig);
-            expect(changes.hasOriginChanged).to.be.false;
-            expect(changes.hasMethodsChanged).to.be.false;
-            expect(changes.hasOtherChanges).to.be.true;
+            expect(changes.hasOriginChanged).to.equal(false);
+            expect(changes.hasMethodsChanged).to.equal(false);
+            expect(changes.hasOtherChanges).to.equal(true);
             done();
         });
         it('should indicate other changes as changed (maxAge)', function (done) {
@@ -231,9 +231,9 @@ describe('Cors::HeaderHelper', function () {
                 allowCredentials: false
             };
             var changes = testSubject.getCorsChanges(newConfig, oldConfig);
-            expect(changes.hasOriginChanged).to.be.false;
-            expect(changes.hasMethodsChanged).to.be.false;
-            expect(changes.hasOtherChanges).to.be.true;
+            expect(changes.hasOriginChanged).to.equal(false);
+            expect(changes.hasMethodsChanged).to.equal(false);
+            expect(changes.hasOtherChanges).to.equal(true);
             done();
         });
         it('should indicate other changes as changed (allowCredentials)', function (done) {
@@ -254,9 +254,9 @@ describe('Cors::HeaderHelper', function () {
                 allowCredentials: true
             };
             var changes = testSubject.getCorsChanges(newConfig, oldConfig);
-            expect(changes.hasOriginChanged).to.be.false;
-            expect(changes.hasMethodsChanged).to.be.false;
-            expect(changes.hasOtherChanges).to.be.true;
+            expect(changes.hasOriginChanged).to.equal(false);
+            expect(changes.hasMethodsChanged).to.equal(false);
+            expect(changes.hasOtherChanges).to.equal(true);
             done();
         });
         it('should indicate methods as changed when not in new config', function (done) {
@@ -276,9 +276,9 @@ describe('Cors::HeaderHelper', function () {
                 allowCredentials: false
             };
             var changes = testSubject.getCorsChanges(newConfig, oldConfig);
-            expect(changes.hasOriginChanged).to.be.false;
-            expect(changes.hasMethodsChanged).to.be.true;
-            expect(changes.hasOtherChanges).to.be.false;
+            expect(changes.hasOriginChanged).to.equal(false);
+            expect(changes.hasMethodsChanged).to.equal(true);
+            expect(changes.hasOtherChanges).to.equal(false);
             done();
         });
     });

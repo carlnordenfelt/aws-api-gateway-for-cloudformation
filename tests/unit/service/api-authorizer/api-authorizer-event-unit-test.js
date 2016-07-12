@@ -119,7 +119,7 @@ describe('ApiAuthorizerEvent', function () {
                 }
             };
             var patchOperations = testSubject.getPatchOperations(event);
-            expect(patchOperations).to.be.an.Array;
+            expect(patchOperations).to.be.an('Array');
             expect(patchOperations.length).to.equal(6);
             expect(patchOperations[0].path).to.equal('/name');
             expect(patchOperations[1].path).to.equal('/authorizerUri');

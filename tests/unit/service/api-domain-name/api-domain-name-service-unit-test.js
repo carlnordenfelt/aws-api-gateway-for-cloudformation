@@ -44,7 +44,7 @@ describe('ApiDomainNameService', function () {
         mockery.registerMock('aws-sdk', awsSdkStub);
         testSubject = require('../../../../lib/service/api-domain-name/api-domain-name-service');
     });
-    beforeEach(function () {
+    beforeEach(function () {
         getDomainNameStub.reset().resetBehavior();
         getDomainNameStub.yields(undefined, {});
         createDomainNameStub.reset().resetBehavior();
@@ -60,7 +60,7 @@ describe('ApiDomainNameService', function () {
     describe('getForResponse', function () {
         it('should get a domain name', function (done) {
             testSubject.getForResponse('DomainName', function (error, apiDomainName) {
-                expect(error).to.be.undefined;
+                expect(error).to.equal(undefined);
                 expect(apiDomainName).to.be.an('object');
                 done();
             });
@@ -68,8 +68,8 @@ describe('ApiDomainNameService', function () {
         it('should return an error when getting domain name', function (done) {
             getDomainNameStub.yields({});
             testSubject.getForResponse('DomainName', function (error, apiDomainName) {
-                expect(error).to.be.an.Error;
-                expect(apiDomainName).to.be.undefined;
+                expect(error).to.be.an('object');
+                expect(apiDomainName).to.equal(undefined);
                 done();
             });
         });
@@ -88,9 +88,9 @@ describe('ApiDomainNameService', function () {
         });
         it('should create a domain name', function (done) {
             testSubject.createDomain(params, function (error, apiDomainName) {
-                expect(error).to.be.undefined;
-                expect(getServerCertificateStub.called).to.be.false;
-                expect(createDomainNameStub.called).to.be.true;
+                expect(error).to.equal(undefined);
+                expect(getServerCertificateStub.called).to.equal(false);
+                expect(createDomainNameStub.called).to.equal(true);
                 expect(apiDomainName).to.be.an('object');
                 done();
             });
@@ -100,9 +100,9 @@ describe('ApiDomainNameService', function () {
             delete params.certificateChain;
             params.iamServerCertificateName = 'IamServerCertificateName';
             testSubject.createDomain(params, function (error, apiDomainName) {
-                expect(error).to.be.undefined;
-                expect(getServerCertificateStub.called).to.be.true;
-                expect(createDomainNameStub.called).to.be.true;
+                expect(error).to.equal(undefined);
+                expect(getServerCertificateStub.called).to.equal(true);
+                expect(createDomainNameStub.called).to.equal(true);
                 expect(apiDomainName).to.be.an('object');
                 done();
             });
@@ -110,10 +110,10 @@ describe('ApiDomainNameService', function () {
         it('should return an error when creating domain name', function (done) {
             createDomainNameStub.yields({});
             testSubject.createDomain(params, function (error, apiDomainName) {
-                expect(error).to.be.an.Error;
-                expect(getServerCertificateStub.called).to.be.false;
-                expect(createDomainNameStub.called).to.be.true;
-                expect(apiDomainName).to.be.undefined;
+                expect(error).to.be.an('object');
+                expect(getServerCertificateStub.called).to.equal(false);
+                expect(createDomainNameStub.called).to.equal(true);
+                expect(apiDomainName).to.equal(undefined);
                 done();
             });
         });
@@ -123,10 +123,10 @@ describe('ApiDomainNameService', function () {
             params.iamServerCertificateName = 'IamServerCertificateName';
             getServerCertificateStub.yields({});
             testSubject.createDomain(params, function (error, apiDomainName) {
-                expect(error).to.be.an.Error;
-                expect(getServerCertificateStub.called).to.be.true;
-                expect(createDomainNameStub.called).to.be.false;
-                expect(apiDomainName).to.be.undefined;
+                expect(error).to.be.an('object');
+                expect(getServerCertificateStub.called).to.equal(true);
+                expect(createDomainNameStub.called).to.equal(false);
+                expect(apiDomainName).to.equal(undefined);
                 done();
             });
         });
@@ -136,10 +136,10 @@ describe('ApiDomainNameService', function () {
             params.iamServerCertificateName = 'IamServerCertificateName';
             getServerCertificateStub.yields(undefined, { ServerCertificate: { CertificateBody: 'ServerCertificateBody' }});
             testSubject.createDomain(params, function (error, apiDomainName) {
-                expect(error).to.be.an.Error;
-                expect(getServerCertificateStub.called).to.be.true;
-                expect(createDomainNameStub.called).to.be.false;
-                expect(apiDomainName).to.be.undefined;
+                expect(error).to.be.a('string');
+                expect(getServerCertificateStub.called).to.equal(true);
+                expect(createDomainNameStub.called).to.equal(false);
+                expect(apiDomainName).to.equal(undefined);
                 done();
             });
         });
@@ -148,7 +148,7 @@ describe('ApiDomainNameService', function () {
     describe('deleteDomain', function () {
         it('should delete a domain name', function (done) {
             testSubject.deleteDomain('DomainName', function (error) {
-                expect(error).to.be.undefined;
+                expect(error).to.equal(undefined);
                 done();
             });
         });
@@ -180,8 +180,8 @@ describe('ApiDomainNameService', function () {
                 }
             };
             testSubject.patchDomain('DomainName', event, function (error) {
-                expect(error).to.be.undefined;
-                expect(updateDomainNameStub.called).to.be.true;
+                expect(error).to.equal(undefined);
+                expect(updateDomainNameStub.called).to.equal(true);
                 done();
             });
         });
@@ -191,8 +191,8 @@ describe('ApiDomainNameService', function () {
                 old: { domainName: 'DomainName' }
             };
             testSubject.patchDomain('DomainName', event, function (error) {
-                expect(error).to.be.undefined;
-                expect(updateDomainNameStub.called).to.be.false;
+                expect(error).to.equal(undefined);
+                expect(updateDomainNameStub.called).to.equal(false);
                 done();
             });
         });
@@ -204,7 +204,7 @@ describe('ApiDomainNameService', function () {
             updateDomainNameStub.yields({ code: 'BadRequestException' });
             testSubject.patchDomain('DomainName', event, function (error) {
                 expect(error.code).to.equal('BadRequestException');
-                expect(updateDomainNameStub.called).to.be.true;
+                expect(updateDomainNameStub.called).to.equal(true);
                 done();
             });
         });

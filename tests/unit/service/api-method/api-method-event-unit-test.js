@@ -138,7 +138,7 @@ describe('ApiMethodEvent', function () {
         it('should return valid parameters if responses is missing', function (done) {
             delete event.ResourceProperties.responses;
             var parameters = testSubject.getParameters(event);
-            expect(parameters).not.to.be.an.Error;
+            expect(parameters).not.to.be.an('Error');
             done();
         });
         it('should throw an error due to missing responses.statusCode', function (done) {
