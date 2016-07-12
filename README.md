@@ -15,10 +15,10 @@ It supports API Definitions in Swagger as well as individual Cloud Formation res
 
 ##Overview
 
-This setup allows you to manage the majority of the API Gateway related resources.  
+This setup allows you to manage the majority of the API Gateway related resources.
 The installation will create a Lambda function in the region corresponding to the template location in your
 AWS account. This Lambda function is a CloudFormation Custom Resource and acts as a liaison between
-CloudFormation and API Gateway.  
+CloudFormation and API Gateway.
 Once the Lambda function has been installed you can start writing your CloudFormation templates.
 
 If you want to learn more about CloudFormation, Custom Resources or API Gateway I suggest the following links:

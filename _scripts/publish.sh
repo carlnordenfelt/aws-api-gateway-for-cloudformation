@@ -21,7 +21,7 @@ while getopts ":a:v:" opt; do
     ;;
     \?)
         echo "Invalid argument: -$OPTARG" >&2
-        exit 1;
+        usage
     ;;
   esac
 done
@@ -54,8 +54,8 @@ function package() {
 }
 
 # Publishes the source file and CFN template to S3.
-# It will publish to all Lambda regions. If the bucket does not exist it is created.
-# If version matches *test/* it's only uploaded to eu-west-1 (the best region :)
+# It will publish to all ${regions}. If the bucket does not exist it is created.
+# If version matches *test/* it's only uploaded to eu-west-1. These versions are only available to 10 days,
 function publish() {
     echo "Publishing version: ${version}"
 
@@ -110,9 +110,10 @@ if [[ -z "${version}" ]]; then
     usage
 fi
 
-package || exit 1;
 version=$(parseVersion ${version}) || exit 1;
+package || exit 1;
 publish ${version}
+
 if [[ " ${version} " != *"test/"* ]]; then
     git push --tags
 fi
