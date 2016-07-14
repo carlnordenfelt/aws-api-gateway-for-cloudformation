@@ -13,7 +13,7 @@
             "type": "string"
         },
         "stageName": {
-            "description": "Name of the Stage you want to deploy to. If the Stage does not exist it will be created.",
+            "description": "Name of the Stage you want to deploy to. If the Stage does not exist it will be created. You may change the name of the Stage but that will have no impact on the existing Stage, thus the existing Stage will remain deployed.",
             "type": "string",
             "required": true
         },

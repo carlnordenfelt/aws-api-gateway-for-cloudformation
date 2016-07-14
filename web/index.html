@@ -128,15 +128,9 @@
                 <div class="callout callout-info">
                     <p>
                         CloudFormation offers <a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-template-resource-type-ref.html">native support</a> for API Gateway.
-                        This project is kept alive and offered as an alternative becuase I feel that the native resources aren't sufficient.
+                        This project is kept alive and offered as an alternative because I feel that the native resources aren't sufficient.
                     </p>
                 </div>
-
-                <p>
-                    API Gateway for CloudFormation is a set of Custom Resources that allows you to manage your API Gateway setup
-                    with CloudFormation. Yes, you read that right! Finally a way to integrate your backend services that you
-                    already create using CloudFormation with your APIs!
-                </p>
 
                 <p>
                     It's deployed via the CloudFormation Console and runs on AWS Lambda.<br/>
@@ -155,13 +149,6 @@
                     resources described in this document.
                 </p>
 
-                <div class="callout callout-info">
-                    <h4>Swagger support</h4>
-                    <p>
-                        As of version 1.5.0 you can also define your APIs in Swagger using the <code>Custom::ApiImport</code> resource.
-                    </p>
-                </div>
-
                 <p>
                     If you want to learn more about CloudFormation, Custom Resources or API Gateway I suggest the following
                     links:
@@ -178,7 +165,6 @@
 
                 <div class="callout callout-warning">
                     <h4>Experimental resources</h4>
-
                     <p>
                         Some resources may be flagged as experimental which means that they haven't been tested thoroughly,
                         it doesn't necessarily mean that they don't work.<br/>
@@ -295,8 +281,8 @@
                 <p>
                     All resources accept a common parameter: <code>lastModified</code>.
                     This parameter is optional but can be passed to a resource to force an update even if there are no
-                    changes to be made. This will force an update which can be useful for certain reousrces such as ApiDeploy.
-                    Paramters that are not specified in the <a href="https://github.com/carlnordenfelt/aws-api-gateway-for-cloudformation/tree/master/lib/services/json-schemas">schemas</a> will fail validation.
+                    changes to be made. This can be useful for certain resources such as ApiDeploy.
+                    Parameters that are not specified in the <a href="https://github.com/carlnordenfelt/aws-api-gateway-for-cloudformation/tree/master/lib/service/json-schemas">schemas</a> will fail validation.
                 </p>
 
                 <section id="custom-ApiImport">
@@ -313,7 +299,6 @@
                             <p>
                                 By using the Import API resource you define our entire API in swagger and import it in one go.<br/>
                                 You can also utilize the import to make partial updates to an API by supplying a REST API Id in the request.<br/>
-
                                 <a href="http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#importRestApi-property">http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#importRestApi-property</a><br/>
                                 <a href="http://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-import-api.html">http://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-import-api.html</a>
                             </p>
@@ -336,6 +321,9 @@
                             </div>
 
                             <h3>Parameters</h3>
+                            <p>
+                                <a href="https://github.com/carlnordenfelt/aws-api-gateway-for-cloudformation/blob/master/lib/service/json-schemas/api-import-schema.json">JSON Schema</a>
+                            </p>
 
                             <div class="panel panel-default">
                                 <div class="panel-heading">
@@ -466,6 +454,9 @@
                             </p>
 
                             <h3>Parameters</h3>
+                            <p>
+                                <a href="https://github.com/carlnordenfelt/aws-api-gateway-for-cloudformation/blob/master/lib/service/json-schemas/rest-api-schema.json">JSON Schema</a>
+                            </p>
 
                             <div class="panel panel-default">
                                 <div class="panel-heading">
@@ -584,6 +575,9 @@
                             </div>
 
                             <h3>Parameters</h3>
+                            <p>
+                                <a href="https://github.com/carlnordenfelt/aws-api-gateway-for-cloudformation/blob/master/lib/service/json-schemas/api-resource-schema.json">JSON Schema</a>
+                            </p>
 
                             <div class="panel panel-default">
                                 <div class="panel-heading">
@@ -915,6 +909,9 @@
                             </p>
 
                             <h3>Parameters</h3>
+                            <p>
+                                <a href="https://github.com/carlnordenfelt/aws-api-gateway-for-cloudformation/blob/master/lib/service/json-schemas/api-method-schema.json">JSON Schema</a>
+                            </p>
 
                             <div class="panel panel-default">
                                 <div class="panel-heading">
@@ -1469,6 +1466,11 @@
                                 <a href="http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createModel-property">http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createModel-property</a>
                             </p>
 
+                            <h3>Parameters</h3>
+                            <p>
+                                <a href="https://github.com/carlnordenfelt/aws-api-gateway-for-cloudformation/blob/master/lib/service/json-schemas/api-model-schema.json">JSON Schema</a>
+                            </p>
+
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <h3 class="panel-title">
@@ -1600,6 +1602,9 @@
                             </div>
 
                             <h3>Parameters</h3>
+                            <p>
+                                <a href="https://github.com/carlnordenfelt/aws-api-gateway-for-cloudformation/blob/master/lib/service/json-schemas/api-domain-name-schema.json">JSON Schema</a>
+                            </p>
 
                             <div class="panel panel-default">
                                 <div class="panel-heading">
@@ -1770,7 +1775,6 @@
                             </h3>
                         </div>
                         <div class="panel-body">
-
                             <p>
                                 Creates a new Api Gateway Base Path Mapping<br/>
                                 <a href="http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createBasePathMapping-property">http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/APIGateway.html#createBasePathMapping-property</a>
@@ -1790,7 +1794,9 @@
                             </div>
 
                             <h3>Parameters</h3>
-
+                            <p>
+                                <a href="https://github.com/carlnordenfelt/aws-api-gateway-for-cloudformation/blob/master/lib/service/json-schemas/.json">JSON Schema</a>
+                            </p>
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <h3 class="panel-title">
@@ -1907,6 +1913,9 @@
                             </p>
 
                             <h3>Parameters</h3>
+                            <p>
+                                <a href="https://github.com/carlnordenfelt/aws-api-gateway-for-cloudformation/blob/master/lib/service/json-schemas/api-authorizer-schema.json">JSON Schema</a>
+                            </p>
 
                             <div class="panel panel-default">
                                 <div class="panel-heading">
@@ -2110,6 +2119,9 @@
                             </p>
 
                             <h3>Parameters</h3>
+                            <p>
+                                <a href="https://github.com/carlnordenfelt/aws-api-gateway-for-cloudformation/blob/master/lib/service/json-schemas/api-deploy-schema.json">JSON Schema</a>
+                            </p>
 
                             <div class="panel panel-default">
                                 <div class="panel-heading">
@@ -2296,10 +2308,10 @@
                             <li><span class="label label-danger">Breaking change</span> Removed support for shorthand pass-through templates. Use ApiMethod::.integration.passthroughBehaviour instead.</li>
                             <li><span class="label label-danger">Breaking change</span> ApiDeploy interface has changed slightly. The wrapper object stageConfig has been flattened.</li>
                             <li><span class="label label-danger">Breaking change</span> corsConfiguration.allowMethods no longer allows the value "*". Instead, you can omit the property and it will default to all methods.</li>
-                            <li><span class="label label-info">New</span> Added region: ap-northeast-2 (Sydney)</li>
+                            <li><span class="label label-info">New</span> Added region: ap-southeast-2 (Sydney)</li>
                             <li><span class="label label-info">New</span> Support for ApiMethod::.integration.passthroughBehaviour</li>
                             <li><span class="label label-info">New</span> Parametrized NodejsRuntime, CodeBucket & CodeKey.</li>
-                            <li><span class="label label-inof">New</span> Added and cleaned up the example templates.</li>
+                            <li><span class="label label-info">New</span> Added and cleaned up the example templates.</li>
                             <li><span class="label label-default">Clean up</span> Updated several npm dependencies including the aws-sdk</li>
                             <li><span class="label label-default">Clean up</span> Updated several eslint and the eslint rule set</li>
                             <li><span class="label label-default">Clean up</span> Renamed all files to dash-case</li>
@@ -2318,7 +2330,7 @@
                         <h4>Templates</h4>
                         <ul>
                             <li><a href="http://apigatewaycloudformation.ap-northeast-1.s3.amazonaws.com/2.0.0/ApiGatewayCloudFormation.template">ap-northeast-1 (Singapore)</a></li>
-                            <li><a href="http://apigatewaycloudformation.ap-northeast-2.s3.amazonaws.com/2.0.0/ApiGatewayCloudFormation.template">ap-northeast-2 (Sydney)</a></li>
+                            <li><a href="http://apigatewaycloudformation.ap-southeast-2.s3.amazonaws.com/2.0.0/ApiGatewayCloudFormation.template">ap-southeast-2 (Sydney)</a></li>
                             <li><a href="http://apigatewaycloudformation.eu-central-1.s3.amazonaws.com/2.0.0/ApiGatewayCloudFormation.template">eu-central-1 (Frankfurt)</a></li>
                             <li><a href="http://apigatewaycloudformation.eu-west-1.s3.amazonaws.com/2.0.0/ApiGatewayCloudFormation.template">eu-west-1 (Ireland)</a></li>
                             <li><a href="http://apigatewaycloudformation.us-east-1.s3.amazonaws.com/2.0.0/ApiGatewayCloudFormation.template">us-east-1 (North Virginia)</a></li>
@@ -2721,20 +2733,17 @@
 
             <section id="contribute">
                 <h2>Contribute</h2>
-
                 <p>
                     I gladly accept PRs, issues and comments. Anything that will help improve stability, reduce complexity or
-                    add more functionality is appreciated. Please make sure that npm test does not fail before you push your PR.
+                    add more functionality is appreciated. Please make sure that <code>make test</code>code> does not fail before you push your PR.
                     There are strict requirements on <strong>eslint and 100% unit test coverage</strong> for builds to succeed
                     before they can be published.
                 </p>
 
                 <h3>Testing</h3>
-
                 <p>
                     I highly recommend that you deploy your changes and test them in a real environment before submitting the
-                    PR.<br/>
-                    To package and deploy your changes manually, follow these steps:
+                    PR.<br/>To package and deploy your changes manually, follow these steps:
                 </p>
                 <ol>
                     <li><code>npm install --production</code></li>
@@ -2745,7 +2754,6 @@
 
             <section id="issues">
                 <h2>Issues</h2>
-
                 <p>
                     Open issues can be found at the
                     <a href="https://github.com/carlnordenfelt/aws-api-gateway-for-cloudformation/issues">Github page</a>.
@@ -2754,21 +2762,16 @@
 
             <section id="license">
                 <h2>License</h2>
-
                 <p>The MIT License (MIT)</p>
-
                 <p>Copyright (c) 2016 By Nordenfelt</p>
-
                 <p>Permission is hereby granted, free of charge, to any person obtaining a copy
                 of this software and associated documentation files (the "Software"), to deal
                 in the Software without restriction, including without limitation the rights
                 to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
                 copies of the Software, and to permit persons to whom the Software is
                 furnished to do so, subject to the following conditions:</p>
-
                 <p>The above copyright notice and this permission notice shall be included in all
                 copies or substantial portions of the Software.</p>
-
                 <p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
                 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
                 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -2787,7 +2790,6 @@
                         (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
                     m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
             })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
             ga('create', 'UA-76111534-1', 'auto');
             ga('send', 'pageview');
         </script>
