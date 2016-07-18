@@ -8,23 +8,46 @@ describe('certificateParser', function () {
 
     describe('ParseCertificate', function () {
         describe('Parse CHAIN part', function () {
-            it('should give a valid certificate with newline', function (done) {
-                var certificate = '-----BEGIN CERTIFICATE-----\nline1\nline2\n-----END CERTIFICATE-----';
-                var parsedCertificate = testSubject.parseCertificate(certificate, testSubject.CERTIFICATE_PART.CHAIN);
-                expect(parsedCertificate).to.equal('-----BEGIN CERTIFICATE-----\nline1\nline2\n-----END CERTIFICATE-----');
-                done();
+            describe('with one certificate', function () {
+                it('should give a valid certificate with newline', function (done) {
+                    var certificate = '-----BEGIN CERTIFICATE-----\nline1\nline2\n-----END CERTIFICATE-----';
+                    var parsedCertificate = testSubject.parseCertificate(certificate, testSubject.CERTIFICATE_PART.CHAIN);
+                    expect(parsedCertificate).to.equal('-----BEGIN CERTIFICATE-----\nline1\nline2\n-----END CERTIFICATE-----');
+                    done();
+                });
+                it('should give a valid certificate with space', function (done) {
+                    var certificate = '-----BEGIN CERTIFICATE----- line1 line2 -----END CERTIFICATE-----';
+                    var parsedCertificate = testSubject.parseCertificate(certificate, testSubject.CERTIFICATE_PART.CHAIN);
+                    expect(parsedCertificate).to.equal('-----BEGIN CERTIFICATE-----\nline1\nline2\n-----END CERTIFICATE-----');
+                    done();
+                });
+                it('should give a valid certificate with escaped newline', function (done) {
+                    var certificate = '-----BEGIN CERTIFICATE-----\\nline1\\nline2\\n-----END CERTIFICATE-----';
+                    var parsedCertificate = testSubject.parseCertificate(certificate, testSubject.CERTIFICATE_PART.CHAIN);
+                    expect(parsedCertificate).to.equal('-----BEGIN CERTIFICATE-----\nline1\nline2\n-----END CERTIFICATE-----');
+                    done();
+                });
             });
-            it('should give a valid certificate with space', function (done) {
-                var certificate = '-----BEGIN CERTIFICATE----- line1 line2 -----END CERTIFICATE-----';
-                var parsedCertificate = testSubject.parseCertificate(certificate, testSubject.CERTIFICATE_PART.CHAIN);
-                expect(parsedCertificate).to.equal('-----BEGIN CERTIFICATE-----\nline1\nline2\n-----END CERTIFICATE-----');
-                done();
-            });
-            it('should give a valid certificate with escaped newline', function (done) {
-                var certificate = '-----BEGIN CERTIFICATE-----\\nline1\\nline2\\n-----END CERTIFICATE-----';
-                var parsedCertificate = testSubject.parseCertificate(certificate, testSubject.CERTIFICATE_PART.CHAIN);
-                expect(parsedCertificate).to.equal('-----BEGIN CERTIFICATE-----\nline1\nline2\n-----END CERTIFICATE-----');
-                done();
+            describe('with multiple certificates', function () {
+
+                it('should give a valid certificate with newline', function (done) {
+                    var certificate = '-----BEGIN CERTIFICATE-----\nline1\nline2\n-----END CERTIFICATE-----\n-----BEGIN CERTIFICATE-----\nline3\nline4\n-----END CERTIFICATE-----';
+                    var parsedCertificate = testSubject.parseCertificate(certificate, testSubject.CERTIFICATE_PART.CHAIN);
+                    expect(parsedCertificate).to.equal('-----BEGIN CERTIFICATE-----\nline1\nline2\n-----END CERTIFICATE-----\n-----BEGIN CERTIFICATE-----\nline3\nline4\n-----END CERTIFICATE-----');
+                    done();
+                });
+                it('should give a valid certificate with space', function (done) {
+                    var certificate = '-----BEGIN CERTIFICATE----- line1 line2 -----END CERTIFICATE----- -----BEGIN CERTIFICATE----- line3 line4 -----END CERTIFICATE-----';
+                    var parsedCertificate = testSubject.parseCertificate(certificate, testSubject.CERTIFICATE_PART.CHAIN);
+                    expect(parsedCertificate).to.equal('-----BEGIN CERTIFICATE-----\nline1\nline2\n-----END CERTIFICATE-----\n-----BEGIN CERTIFICATE-----\nline3\nline4\n-----END CERTIFICATE-----');
+                    done();
+                });
+                it('should give a valid certificate with escaped newline', function (done) {
+                    var certificate = '-----BEGIN CERTIFICATE-----\\nline1\\nline2\\n-----END CERTIFICATE-----\\n-----BEGIN CERTIFICATE-----\\nline3\\nline4\\n-----END CERTIFICATE-----';
+                    var parsedCertificate = testSubject.parseCertificate(certificate, testSubject.CERTIFICATE_PART.CHAIN);
+                    expect(parsedCertificate).to.equal('-----BEGIN CERTIFICATE-----\nline1\nline2\n-----END CERTIFICATE-----\n-----BEGIN CERTIFICATE-----\nline3\nline4\n-----END CERTIFICATE-----');
+                    done();
+                });
             });
         });
         describe('Parse BODY part', function () {
