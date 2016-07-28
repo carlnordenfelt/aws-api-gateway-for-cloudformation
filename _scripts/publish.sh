@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 # Regions where AWS Lambda + API Gateway are available
-regions=( eu-central-1 eu-west-1 us-west-2 us-east-1 ap-northeast-1 ap-southeast-2 )
+regions=( eu-central-1 eu-west-1 us-west-2 us-east-1 ap-northeast-1 ap-southeast-1 ap-southeast-2 )
 # Valid npm version arguments
 npmActions=( patch minor major )
 # Local path to the CFN template file
