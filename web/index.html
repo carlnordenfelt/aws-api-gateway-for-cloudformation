@@ -329,15 +329,131 @@
                                 <div class="panel-heading">
                                     <h3 class="panel-title">
                                         apiDefinition
-                                        <span class="label label-danger pull-right">Required</span>
+                                        <span class="label label-warning pull-right">Conditional</span>
                                     </h3>
                                 </div>
                                 <div class="panel-body">
-                                    <p>Swagger definition of the REST API. Either the complete API or a partial API if you provide the restApiId parameter.</p>
+                                    <p>The REST API described in JSON Swagger. Can be either the complete API or a partial API if you provide the restApiId parameter.</p>
+                                    <p>You must either specify this or the <code>apiDefinitionS3Location</code> property.</p>
                                     <table class="table">
                                         <tr>
                                             <th>Type:</th>
                                             <td>Object</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Update:</th>
+                                            <td>No interruption</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        apiDefinitionS3Location
+                                        <span class="label label-warning pull-right">Conditional</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>
+                                        Container for Swagger definitions on S3.<br/>
+                                        The API can be described in YAML or JSON.<br/>
+                                        Can be either the complete API or a partial API if you provide the restApiId parameter.
+                                    </p>
+                                    <p>You must either specify this or the <code>apiDefinition</code> property.</p>
+                                    <table class="table">
+                                        <tr>
+                                            <th>Type:</th>
+                                            <td>Object</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Update:</th>
+                                            <td>No interruption</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        apiDefinitionS3Location.bucket
+                                        <span class="label label-danger pull-right">Required</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>Bucket where the Swagger file is stored.</p>
+                                    <table class="table">
+                                        <tr>
+                                            <th>Type:</th>
+                                            <td>String</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Update:</th>
+                                            <td>No interruption</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        apiDefinitionS3Location.key
+                                        <span class="label label-danger pull-right">Required</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>Swagger file object key on S3.</p>
+                                    <table class="table">
+                                        <tr>
+                                            <th>Type:</th>
+                                            <td>String</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Update:</th>
+                                            <td>No interruption</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        apiDefinitionS3Location.version
+                                        <span class="label label-info pull-right">Optional</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>If the Bucket is versioned you can point to a specific object version here. If omitted, the latest will be used.</p>
+                                    <table class="table">
+                                        <tr>
+                                            <th>Type:</th>
+                                            <td>String</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Update:</th>
+                                            <td>No interruption</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        apiDefinitionS3Location.etag
+                                        <span class="label label-info pull-right">Optional</span>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>The S3 ETag of the Swagger file. If provided, a checksum validation will be performed.</p>
+                                    <table class="table">
+                                        <tr>
+                                            <th>Type:</th>
+                                            <td>String</td>
                                         </tr>
                                         <tr>
                                             <th>Update:</th>
@@ -2299,11 +2415,38 @@
                 <h2>Change Log</h2>
                 <div class="panel panel-default">
                     <div class="panel-heading">
+                        <h3 class="panel-title">2.1.0 (2016-07-28)</h3>
+                    </div>
+                    <div class="panel-body">
+                        <ul>
+                            <li>
+                                <span class="label label-info">New</span> Introducing support for API Import from S3.
+                                <a href="https://github.com/carlnordenfelt/aws-api-gateway-for-cloudformation/issues/48">Issue #48</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="panel-footer">
+                        <h4>Templates</h4>
+                        <ul>
+                            <li><a href="http://apigatewaycloudformation.ap-northeast-1.s3.amazonaws.com/2.0.2/ApiGatewayCloudFormation.template">ap-northeast-1 (Tokyo)</a></li>
+                            <li><a href="http://apigatewaycloudformation.ap-southeast-1.s3.amazonaws.com/2.0.2/ApiGatewayCloudFormation.template">ap-southeast-1 (Singapore)</a></li>
+                            <li><a href="http://apigatewaycloudformation.ap-southeast-2.s3.amazonaws.com/2.0.2/ApiGatewayCloudFormation.template">ap-southeast-2 (Sydney)</a></li>
+                            <li><a href="http://apigatewaycloudformation.eu-central-1.s3.amazonaws.com/2.0.2/ApiGatewayCloudFormation.template">eu-central-1 (Frankfurt)</a></li>
+                            <li><a href="http://apigatewaycloudformation.eu-west-1.s3.amazonaws.com/2.0.2/ApiGatewayCloudFormation.template">eu-west-1 (Ireland)</a></li>
+                            <li><a href="http://apigatewaycloudformation.us-east-1.s3.amazonaws.com/2.0.2/ApiGatewayCloudFormation.template">us-east-1 (North Virginia)</a></li>
+                            <li><a href="http://apigatewaycloudformation.us-west-2.s3.amazonaws.com/2.0.2/ApiGatewayCloudFormation.template">us-west-2 (Oregon)</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
                         <h3 class="panel-title">2.0.2 (2016-07-28)</h3>
                     </div>
                     <div class="panel-body">
                         <ul>
-                            <li><span class="label label-danger">New</span> Support for ap-southeast-1 (Singapore)</li>
+                            <li><span class="label label-info">New</span> Support for ap-southeast-1 (Singapore)</li>
                         </ul>
                     </div>
 
@@ -2327,7 +2470,10 @@
                     </div>
                     <div class="panel-body">
                         <ul>
-                            <li><span class="label label-danger">Fix</span> API Domain Name certificate chains now supports multiple cerificates. <a href="https://github.com/carlnordenfelt/aws-api-gateway-for-cloudformation/issues/49">Issue #49</a></li>
+                            <li>
+                                <span class="label label-danger">Fix</span> API Domain Name certificate chains now supports multiple cerificates.
+                                <a href="https://github.com/carlnordenfelt/aws-api-gateway-for-cloudformation/issues/49">Issue #49</a>
+                            </li>
                         </ul>
                     </div>
 

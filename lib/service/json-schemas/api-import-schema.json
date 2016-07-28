@@ -9,8 +9,30 @@
             "default": "false"
         },
         "apiDefinition": {
+            "type": "object"
+        },
+        "apiDefinitionS3Location": {
             "type": "object",
-            "required": true
+            "properties": {
+                "bucket": {
+                    "type": "string",
+                    "required": true,
+                    "description": "Bucket where the Swagger file is stored"
+                },
+                "key": {
+                    "type": "string",
+                    "required": true,
+                    "description": "Swagger file object key"
+                },
+                "etag": {
+                    "type": "string",
+                    "description": "The S3 ETag of the Swagger file. If provided, a checksum validation will be performed"
+                },
+                "version": {
+                    "type": "string",
+                    "description": "If the Bucket is versioned you can point to a specific object version here. If omitted, the latest will be used."
+                }
+            }
         },
         "parameters": {
             "type": "object"
@@ -22,5 +44,9 @@
             "type": "string"
         }
     },
+    "oneOf": [
+        { "title": "apiDefinition", "required": ["apiDefinition"] },
+        { "title": "apiDefinitionS3Location", "required": ["apiDefinitionS3Location"] }
+    ],
     "additionalProperties": false
 }
