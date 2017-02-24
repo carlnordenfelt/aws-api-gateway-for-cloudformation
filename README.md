@@ -1,5 +1,13 @@
 #API Gateway for CloudFormation
 
+## !Project Discontinued!
+This project is no longer actively maintained. Critical bug fixes may be released but no new features can be expected.
+Cloudformation has a decent set of native resources for API Gateway and where there is a gap in CloudFormation, I recommend using [Lulo](https://www.npmjs.com/package/lulo) to bridge it. 
+[Lulo](https://www.npmjs.com/package/lulo) is a plugin engine for Custom Resources and is much more extendible and versatile than this project as the plugins can cover any AWS Service (and anything else for that matter) and not just API Gateway.
+
+
+
+
 [![Build Status](https://travis-ci.org/carlnordenfelt/aws-api-gateway-for-cloudformation.svg?branch=master)](https://travis-ci.org/carlnordenfelt/aws-api-gateway-for-cloudformation)
 [![Coverage Status](https://coveralls.io/repos/github/carlnordenfelt/aws-api-gateway-for-cloudformation/badge.svg?branch=master)](https://coveralls.io/github/carlnordenfelt/aws-api-gateway-for-cloudformation?branch=master)
 
