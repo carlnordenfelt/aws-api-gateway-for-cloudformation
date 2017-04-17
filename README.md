@@ -1,4 +1,4 @@
-#API Gateway for CloudFormation
+# API Gateway for CloudFormation
 
 ## !Project Discontinued!
 This project is no longer actively maintained. Critical bug fixes may be released but no new features can be expected.
@@ -21,7 +21,7 @@ It supports API Definitions in Swagger as well as individual Cloud Formation res
 
 **Complete documentation is available at [the project website](https://apigatewaycloudformation.bynordenfelt.com/)**
 
-##Overview
+## Overview
 
 This setup allows you to manage the majority of the API Gateway related resources.
 The installation will create a Lambda function in the region corresponding to the template location in your
