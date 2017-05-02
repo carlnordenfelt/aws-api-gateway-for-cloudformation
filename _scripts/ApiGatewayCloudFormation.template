@@ -22,6 +22,11 @@
             "Default": 180,
             "Description": "Lambda execution timeout"
         },
+        "ExportName": {
+            "Type": "String",
+            "Default": "APIGatewayCloudFormationServiceToken",
+            "Description": "Cross Stack Reference Name"
+        },
         "NodeRuntime": {
             "Type": "String",
             "AllowedValues": ["nodejs", "nodejs4.3"],
@@ -116,7 +121,8 @@
     },
     "Outputs": {
         "LambdaFunction": {
-            "Value": { "Fn::GetAtt": ["LambdaFunction", "Arn"] }
+            "Value": { "Fn::GetAtt": ["LambdaFunction", "Arn"] },
+            "Export": { "Name" : {"Ref": "ExportName" }}
         },
         "SourceVersion": {
             "Value": "{VERSION}"
