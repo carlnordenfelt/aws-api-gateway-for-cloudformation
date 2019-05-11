@@ -1,6 +1,6 @@
 # !Removal notice!
 The downloadable artifacts will be **removed on August 31st 2019**.
-This mean that the following pacakges will no longer be available:
+This means that the following packages will no longer be available:
 
 * https://s3-{AWS-Region}.amazonaws.com/apigatewaycloudformation.{AWS-Region}/{VERSION}/ApiGatewayCloudFormation.template
 * https://s3-{AWS-Region}.amazonaws.com/apigatewaycloudformation.{AWS-Region}/{VERSION}/source.zip
